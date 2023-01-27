@@ -1,0 +1,18 @@
+#version 300 es
+
+uniform mat4 r_projectionMatrix;
+uniform mat4 r_modelViewMatrix;
+
+layout(location = 0) in vec3 position;
+out vec2 texCoord;
+out vec2 texCoordRaw;
+layout(location = 1) in vec2 texCoordRawIn;
+out vec3 normal;
+
+void main()
+{
+    gl_Position = (r_projectionMatrix * r_modelViewMatrix) * vec4(position, 1.0);
+    texCoordRaw = texCoordRawIn;
+    texCoord = texCoordRawIn;
+}
+

@@ -1,0 +1,78 @@
+#version 300 es
+precision mediump float;
+precision highp int;
+
+uniform highp sampler2D shotlayer;
+uniform highp float time;
+uniform highp sampler2D flowlayer;
+
+in highp vec2 texCoord;
+layout(location = 0) out highp vec4 fragColor;
+
+void main()
+{
+    highp vec2 _249 = dFdx(texCoord);
+    highp vec2 _252 = dFdy(texCoord);
+    highp vec4 _262 = textureGrad(shotlayer, texCoord, _249, _252);
+    if (all(lessThan(_262, vec4(0.0039215688593685626983642578125))))
+    {
+        discard;
+    }
+    highp float _419 = _262.w;
+    highp float _465 = smoothstep(0.0, 1.0, _419 * _419);
+    highp vec4 _498 = mix(vec4(_262.zy, -1.0, 0.666666686534881591796875), vec4(_262.yz, 0.0, -0.3333333432674407958984375), vec4(step(_262.z, _262.y)));
+    highp float _502 = _262.x;
+    highp float _503 = _498.x;
+    highp vec4 _521 = mix(vec4(_503, _498.yw, _502), vec4(_502, _498.yz, _503), vec4(step(_503, _502)));
+    highp float _523 = _521.x;
+    highp float _525 = _521.w;
+    highp float _527 = _521.y;
+    highp float _529 = _523 - min(_525, _527);
+    highp float _549 = _529 / (_523 + 1.0000000133514319600180897396058e-10);
+    highp vec3 _552 = vec3(abs(_521.z + ((_525 - _527) / (6.0 * _529 + 1.0000000133514319600180897396058e-10))), _549, _523);
+    highp float _428 = (_465 * _465) * _465;
+    highp float _434 = _549 * ((-_428) * _465 + 1.0);
+    _552.y = _434;
+    highp float _447 = _428 * (1.0 - _523) + _523;
+    _552.z = _447;
+    highp vec4 _459 = clamp(vec4(mix(vec3(1.0), clamp(abs((fract(_552.xxx + vec3(1.0, 0.666666686534881591796875, 0.3333333432674407958984375)) * 6.0) - vec3(3.0)) - vec3(1.0), vec3(0.0), vec3(1.0)), vec3(_434)) * _447, _465 * 0.5), vec4(0.0), vec4(1.0));
+    highp float _283 = _459.w;
+    highp float _294 = ((_283 * 0.20000000298023223876953125 + time) * 0.100000001490116119384765625 + 92.1234283447265625) + fwidth(_283);
+    highp vec4 _313 = textureGrad(flowlayer, texCoord + (vec2(3.1229999065399169921875 * sin(_294 * 1.631999969482421875), _294 * 36.345001220703125) * 0.052400000393390655517578125), _249, _252);
+    highp vec4 _758 = vec4(0.0, 0.0, 0.0, 1.0);
+    _758.x = _313.x;
+    _758.y = _313.y;
+    _758.z = _313.z;
+    highp vec3 _343 = _758.xyz + textureGrad(flowlayer, texCoord + (vec2(_294 * 13.62399959564208984375, _294 * (-49.851001739501953125)) * 0.0531000010669231414794921875), _249, _252).xyz;
+    highp vec4 _764 = _758;
+    _764.x = _343.x;
+    _764.y = _343.y;
+    _764.z = _343.z;
+    highp vec3 _370 = _764.xyz + textureGrad(flowlayer, texCoord + (vec2(_294 * (-12.930999755859375), _294 * (-24.340999603271484375)) * 0.0542999990284442901611328125), _249, _252).xyz;
+    highp vec4 _770 = _764;
+    _770.x = _370.x;
+    _770.y = _370.y;
+    _770.z = _370.z;
+    highp vec3 _384 = clamp(_770.xyz * vec3(0.4000000059604644775390625), vec3(0.0), vec3(1.0));
+    highp float _609 = _384.z;
+    highp float _610 = _384.y;
+    highp vec4 _629 = mix(vec4(_609, _610, -1.0, 0.666666686534881591796875), vec4(_610, _609, 0.0, -0.3333333432674407958984375), vec4(step(_609, _610)));
+    highp float _633 = _384.x;
+    highp float _634 = _629.x;
+    highp vec4 _652 = mix(vec4(_634, _629.yw, _633), vec4(_633, _629.yz, _634), vec4(step(_634, _633)));
+    highp float _654 = _652.x;
+    highp float _656 = _652.w;
+    highp float _658 = _652.y;
+    highp float _660 = _654 - min(_656, _658);
+    highp float _674 = abs(_652.z + ((_656 - _658) / (6.0 * _660 + 1.0000000133514319600180897396058e-10)));
+    highp float _680 = _660 / (_654 + 1.0000000133514319600180897396058e-10);
+    highp vec3 _683 = vec3(_674, _680, _654);
+    _683.x = _674 + (time * 0.100000001490116119384765625 + texCoord.y);
+    highp vec3 _714 = mix(vec3(1.0), clamp(abs((fract(_683.xxx + vec3(1.0, 0.666666686534881591796875, 0.3333333432674407958984375)) * 6.0) - vec3(3.0)) - vec3(1.0), vec3(0.0), vec3(1.0)), vec3(_680)) * _654;
+    highp vec4 _796 = _770;
+    _796.x = _714.x;
+    _796.y = _714.y;
+    _796.z = _714.z;
+    fragColor = _459 * _796;
+}
+

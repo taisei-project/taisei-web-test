@@ -1,0 +1,23 @@
+#version 300 es
+precision mediump float;
+precision highp int;
+
+uniform highp sampler2D tex;
+
+in highp vec2 texCoord;
+in highp vec4 color_width;
+layout(location = 0) out highp vec4 fragColor;
+
+void main()
+{
+    highp vec4 _25 = texture(tex, texCoord);
+    highp float _31 = _25.x;
+    if (_31 >= 4.0)
+    {
+        discard;
+    }
+    highp float _69 = smoothstep(2.0, 7.0, 0.800000011920928955078125 - _31);
+    highp float _77 = smoothstep(-min(4.0, color_width.w), 8.0, 2.0 - _31);
+    fragColor = vec4((color_width.xyz * (_77 * _77 + smoothstep(0.0, 6.0, -_31))) + vec3(_69 * _69), 0.0);
+}
+

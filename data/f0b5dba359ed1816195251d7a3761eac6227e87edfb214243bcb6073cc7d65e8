@@ -1,0 +1,15 @@
+#version 300 es
+precision mediump float;
+precision highp int;
+
+uniform highp sampler2D tex;
+
+in highp vec2 texCoord;
+in highp vec3 posModelView;
+layout(location = 0) out highp vec4 fragColor;
+
+void main()
+{
+    fragColor = mix(vec4(1.0), texture(tex, texCoord), vec4(1.0 - min(1.0, length(posModelView) * 0.0003333333297632634639739990234375)));
+}
+

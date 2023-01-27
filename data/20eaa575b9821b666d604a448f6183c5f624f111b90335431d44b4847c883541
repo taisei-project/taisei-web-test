@@ -1,0 +1,37 @@
+#version 300 es
+
+uniform mat4 r_projectionMatrix;
+
+out vec3 pos;
+layout(location = 4) in mat4 spriteVMTransform;
+layout(location = 0) in vec2 vertPos;
+out vec3 normal;
+layout(location = 2) in vec3 vertNormal;
+out vec3 tangent;
+layout(location = 3) in vec4 vertTangent;
+out vec3 bitangent;
+out vec2 texCoord;
+layout(location = 13) in vec4 spriteTexRegion;
+layout(location = 1) in vec2 vertTexCoord;
+out vec4 color;
+layout(location = 12) in vec4 spriteRGBA;
+out vec4 customParams;
+layout(location = 15) in vec4 spriteCustomParams;
+out vec2 texCoordRaw;
+out vec2 texCoordOverlay;
+out vec4 texRegion;
+out vec2 dimensions;
+
+void main()
+{
+    pos = (spriteVMTransform * vec4(vertPos, 0.0, 1.0)).xyz;
+    mat3 _81 = mat3(spriteVMTransform[0].xyz, spriteVMTransform[1].xyz, spriteVMTransform[2].xyz);
+    normal = normalize(_81 * vertNormal);
+    tangent = normalize(_81 * vertTangent.xyz);
+    bitangent = normalize((_81 * cross(vertNormal, vertTangent.xyz)) * vertTangent.w);
+    gl_Position = r_projectionMatrix * vec4(pos, 1.0);
+    texCoord = vec2(mix(spriteTexRegion.x, spriteTexRegion.x + spriteTexRegion.z, vertTexCoord.x), 1.0 - mix(spriteTexRegion.y, spriteTexRegion.y + spriteTexRegion.w, 1.0 - vertTexCoord.y));
+    color = spriteRGBA;
+    customParams = spriteCustomParams;
+}
+

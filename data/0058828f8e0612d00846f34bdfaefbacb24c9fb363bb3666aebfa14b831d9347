@@ -1,0 +1,98 @@
+#version 300 es
+precision mediump float;
+precision highp int;
+
+uniform highp sampler2D tex;
+uniform highp sampler2D tex_aux[3];
+
+layout(location = 0) out highp vec4 fragColor;
+in highp vec4 customParams;
+in highp vec2 texCoord;
+in highp vec2 texCoordOverlay;
+in highp vec2 dimensions;
+in highp vec4 color;
+in highp vec4 texRegion;
+
+void main()
+{
+    highp vec2 _336 = texCoord;
+    _336.y = 1.0 - _336.y;
+    highp vec2 _341 = _336 * dimensions;
+    highp float _346 = 1.0 - customParams.x;
+    highp float _347 = pow(_346, 2.0);
+    highp float _348 = 1.0 - _347;
+    highp float _358 = (sin((_341.y * 0.25) * _348) * 2.0) * pow(_346, 1.0) + _341.x;
+    highp vec2 _386 = vec2(_358, (cos((_358 * 0.25) * _348 + (_347 * 6.283185482025146484375)) * (-2.0)) * pow(_346, 0.5) + _341.y) / dimensions;
+    highp float _462 = _386.x;
+    bool _463 = _462 >= 0.0;
+    bool _469;
+    if (_463)
+    {
+        _469 = _462 <= 1.0;
+    }
+    else
+    {
+        _469 = _463;
+    }
+    bool _475;
+    if (_469)
+    {
+        _475 = _386.y >= 0.0;
+    }
+    else
+    {
+        _475 = _469;
+    }
+    bool _481;
+    if (_475)
+    {
+        _481 = _386.y <= 1.0;
+    }
+    else
+    {
+        _481 = _475;
+    }
+    highp float _503 = texRegion.x + texRegion.z;
+    highp float _513 = texRegion.y + texRegion.w;
+    highp vec4 _395 = texture(tex, vec2(mix(texRegion.x, _503, _386.x), 1.0 - mix(texRegion.y, _513, _386.y)));
+    highp vec4 _399 = (color * _395.x) * float(_481);
+    highp vec2 _403 = _386 - (vec2(1.0) / dimensions);
+    highp float _523 = _403.x;
+    bool _524 = _523 >= 0.0;
+    bool _530;
+    if (_524)
+    {
+        _530 = _523 <= 1.0;
+    }
+    else
+    {
+        _530 = _524;
+    }
+    bool _536;
+    if (_530)
+    {
+        _536 = _403.y >= 0.0;
+    }
+    else
+    {
+        _536 = _530;
+    }
+    bool _542;
+    if (_536)
+    {
+        _542 = _403.y <= 1.0;
+    }
+    else
+    {
+        _542 = _536;
+    }
+    highp vec4 _417 = texture(tex, vec2(mix(texRegion.x, _503, _403.x), 1.0 - mix(texRegion.y, _513, _403.y)));
+    highp vec4 _437 = texture(tex_aux[0], clamp(texCoordOverlay, vec2(0.00999999977648258209228515625), vec2(0.9900000095367431640625)));
+    highp vec4 _446 = mix((vec4(0.0, 0.0, 0.0, color.w) * _417.x) * float(_542), _399, vec4(sqrt(_399.w))) * clamp(((_437.x + 0.5) * 2.5) * customParams.x + (-0.5), 0.0, 1.0);
+    if (all(lessThan(_446, vec4(1.525902189314365386962890625e-05))))
+    {
+        discard;
+    }
+    fragColor = _446;
+}
+

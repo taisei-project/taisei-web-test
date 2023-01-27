@@ -1,0 +1,21 @@
+#version 300 es
+
+uniform mat4 r_modelViewMatrix;
+uniform mat4 r_projectionMatrix;
+uniform mat4 r_textureMatrix;
+
+layout(location = 0) in vec3 position;
+out vec3 posModelView;
+out vec2 texCoord;
+layout(location = 1) in vec2 texCoordRawIn;
+out vec3 normal;
+out vec2 texCoordRaw;
+
+void main()
+{
+    vec4 _28 = r_modelViewMatrix * vec4(position, 1.0);
+    gl_Position = r_projectionMatrix * _28;
+    posModelView = _28.xyz;
+    texCoord = (r_textureMatrix * vec4(texCoordRawIn, 0.0, 1.0)).xy;
+}
+

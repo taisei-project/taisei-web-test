@@ -1,0 +1,30 @@
+#version 300 es
+precision mediump float;
+precision highp int;
+
+uniform highp float points[120];
+uniform highp vec3 color_mid;
+uniform highp vec3 color_high;
+uniform highp vec3 color_low;
+
+in highp vec2 texCoord;
+layout(location = 0) out highp vec4 fragColor;
+
+void main()
+{
+    int _206 = int(floor(clamp(texCoord.x, 0.0, 1.0) * 119.0));
+    highp float _118 = 0.949999988079071044921875 * (float(texCoord.y <= points[_206]) * (0.800000011920928955078125 * points[_206] + 0.20000000298023223876953125)) + 0.0500000007450580596923828125;
+    highp vec4 _251;
+    if (points[_206] > 0.5)
+    {
+        _251 = vec4(mix(color_mid, color_high, vec3(2.0 * (points[_206] - 0.5))), _118);
+    }
+    else
+    {
+        _251 = vec4(mix(color_low, color_mid, vec3(2.0 * points[_206])), _118);
+    }
+    highp vec4 _169 = mix(_251, vec4(1.0), vec4(0.5 * pow(1.0 - abs(texCoord.y - 0.5), 32.0)));
+    highp float _215 = _169.w;
+    fragColor = vec4(_169.xyz * _215, _215);
+}
+

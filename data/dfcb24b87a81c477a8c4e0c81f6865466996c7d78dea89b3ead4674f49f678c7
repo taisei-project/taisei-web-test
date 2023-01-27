@@ -1,0 +1,32 @@
+#version 300 es
+
+uniform mat4 r_projectionMatrix;
+
+layout(location = 0) in vec2 vertPos;
+layout(location = 4) in mat4 spriteVMTransform;
+layout(location = 1) in vec2 vertTexCoord;
+out vec2 texCoord;
+out vec4 texRegion;
+layout(location = 13) in vec4 spriteTexRegion;
+out vec2 texCoordOverlay;
+layout(location = 8) in mat4 spriteTexTransform;
+out vec2 dimensions;
+layout(location = 14) in vec2 spriteDimensions;
+out vec4 customParams;
+layout(location = 15) in vec4 spriteCustomParams;
+out vec4 color;
+layout(location = 12) in vec4 spriteRGBA;
+out vec2 texCoordRaw;
+
+void main()
+{
+    gl_Position = (r_projectionMatrix * spriteVMTransform) * vec4(vertPos * 2.0, 0.0, 1.0);
+    vec2 _60 = (vertTexCoord * 2.0) - vec2(0.5);
+    texCoord = _60;
+    texRegion = spriteTexRegion;
+    texCoordOverlay = (spriteTexTransform * vec4(_60, 0.0, 1.0)).xy;
+    dimensions = spriteDimensions;
+    customParams = spriteCustomParams;
+    color = spriteRGBA;
+}
+

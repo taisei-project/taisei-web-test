@@ -1,0 +1,46 @@
+#version 300 es
+precision mediump float;
+precision highp int;
+
+uniform highp vec2 fill;
+uniform highp vec4 fillColor;
+uniform highp vec4 altFillColor;
+uniform highp vec4 coreFillColor;
+uniform highp vec4 glowColor;
+uniform highp vec4 borderColor;
+uniform highp float opacity;
+
+in highp vec2 texCoord;
+in highp vec4 fillNormAngles;
+layout(location = 0) out highp vec4 fragColor;
+
+void main()
+{
+    highp vec2 _56 = texCoord - vec2(0.5);
+    highp float _59 = length(_56);
+    highp float _75 = 1.2000000476837158203125 * _59;
+    highp float _81 = 1.113861560821533203125 * _59;
+    highp float _92 = smoothstep(0.449999988079071044921875, 0.550000011920928955078125, _75) - smoothstep(0.449999988079071044921875, 0.550000011920928955078125, _81);
+    if (_92 == 0.0)
+    {
+        discard;
+    }
+    highp float _123 = atan(_56.x, -_56.y) * 0.15915493667125701904296875 + 0.5;
+    highp float _143 = fwidth(texCoord.x);
+    highp float _345 = (-_143) * 1.08000004291534423828125 + 0.5;
+    highp float _347 = _143 * 1.08000004291534423828125 + 0.5;
+    highp float _205 = smoothstep(0.4900000095367431640625, 0.5099999904632568359375, _59 * 1.18800008296966552734375) - smoothstep(0.4900000095367431640625, 0.5099999904632568359375, _59 * 1.12500011920928955078125);
+    highp float _214 = max(0.0199999995529651641845703125 * min(1.0, fill.x * 32.0), 9.9999997473787516355514526367188e-06);
+    highp float _231 = smoothstep(0.5 + _214, 0.5, (fillNormAngles.x - _123) + 0.5) * smoothstep(0.5 - _214, 0.5, (fillNormAngles.y - _123) + 0.5);
+    highp float _246 = max(0.0199999995529651641845703125 * min(1.0, fill.y * 32.0), 9.9999997473787516355514526367188e-06);
+    highp vec4 _276 = coreFillColor * (pow(_205, 4.0) * _231);
+    fragColor = glowColor * _92;
+    highp vec4 _288 = (_276 + (mix(fillColor, altFillColor, vec4(smoothstep(0.5 + _246, 0.5, (fillNormAngles.z - _123) + 0.5) * smoothstep(0.5 - _246, 0.5, (fillNormAngles.w - _123) + 0.5))) * (1.0 - _276.w))) * (_205 * _231);
+    fragColor = _288 + (fragColor * (1.0 - _288.w));
+    highp vec4 _296 = borderColor * (smoothstep(_345, _347, _75) - smoothstep(_345, _347, 1.18811881542205810546875 * _59));
+    fragColor = _296 + (fragColor * (1.0 - _296.w));
+    highp vec4 _303 = borderColor * (smoothstep(_345, _347, 1.12500011920928955078125 * _59) - smoothstep(_345, _347, _81));
+    fragColor = _303 + (fragColor * (1.0 - _303.w));
+    fragColor *= opacity;
+}
+

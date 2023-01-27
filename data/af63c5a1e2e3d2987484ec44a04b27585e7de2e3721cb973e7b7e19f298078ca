@@ -1,0 +1,15 @@
+#version 300 es
+precision mediump float;
+precision highp int;
+
+uniform highp sampler2D tex;
+
+in highp vec2 texCoord;
+layout(location = 0) out highp vec4 fragColor;
+
+void main()
+{
+    fragColor = vec4(0.100000001490116119384765625, 0.0, 0.070000000298023223876953125, 1.0);
+    gl_FragDepth = (0.5 * gl_FragCoord.z) / (texture(tex, texCoord).w + 0.001000000047497451305389404296875);
+}
+

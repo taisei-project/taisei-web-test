@@ -1,0 +1,21 @@
+#version 300 es
+precision mediump float;
+precision highp int;
+
+uniform highp sampler2D sprite_tex;
+
+in highp vec4 color;
+in highp vec4 tex_coord;
+layout(location = 0) out highp vec4 fragColor;
+
+void main()
+{
+    highp vec4 _25 = texture(sprite_tex, tex_coord.xy);
+    highp vec4 _26 = color * _25;
+    if (all(lessThan(_26, vec4(0.00390625))))
+    {
+        discard;
+    }
+    fragColor = _26;
+}
+

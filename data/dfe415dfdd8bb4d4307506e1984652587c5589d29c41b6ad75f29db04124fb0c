@@ -1,0 +1,20 @@
+#version 300 es
+precision mediump float;
+precision highp int;
+
+uniform highp sampler2D tex;
+uniform highp float threshold;
+
+in highp vec2 texCoord;
+layout(location = 0) out highp vec4 fragColor;
+
+void main()
+{
+    highp vec4 _24 = texture(tex, texCoord);
+    if (_24.w < threshold)
+    {
+        discard;
+    }
+    fragColor = _24;
+}
+

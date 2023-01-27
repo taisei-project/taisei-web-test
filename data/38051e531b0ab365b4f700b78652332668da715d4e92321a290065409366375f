@@ -1,0 +1,30 @@
+#version 300 es
+precision mediump float;
+precision highp int;
+
+uniform highp vec2 origin;
+uniform highp float ratio;
+uniform highp float t;
+uniform highp sampler2D tex;
+
+in highp vec2 texCoordRaw;
+in highp vec2 texCoord;
+layout(location = 0) out highp vec4 fragColor;
+
+void main()
+{
+    highp vec2 _23 = texCoordRaw - origin;
+    highp float _32 = _23.y * ratio;
+    highp vec2 _122 = _23;
+    _122.y = _32;
+    highp float _36 = length(_122);
+    highp float _62 = smoothstep(1.0, 0.0, t) * sin(t * 40.0 + (10.0 * (t * 0.100000001490116119384765625 + atan(_32, _23.x)))) + 1.0;
+    highp float _68 = (step(0.0, t) * t) * 1.5;
+    if (_36 > (_62 * _68))
+    {
+        discard;
+    }
+    highp vec4 _88 = texture(tex, texCoord);
+    fragColor = mix(_88, vec4(1.0) - vec4(_88.xyz, 0.0), vec4(step(_62 * _68 + (sqrt(_36) * (-0.100000001490116119384765625)), _36)));
+}
+

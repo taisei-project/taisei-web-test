@@ -1,0 +1,22 @@
+#version 300 es
+precision mediump float;
+precision highp int;
+
+uniform highp sampler2D tex;
+uniform highp vec2 blur_direction;
+uniform highp vec2 blur_resolution;
+
+layout(location = 0) out highp vec4 fragColor;
+in highp vec2 texCoord;
+
+void main()
+{
+    highp vec2 _145 = blur_direction / blur_resolution;
+    highp vec2 _160 = _145 * 6.0;
+    highp vec2 _167 = _145 * 5.0;
+    highp vec2 _175 = _145 * 4.0;
+    highp vec2 _183 = _145 * 3.0;
+    highp vec2 _191 = _145 * 2.0;
+    fragColor = ((((((((((((texture(tex, texCoord - _160) * 0.008178892545402050018310546875) + (texture(tex, texCoord - _167) * 0.020447112619876861572265625)) + (texture(tex, texCoord - _175) * 0.04327301681041717529296875)) + (texture(tex, texCoord - _183) * 0.077526487410068511962890625)) + (texture(tex, texCoord - _191) * 0.117579273879528045654296875)) + (texture(tex, texCoord - _145) * 0.15095905959606170654296875)) + (texture(tex, texCoord) * 0.16407231986522674560546875)) + (texture(tex, texCoord + _145) * 0.15095905959606170654296875)) + (texture(tex, texCoord + _191) * 0.117579273879528045654296875)) + (texture(tex, texCoord + _183) * 0.077526487410068511962890625)) + (texture(tex, texCoord + _175) * 0.04327301681041717529296875)) + (texture(tex, texCoord + _167) * 0.020447112619876861572265625)) + (texture(tex, texCoord + _160) * 0.008178892545402050018310546875);
+}
+

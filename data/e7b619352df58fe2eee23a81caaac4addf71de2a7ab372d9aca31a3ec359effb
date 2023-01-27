@@ -1,0 +1,29 @@
+#version 300 es
+
+uniform mat4 r_modelViewMatrix;
+uniform mat4 r_projectionMatrix;
+uniform mat4 r_textureMatrix;
+
+out vec3 pos;
+layout(location = 0) in vec3 position;
+out vec3 normal;
+layout(location = 2) in vec3 normalIn;
+out vec3 tangent;
+layout(location = 3) in vec4 tangentIn;
+out vec3 bitangent;
+out vec2 texCoord;
+layout(location = 1) in vec2 texCoordRawIn;
+out vec2 texCoordRaw;
+
+void main()
+{
+    pos = (r_modelViewMatrix * vec4(position, 1.0)).xyz;
+    mat3 _43 = mat3(r_modelViewMatrix[0].xyz, r_modelViewMatrix[1].xyz, r_modelViewMatrix[2].xyz);
+    normal = normalize(_43 * normalIn);
+    tangent = normalize(_43 * tangentIn.xyz);
+    bitangent = normalize((_43 * cross(normalIn, tangentIn.xyz)) * tangentIn.w);
+    gl_Position = r_projectionMatrix * vec4(pos, 1.0);
+    texCoord = (r_textureMatrix * vec4(texCoordRawIn, 0.0, 1.0)).xy;
+    texCoordRaw = texCoordRawIn;
+}
+

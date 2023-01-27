@@ -1,0 +1,31 @@
+#version 300 es
+precision mediump float;
+precision highp int;
+
+uniform int samples;
+uniform highp float radius;
+uniform highp sampler2D tex;
+uniform highp mat4 r_textureMatrix;
+uniform highp float intensity;
+
+in highp vec2 texCoordRaw;
+layout(location = 0) out highp vec4 fragColor;
+in highp vec2 texCoord;
+
+void main()
+{
+    highp float _34 = float(samples);
+    highp float _35 = 6.283185482025146484375 / _34;
+    highp vec4 _130;
+    _130 = vec4(0.0);
+    for (int _129 = 0; _129 < samples; )
+    {
+        highp float _53 = _35 * float(_129);
+        _130 += texture(tex, (r_textureMatrix * vec4(clamp(texCoordRaw + (vec2(cos(_53), sin(_53)) * radius), vec2(0.0), vec2(0.89999997615814208984375)), 0.0, 1.0)).xy);
+        _129++;
+        continue;
+    }
+    highp vec4 _96 = _130 / vec4(_34);
+    fragColor = texture(tex, texCoord) + (((_96 * intensity) * _96) * 10.0);
+}
+

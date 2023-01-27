@@ -1,0 +1,31 @@
+#version 300 es
+
+uniform mat4 r_modelViewMatrix;
+uniform mat4 r_projectionMatrix;
+uniform float wave_scale;
+uniform vec2 wave_offset;
+
+out vec3 pos;
+layout(location = 0) in vec3 position;
+out vec3 normal;
+layout(location = 2) in vec3 normalIn;
+out vec3 tangent;
+layout(location = 3) in vec4 tangentIn;
+out vec3 bitangent;
+out vec2 texCoord;
+layout(location = 1) in vec2 texCoordRawIn;
+out vec2 texCoordRaw;
+
+void main()
+{
+    pos = (r_modelViewMatrix * vec4(position, 1.0)).xyz;
+    gl_Position = r_projectionMatrix * vec4(pos, 1.0);
+    mat3 _106 = mat3(r_modelViewMatrix[0].xyz, r_modelViewMatrix[1].xyz, r_modelViewMatrix[2].xyz);
+    normal = normalize(_106 * normalIn);
+    tangent = normalize(_106 * tangentIn.xyz);
+    bitangent = normalize((_106 * cross(normalIn, tangentIn.xyz)) * tangentIn.w);
+    vec2 _152 = texCoordRawIn - wave_offset;
+    _152.y = _152.y;
+    texCoord = (mat2(vec2(-0.707106769084930419921875, 0.707106769084930419921875), vec2(-0.707106769084930419921875)) * wave_scale) * _152;
+}
+
