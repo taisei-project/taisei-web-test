@@ -1,0 +1,74 @@
+#version 300 es
+precision mediump float;
+precision highp int;
+
+uniform highp sampler2D tex;
+uniform int linearize;
+uniform int multiply_alpha;
+uniform int apply_alphamap;
+uniform highp sampler2D alphamap;
+
+layout(location = 0) out highp vec4 fragColor;
+in highp vec2 texCoordRaw;
+
+void main()
+{
+    fragColor = textureLod(tex, texCoordRaw, 0.0);
+    if (linearize != 0)
+    {
+        highp float _174;
+        do
+        {
+            if (fragColor.x <= 0.040449999272823333740234375)
+            {
+                _174 = fragColor.x * 0.077399380505084991455078125;
+                break;
+            }
+            else
+            {
+                _174 = pow((fragColor.x + 0.054999999701976776123046875) * 0.947867333889007568359375, 2.400000095367431640625);
+                break;
+            }
+        } while(false);
+        highp float _175;
+        do
+        {
+            if (fragColor.y <= 0.040449999272823333740234375)
+            {
+                _175 = fragColor.y * 0.077399380505084991455078125;
+                break;
+            }
+            else
+            {
+                _175 = pow((fragColor.y + 0.054999999701976776123046875) * 0.947867333889007568359375, 2.400000095367431640625);
+                break;
+            }
+        } while(false);
+        highp float _176;
+        do
+        {
+            if (fragColor.z <= 0.040449999272823333740234375)
+            {
+                _176 = fragColor.z * 0.077399380505084991455078125;
+                break;
+            }
+            else
+            {
+                _176 = pow((fragColor.z + 0.054999999701976776123046875) * 0.947867333889007568359375, 2.400000095367431640625);
+                break;
+            }
+        } while(false);
+        highp vec3 _77 = vec3(_174, _175, _176);
+        fragColor = vec4(_77.x, _77.y, _77.z, fragColor.w);
+    }
+    if (multiply_alpha != 0)
+    {
+        highp vec3 _90 = fragColor.xyz * fragColor.w;
+        fragColor = vec4(_90.x, _90.y, _90.z, fragColor.w);
+    }
+    if (apply_alphamap != 0)
+    {
+        fragColor.w *= textureLod(alphamap, texCoordRaw, 0.0).x;
+    }
+}
+

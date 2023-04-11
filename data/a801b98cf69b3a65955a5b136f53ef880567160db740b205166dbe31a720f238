@@ -1,0 +1,28 @@
+#version 300 es
+precision mediump float;
+precision highp int;
+
+uniform highp sampler2D tex;
+uniform highp vec2 blur_direction;
+uniform highp vec2 blur_resolution;
+
+layout(location = 0) out highp vec4 fragColor;
+in highp vec2 texCoord;
+
+void main()
+{
+    highp vec2 _253 = blur_direction / blur_resolution;
+    highp vec2 _268 = _253 * 12.0;
+    highp vec2 _275 = _253 * 11.0;
+    highp vec2 _283 = _253 * 10.0;
+    highp vec2 _291 = _253 * 9.0;
+    highp vec2 _299 = _253 * 8.0;
+    highp vec2 _307 = _253 * 7.0;
+    highp vec2 _315 = _253 * 6.0;
+    highp vec2 _323 = _253 * 5.0;
+    highp vec2 _331 = _253 * 4.0;
+    highp vec2 _339 = _253 * 3.0;
+    highp vec2 _347 = _253 * 2.0;
+    fragColor = ((((((((((((((((((((((((texture(tex, texCoord - _268) * 0.001748822047375142574310302734375) + (texture(tex, texCoord - _275) * 0.00330560863949358463287353515625)) + (texture(tex, texCoord - _283) * 0.0059117120690643787384033203125)) + (texture(tex, texCoord - _291) * 0.010003020055592060089111328125)) + (texture(tex, texCoord - _299) * 0.0160141922533512115478515625)) + (texture(tex, texCoord - _307) * 0.024256877601146697998046875)) + (texture(tex, texCoord - _315) * 0.034763284027576446533203125)) + (texture(tex, texCoord - _323) * 0.0471370853483676910400390625)) + (texture(tex, texCoord - _331) * 0.060472883284091949462890625)) + (texture(tex, texCoord - _339) * 0.07340313494205474853515625)) + (texture(tex, texCoord - _347) * 0.0842994153499603271484375)) + (texture(tex, texCoord - _253) * 0.091598965227603912353515625)) + (texture(tex, texCoord) * 0.094169996678829193115234375)) + (texture(tex, texCoord + _253) * 0.091598965227603912353515625)) + (texture(tex, texCoord + _347) * 0.0842994153499603271484375)) + (texture(tex, texCoord + _339) * 0.07340313494205474853515625)) + (texture(tex, texCoord + _331) * 0.060472883284091949462890625)) + (texture(tex, texCoord + _323) * 0.0471370853483676910400390625)) + (texture(tex, texCoord + _315) * 0.034763284027576446533203125)) + (texture(tex, texCoord + _307) * 0.024256877601146697998046875)) + (texture(tex, texCoord + _299) * 0.0160141922533512115478515625)) + (texture(tex, texCoord + _291) * 0.010003020055592060089111328125)) + (texture(tex, texCoord + _283) * 0.0059117120690643787384033203125)) + (texture(tex, texCoord + _275) * 0.00330560863949358463287353515625)) + (texture(tex, texCoord + _268) * 0.001748822047375142574310302734375);
+}
+

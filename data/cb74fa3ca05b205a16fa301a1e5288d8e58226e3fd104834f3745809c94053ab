@@ -1,0 +1,109 @@
+#version 300 es
+precision mediump float;
+precision highp int;
+
+uniform highp vec2 aspect;
+uniform highp float zoom;
+uniform highp float time;
+uniform highp sampler2D tex;
+uniform highp vec4 r_color;
+uniform highp sampler2D runes;
+
+in highp vec2 texCoord;
+layout(location = 0) out highp vec4 fragColor;
+
+void main()
+{
+    highp vec2 _749 = texCoord;
+    _749.y = 1.0 - texCoord.y;
+    highp float _234 = -time;
+    highp float _556 = cos(_234);
+    highp float _558 = sin(_234);
+    highp vec2 _545 = ((_749 - vec2(0.5)) * (aspect * zoom)) * mat2(vec2(_556, -_558), vec2(_558, _556));
+    highp vec2 _548 = _545 + vec2(0.5);
+    highp float _573 = _548.x;
+    highp float _724;
+    if (_573 < 0.5)
+    {
+        highp float _622 = (2.0 * _573) - 0.5;
+        _724 = 0.5 - sqrt(0.25 - (_622 * _622));
+    }
+    else
+    {
+        highp float _632 = (2.0 * _573) - 1.5;
+        _724 = sqrt(0.25 - (_632 * _632)) + 0.5;
+    }
+    highp float _583 = length((_545 + vec2(-0.25, 0.0)) * 16.0);
+    highp float _591 = length((_545 + vec2(0.25, 0.0)) * 16.0);
+    highp float _268 = (1.0 - (2.0 * mix(mix(smoothstep(0.0, 0.00999999977648258209228515625, _548.y - ((0.5 * _724) + 0.25)), 1.0, smoothstep(1.0, 0.949999988079071044921875, _583)), 0.0, smoothstep(1.0, 0.949999988079071044921875, _591)))) * (1.0 + sqrt((_591 * _591) + (_583 * _583)));
+    highp float _270 = sqrt(_583);
+    highp float _272 = sqrt(_591);
+    highp float _278 = (_272 * 4.9999998736893758177757263183594e-05) * _268;
+    highp float _642 = cos(_278);
+    highp float _644 = sin(_278);
+    highp mat2 _288 = mat2(vec2(_642, -_644), vec2(_644, _642)) * (1.0 / (1.0 + ((_270 * (-0.000600000028498470783233642578125)) * _268)));
+    highp float _294 = (_272 * 9.0000001364387571811676025390625e-05) * _268;
+    highp float _656 = cos(_294);
+    highp float _658 = sin(_294);
+    highp mat2 _304 = mat2(vec2(_656, -_658), vec2(_658, _656)) * (1.0 / (1.0 + ((_270 * (-0.00039999998989515006542205810546875)) * _268)));
+    highp float _310 = (_272 * 0.00011999999696854501962661743164062) * _268;
+    highp float _670 = cos(_310);
+    highp float _672 = sin(_310);
+    highp mat2 _320 = mat2(vec2(_670, -_672), vec2(_672, _670)) * (1.0 / (1.0 + ((_270 * (-0.00019999999494757503271102905273438)) * _268)));
+    highp mat2 _325 = (_288 * _288) * _288;
+    highp mat2 _330 = (_304 * _304) * _304;
+    highp mat2 _335 = (_320 * _320) * _320;
+    highp vec2 _728;
+    highp vec2 _730;
+    highp vec2 _732;
+    highp vec3 _781;
+    _781 = vec3(0.0);
+    _732 = texCoord;
+    _730 = texCoord;
+    _728 = texCoord;
+    for (int _726 = 0; _726 < 2; )
+    {
+        highp vec2 _356 = ((_728 - vec2(0.5)) * _325) + vec2(0.5);
+        highp vec3 _754 = _781;
+        _754.x = _781.x + texture(tex, _356).x;
+        highp vec2 _378 = ((_730 - vec2(0.5)) * _330) + vec2(0.5);
+        highp vec3 _757 = _754;
+        _757.y = _781.y + texture(tex, _378).y;
+        highp vec2 _395 = ((_732 - vec2(0.5)) * _335) + vec2(0.5);
+        highp vec3 _760 = _757;
+        _760.z = _781.z + texture(tex, _395).z;
+        _781 = _760;
+        _732 = _395;
+        _730 = _378;
+        _728 = _356;
+        _726++;
+        continue;
+    }
+    fragColor = (vec4(_781 * 0.5, 1.0) * 0.89999997615814208984375) * vec4(r_color.w);
+    highp vec2 _437 = ((texCoord - vec2(0.5)) * mat2(vec2(-4.3711388286737928865477442741394e-08, -1.0), vec2(1.0, -4.3711388286737928865477442741394e-08))) + vec2(0.5);
+    highp float _443 = floor(_437.y * 24.0);
+    highp float _458 = _437.x + ((0.931222975254058837890625 * _443) + ((time * 0.100000001490116119384765625) * cos(3.1415927410125732421875 * _443)));
+    highp vec2 _764 = _437;
+    _764.x = _458;
+    highp float _462 = _437.y * 24.0;
+    highp vec2 _767 = _764;
+    _767.y = _462;
+    highp float _699 = mod(_462, 1.0);
+    highp vec2 _770 = _767;
+    _770.y = _699;
+    highp float _706 = _699 + floor(_458);
+    highp vec2 _774 = _770;
+    _774.y = _706;
+    highp float _710 = _706 * 0.03125;
+    highp vec2 _777 = _774;
+    _777.y = _710;
+    highp vec2 _780 = _777;
+    _780.y = _710;
+    highp vec4 _473 = texture(runes, _780);
+    highp float _474 = _473.x;
+    highp vec3 _483 = pow(fragColor.xyz, vec3(1.0 + ((1.0 - (2.0 * _474)) * 0.100000001490116119384765625)));
+    fragColor = vec4(_483.x, _483.y, _483.z, fragColor.w);
+    fragColor += ((r_color * _474) * 0.100000001490116119384765625);
+    fragColor.w *= (1.0 - (_474 * 0.100000001490116119384765625));
+}
+

@@ -1,0 +1,35 @@
+#version 300 es
+precision mediump float;
+precision highp int;
+
+uniform highp sampler2D noise_tex;
+uniform highp sampler2D paper_tex;
+uniform highp float distort_strength;
+uniform highp sampler2D tex;
+uniform highp sampler2D erase_mask_tex;
+uniform highp vec2 thresholds;
+
+in highp vec2 texCoord;
+layout(location = 0) out highp vec4 fragColor;
+
+void main()
+{
+    highp vec4 _104 = texture(paper_tex, texCoord);
+    highp vec2 _121 = (vec2(_104.yx) + vec2(-0.699999988079071044921875, -0.75)) * distort_strength;
+    highp vec2 _293 = (texCoord - vec2(0.5)) + ((_121 * 3.0) * vec2(5.0));
+    highp float _304 = 1.0 - (2.0 * length(_293));
+    highp float _317 = clamp(((((_304 * _304) * 0.4000000059604644775390625) + (texture(noise_tex, (_293 * 0.20000000298023223876953125) + vec2(0.23000000417232513427734375, 0.430000007152557373046875)).x * 0.60000002384185791015625)) - 0.00129444920457899570465087890625) * 1.5593326091766357421875, 0.0, 1.0);
+    fragColor = vec4(_317, _317, _317, 1.0);
+    highp vec2 _140 = mod(fragColor.yz, vec2(2.0));
+    fragColor = vec4(fragColor.x, _140.x, _140.y, fragColor.w);
+    highp float _166 = _104.z;
+    highp vec2 _183 = pow(thresholds, vec2(1.0) / vec2(_166));
+    highp float _189 = smoothstep(_183.x, _183.y, _317);
+    highp float _196 = pow(smoothstep(0.0, 0.89999997615814208984375, _104.x), 4.0);
+    highp float _200 = _189 * _189;
+    highp float _204 = _200 * _189;
+    highp float _326 = 1.0 - min(1.0, texture(tex, texCoord + _121).x + smoothstep(0.0, 0.300000011920928955078125, texture(erase_mask_tex, texCoord + (_121 * 10.0)).w * (_166 + 1.0)));
+    highp vec3 _244 = _104.xyz;
+    fragColor = vec4(mix((_244 * _244) * 0.3400000035762786865234375, _244, vec3((((1.0 - (smoothstep(0.0, 1.0, _189 * _196) * _326)) * 0.4000000059604644775390625) + ((1.0 - (smoothstep(0.0, 1.0, _204 * _196) * _326)) * 0.300000011920928955078125)) + ((1.0 - (smoothstep(0.0, 1.0, (_204 * _200) * _196) * _326)) * 0.300000011920928955078125))), 1.0);
+}
+

@@ -1,0 +1,99 @@
+#version 300 es
+precision mediump float;
+precision highp int;
+
+uniform highp sampler2D water_noisetex;
+uniform highp mat4 r_projectionMatrix;
+uniform highp vec2 wave_offset;
+uniform highp float wave_height;
+uniform highp float time;
+uniform highp vec4 r_color;
+uniform highp sampler2D depth;
+uniform highp sampler2D tex;
+
+in highp vec2 texCoord;
+in highp vec3 tangent;
+in highp vec3 bitangent;
+in highp vec3 normal;
+layout(location = 0) out highp vec4 fragColor;
+in highp vec3 pos;
+
+void main()
+{
+    highp vec2 _296 = texCoord - wave_offset;
+    highp vec2 _653 = _296;
+    _653.y = _296.y;
+    highp vec2 _305 = _653 * 4.0;
+    highp vec2 _311 = vec2(time, 0.0);
+    highp vec4 _440 = texture(water_noisetex, (_305 + (_311 * 2.0)) * 0.0625);
+    highp float _441 = _440.x;
+    highp vec4 _447 = texture(water_noisetex, ((_305 - (_311 * 0.5)) - vec2(_441)) * 0.0625);
+    highp vec4 _454 = texture(water_noisetex, (_305 - (mat2(vec2(2.0, 0.0), vec2(0.0, 2.0)) * vec2(_441, _447.x))) * 0.0625);
+    highp float _316 = wave_height * _454.x;
+    highp vec2 _465 = dFdx(_653);
+    highp vec2 _467 = dFdy(_653);
+    highp float _478 = dFdx(_316);
+    highp float _480 = dFdy(_316);
+    fragColor = r_color;
+    highp vec3 _647;
+    do
+    {
+        highp vec3 _508 = reflect(pos, normalize(mat3(normalize(tangent), normalize(bitangent), normalize(normal)) * vec3(-(inverse(mat2(_465, _467)) * vec2(_478, _480)), 1.0)));
+        highp vec3 _514 = _508 / vec3(length(_508.xy));
+        int _635;
+        int _632 = 1;
+        for (;;)
+        {
+            if (_632 < 10)
+            {
+                highp vec4 _605 = r_projectionMatrix * vec4(pos + (_514 * (float(_632) * 1.5)), 1.0);
+                highp vec3 _613 = ((_605.xyz * 0.5) / vec3(_605.w)) + vec3(0.5);
+                if (texture(depth, _613.xy).x < _613.z)
+                {
+                    _635 = _632;
+                    break;
+                }
+                _632++;
+                continue;
+            }
+            else
+            {
+                _635 = 0;
+                break;
+            }
+        }
+        if (_635 == 0)
+        {
+            _647 = vec3(0.0);
+            break;
+        }
+        highp vec3 _646;
+        int _637 = 0;
+        for (;;)
+        {
+            if (_637 < 10)
+            {
+                highp vec4 _623 = r_projectionMatrix * vec4(pos + (_514 * ((float(_635 - 1) + (float(_637) * 0.111111111938953399658203125)) * 1.5)), 1.0);
+                highp vec3 _631 = ((_623.xyz * 0.5) / vec3(_623.w)) + vec3(0.5);
+                highp vec2 _572 = _631.xy;
+                if (texture(depth, _572).x < _631.z)
+                {
+                    _646 = texture(tex, _572).xyz * 0.800000011920928955078125;
+                    break;
+                }
+                _637++;
+                continue;
+            }
+            else
+            {
+                _646 = vec3(0.0);
+                break;
+            }
+        }
+        _647 = _646;
+        break;
+    } while(false);
+    highp vec3 _373 = fragColor.xyz * _647;
+    fragColor = vec4(_373.x, _373.y, _373.z, fragColor.w);
+}
+

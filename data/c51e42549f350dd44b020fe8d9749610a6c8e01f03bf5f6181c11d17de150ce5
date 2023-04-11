@@ -1,0 +1,49 @@
+#version 300 es
+
+uniform vec2 seed;
+uniform float time;
+uniform mat4 r_projectionMatrix;
+uniform mat4 r_modelViewMatrix;
+uniform vec4 sprite_tex_region;
+uniform vec3 color_base;
+uniform vec3 color_nstate;
+uniform vec3 color_nstate2;
+uniform vec4 tint;
+
+layout(location = 0) in vec3 position;
+out vec4 tex_coord;
+layout(location = 1) in vec2 texCoordRawIn;
+out vec4 color;
+
+void main()
+{
+    float _125 = float(gl_InstanceID);
+    vec3 _380 = fract(vec3(seed, _125) * 0.103100001811981201171875);
+    vec3 _389 = _380 + vec3(dot(_380, _380.zyx + vec3(31.31999969482421875)));
+    float _136 = fract((_389.x + _389.y) * _389.z) + time;
+    vec4 _403 = fract(vec4(seed, _125, floor(_136)) * vec4(0.103100001811981201171875, 0.10300000011920928955078125, 0.097300000488758087158203125, 0.109899997711181640625));
+    vec4 _412 = _403 + vec4(dot(_403, _403.wzxy + vec4(33.3300018310546875)));
+    vec4 _421 = fract((_412.xxyz + _412.yzzw) * _412.zywx);
+    float _151 = fract(_136);
+    float _154 = 1.0 - _151;
+    float _158 = _154 * _154;
+    float _178 = _421.z;
+    float _181 = ((seed.y - seed.x) + _136) * (21.0 + (0.100000001490116119384765625 * _178));
+    float _208 = _421.x * 6.283185482025146484375;
+    float _211 = sin(_208);
+    float _214 = cos(_208);
+    gl_Position = (r_projectionMatrix * r_modelViewMatrix) * vec4((((mat3(vec3(_214, _211, 0.0), vec3(-_211, _214, 0.0), vec3(0.0, 0.0, 1.0)) * position) * (mix(0.800000011920928955078125, 1.0, _421.y) * mix(0.20000000298023223876953125, 1.0, _158))) + ((vec3(0.0, -1.0, 0.0) + (vec3(sin(_181 + seed.y), 0.0, cos(_181 - seed.x)) * (0.20000000298023223876953125 * _158))) * ((mix(0.89999997615814208984375, 1.2000000476837158203125, _178) * 3.0) * _151))) + (((vec3(0.0, 0.0, 1.0) * _211) + (vec3(1.0, 0.0, 0.0) * _214)) * mix(0.0199999995529651641845703125, 0.20000000298023223876953125, _421.w)), 1.0);
+    vec2 _446 = vec2(mix(sprite_tex_region.x, sprite_tex_region.x + sprite_tex_region.z, texCoordRawIn.x), 1.0 - mix(sprite_tex_region.y, sprite_tex_region.y + sprite_tex_region.w, 1.0 - texCoordRawIn.y));
+    tex_coord = vec4(_446.x, _446.y, tex_coord.z, tex_coord.w);
+    tex_coord = vec4(tex_coord.x, tex_coord.y, texCoordRawIn.x, texCoordRawIn.y);
+    vec3 _322 = (color_base + (color_nstate * _154)) + (color_nstate2 * _158);
+    color = vec4(_322.x, _322.y, _322.z, color.w);
+    vec3 _328 = color.xyz * ((_158 * _158) * _158);
+    color = vec4(_328.x, _328.y, _328.z, color.w);
+    color.w = smoothstep(0.100000001490116119384765625, 0.5, _151);
+    color.w *= color.w;
+    color.w *= color.w;
+    color *= (smoothstep(0.0, 0.07500000298023223876953125, _151) * _158);
+    color *= tint;
+}
+
