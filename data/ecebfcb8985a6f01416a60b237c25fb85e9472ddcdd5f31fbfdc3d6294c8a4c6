@@ -1,0 +1,22 @@
+#version 300 es
+precision mediump float;
+precision highp int;
+
+uniform highp vec2 plrpos;
+uniform highp float t;
+uniform highp float decay;
+uniform highp sampler2D tex;
+uniform highp vec4 r_color;
+
+in highp vec2 texCoordRaw;
+layout(location = 0) out highp vec4 fragColor;
+
+void main()
+{
+    highp vec2 _50 = texCoordRaw;
+    _50.y = 1.0 - _50.y;
+    highp vec2 _55 = _50 - plrpos;
+    highp float _70 = (t * (-2.0)) * (decay * t + 1.0) + length(_55);
+    fragColor = (texture(tex, vec2(atan(_55.y, _55.x) * 1.27323949337005615234375 + ((((1.0 + _70) * t) * 5.0) * decay), 1.0 - _70)) * r_color) * (((0.699999988079071044921875 * min(1.0, t)) * ((-t) * decay + 1.0)) * 4.0);
+}
+

@@ -1,0 +1,62 @@
+#version 300 es
+precision mediump float;
+precision highp int;
+
+uniform highp samplerCube skybox;
+
+layout(location = 0) out highp vec4 fragColor;
+in highp vec3 posRaw;
+
+void main()
+{
+    fragColor = texture(skybox, posRaw.xzy * vec3(1.0, -1.0, 1.0));
+    highp float _163;
+    do
+    {
+        if (fragColor.x <= 0.003130800090730190277099609375)
+        {
+            _163 = 12.9200000762939453125 * fragColor.x;
+            break;
+        }
+        else
+        {
+            _163 = 1.05499994754791259765625 * pow(fragColor.x, 0.4166666567325592041015625) + (-0.054999999701976776123046875);
+            break;
+        }
+        break; // unreachable workaround
+    } while(false);
+    fragColor.x = _163;
+    highp float _164;
+    do
+    {
+        if (fragColor.y <= 0.003130800090730190277099609375)
+        {
+            _164 = 12.9200000762939453125 * fragColor.y;
+            break;
+        }
+        else
+        {
+            _164 = 1.05499994754791259765625 * pow(fragColor.y, 0.4166666567325592041015625) + (-0.054999999701976776123046875);
+            break;
+        }
+        break; // unreachable workaround
+    } while(false);
+    fragColor.y = _164;
+    highp float _165;
+    do
+    {
+        if (fragColor.z <= 0.003130800090730190277099609375)
+        {
+            _165 = 12.9200000762939453125 * fragColor.z;
+            break;
+        }
+        else
+        {
+            _165 = 1.05499994754791259765625 * pow(fragColor.z, 0.4166666567325592041015625) + (-0.054999999701976776123046875);
+            break;
+        }
+        break; // unreachable workaround
+    } while(false);
+    fragColor.z = _165;
+}
+
