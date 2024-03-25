@@ -2,7 +2,6 @@
 
 uniform float sdf_range;
 uniform mat4 r_projectionMatrix;
-uniform mat4 r_modelViewMatrix;
 
 layout(location = 1) in vec4 instance_posAB;
 layout(location = 2) in vec4 instance_widthAB_timeAB;
@@ -26,6 +25,6 @@ void main()
     segment = instance_posAB;
     segment_width = instance_widthAB_timeAB.xy * 0.5;
     segment_time = mix(instance_widthAB_timeAB.z, instance_widthAB_timeAB.w, ((position.x * _74.x) / _55) + 0.5);
-    gl_Position = (r_projectionMatrix * r_modelViewMatrix) * vec4(_109, 0.0, 1.0);
+    gl_Position = r_projectionMatrix * vec4(_109, 0.0, 1.0);
 }
 
