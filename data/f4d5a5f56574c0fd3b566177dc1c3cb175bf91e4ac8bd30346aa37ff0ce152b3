@@ -10,12 +10,12 @@ in highp vec2 texCoord;
 
 void main()
 {
-    highp vec4 _67 = texture(tex, texCoord);
-    highp vec4 _70 = color * vec4(_67.x);
-    if (all(lessThan(_70, vec4(1.525902189314365386962890625e-05))))
+    highp vec4 _66 = texture(tex, texCoord);
+    highp vec4 _69 = color * vec4(_66.x);
+    if (all(lessThan(_69, vec4(1.525902189314365386962890625e-05))))
     {
         discard;
     }
-    fragColor = _70;
+    fragColor = _69;
 }
 

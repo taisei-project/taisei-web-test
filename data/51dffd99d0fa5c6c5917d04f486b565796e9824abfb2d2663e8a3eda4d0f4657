@@ -1,0 +1,35 @@
+#version 300 es
+precision mediump float;
+precision highp int;
+
+uniform highp sampler2D tex_aux0;
+uniform highp sampler2D tex;
+
+layout(location = 0) out highp vec4 fragColor;
+in highp vec2 texCoordOverlay;
+in highp vec4 customParams;
+in highp vec2 texCoord;
+in highp vec4 color;
+
+void main()
+{
+    highp vec2 _193 = texCoordOverlay;
+    _193.y = _193.y * (fwidth(_193.x) / fwidth(_193.y));
+    highp vec4 _291 = texture(tex_aux0, _193);
+    highp float _202 = 8.0 * customParams.x;
+    highp float _217 = smoothstep(0.20000000298023223876953125, 0.800000011920928955078125, 1.0 - smoothstep(_202 * customParams.x, _202, 7.0 * (0.5 + texCoordOverlay.x) + _291.x));
+    highp vec4 _220 = texture(tex, texCoord);
+    highp vec4 _260 = mix((vec4(color.xyz * 0.300000011920928955078125, color.w) * _217) * _217, mix(vec4(color.xyz * 0.89999997615814208984375, color.w) * _217, color, vec4(_220.z)), vec4(_220.x)) * _220.y;
+    highp vec3 _266 = _260.xyz * (_217 * _217);
+    highp vec4 _303 = _260;
+    _303.x = _266.x;
+    _303.y = _266.y;
+    _303.z = _266.z;
+    highp vec4 _275 = _303 * _217;
+    if (all(lessThan(_275, vec4(1.525902189314365386962890625e-05))))
+    {
+        discard;
+    }
+    fragColor = _275;
+}
+

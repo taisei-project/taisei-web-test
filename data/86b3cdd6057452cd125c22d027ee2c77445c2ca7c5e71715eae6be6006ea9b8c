@@ -2,7 +2,7 @@
 
 uniform mat4 r_projectionMatrix;
 uniform mat4 r_modelViewMatrix;
-uniform vec2 tex_SIZE;
+uniform vec2 tex_size;
 
 layout(location = 0) in vec3 position;
 out vec2 v_rcpFrame;
@@ -17,7 +17,7 @@ out vec2 v_coordRaw;
 void main()
 {
     gl_Position = (r_projectionMatrix * r_modelViewMatrix) * vec4(position, 1.0);
-    v_rcpFrame = vec2(1.0) / tex_SIZE;
+    v_rcpFrame = vec2(1.0) / tex_size;
     vec2 _133 = texCoordRawIn - (v_rcpFrame * 0.75);
     v_coordNW = _133;
     v_coordNE = vec2(1.0, 0.0) * v_rcpFrame + _133;
