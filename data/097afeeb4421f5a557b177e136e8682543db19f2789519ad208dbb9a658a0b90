@@ -1,0 +1,19 @@
+#version 300 es
+
+uniform mat4 r_projectionMatrix;
+uniform mat4 r_modelViewMatrix;
+uniform mat4 r_textureMatrix;
+uniform vec2 fill;
+
+layout(location = 0) in vec3 position;
+out vec2 texCoord;
+layout(location = 1) in vec2 texCoordRawIn;
+out vec4 fillNormAngles;
+
+void main()
+{
+    gl_Position = (r_projectionMatrix * r_modelViewMatrix) * vec4(position, 1.0);
+    texCoord = (r_textureMatrix * vec4(texCoordRawIn, 0.0, 1.0)).xy;
+    fillNormAngles = vec4((-fill.x) * 0.5 + 0.5, fill.x * 0.5 + 0.5, (-fill.y) * 0.5 + 0.5, fill.y * 0.5 + 0.5);
+}
+

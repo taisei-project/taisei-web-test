@@ -1,0 +1,28 @@
+#version 300 es
+
+uniform mat4 r_projectionMatrix;
+uniform mat4 r_modelViewMatrix;
+uniform vec2 tex_size;
+
+layout(location = 0) in vec3 position;
+out vec2 v_rcpFrame;
+layout(location = 1) in vec2 texCoordRawIn;
+out vec2 v_coordNW;
+out vec2 v_coordNE;
+out vec2 v_coordSW;
+out vec2 v_coordSE;
+out vec2 v_coordM;
+out vec2 v_coordRaw;
+
+void main()
+{
+    gl_Position = (r_projectionMatrix * r_modelViewMatrix) * vec4(position, 1.0);
+    v_rcpFrame = vec2(1.0) / tex_size;
+    vec2 _133 = texCoordRawIn - (v_rcpFrame * 0.75);
+    v_coordNW = _133;
+    v_coordNE = vec2(1.0, 0.0) * v_rcpFrame + _133;
+    v_coordSW = vec2(0.0, 1.0) * v_rcpFrame + _133;
+    v_coordSE = _133 + v_rcpFrame;
+    v_coordM = texCoordRawIn;
+}
+
