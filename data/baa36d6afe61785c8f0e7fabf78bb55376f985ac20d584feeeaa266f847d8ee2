@@ -1,0 +1,33 @@
+#version 300 es
+precision mediump float;
+precision highp int;
+
+uniform highp sampler2D tex;
+uniform highp vec2 origin_ofs;
+uniform highp vec4 back_color;
+
+layout(location = 0) out highp vec4 fragColor;
+in highp vec4 customParams;
+in highp vec2 texCoord;
+in highp vec2 texCoordRaw;
+in highp vec4 color;
+
+void main()
+{
+    highp vec4 _190 = texture(tex, texCoord);
+    highp vec2 _191 = texCoordRaw;
+    _191.y = _191.y;
+    highp vec2 _195 = (_191 - vec2(0.5)) + origin_ofs;
+    highp vec3 _223 = mix(vec3(((0.21600000560283660888671875 * _190.x) + (0.715200006961822509765625 * _190.y)) + (0.072200000286102294921875 * _190.z)), _190.xyz, vec3(step(1.0, customParams.x)));
+    highp vec4 _271 = _190;
+    _271.x = _223.x;
+    _271.y = _223.y;
+    _271.z = _223.z;
+    highp vec4 _236 = _271 * mix(back_color, color, vec4(smoothstep(0.5 + (0.20000000298023223876953125 * step(0.00999999977648258209228515625, customParams.x)), 0.499000012874603271484375, (atan(_195.x, _195.y) - (3.1415927410125732421875 * ((2.0 * customParams.x) - 1.0))) + 0.5)));
+    if (all(lessThan(_236, vec4(1.525902189314365386962890625e-05))))
+    {
+        discard;
+    }
+    fragColor = _236;
+}
+

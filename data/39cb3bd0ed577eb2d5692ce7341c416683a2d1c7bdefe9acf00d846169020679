@@ -1,0 +1,56 @@
+#version 300 es
+precision mediump float;
+precision highp int;
+
+uniform highp sampler2D background_tex;
+uniform highp sampler2D background_binary_tex;
+uniform highp sampler2D code_tex;
+uniform highp vec4 code_tex_params;
+uniform highp sampler2D tex;
+uniform highp sampler2D depth_tex;
+uniform highp sampler2D mask_tex;
+uniform highp vec2 dissolve;
+uniform highp float time;
+
+in highp vec2 texCoord;
+layout(location = 0) out highp vec4 fragColor;
+
+void main()
+{
+    do
+    {
+        highp vec4 _280 = texture(tex, texCoord);
+        highp vec4 _285 = texture(depth_tex, texCoord);
+        highp float _286 = _285.x;
+        highp vec4 _291 = texture(mask_tex, texCoord);
+        highp float _302 = smoothstep(dissolve.y, dissolve.x, _291.w);
+        highp vec2 _308 = mix(_291.xy, vec2(1.0, 0.0), vec2(_302));
+        highp float _310 = _308.x;
+        highp float _312 = _308.y;
+        if (_312 == 1.0)
+        {
+            fragColor = _280;
+            gl_FragDepth = _286;
+            break;
+        }
+        highp vec2 _434 = vec2(1.5, 1.0) * _310;
+        highp vec2 _519 = (mod(texCoord, vec2(1.0)) - vec2(0.5)) * _434;
+        highp vec2 _522 = _519.yx;
+        highp vec2 _536 = ((_519 * sqrt(vec2(1.0) - ((_522 * 0.5) * _522))) / _434) + vec2(0.5);
+        highp vec2 _439 = (_536 * vec2(0.5, 0.800000011920928955078125)) * 0.5;
+        highp float _446 = _439.x;
+        highp vec2 _568 = ((vec2(_536.x + (time * 0.1500000059604644775390625), _536.y + (time * 0.100000001490116119384765625)) * code_tex_params.xy) * 2.0) * code_tex_params.w;
+        highp vec4 _495 = (texture(background_tex, vec2(_446 + (time * 0.00999999977648258209228515625), _439.y - (time * 0.072499997913837432861328125))) * texture(background_binary_tex, vec2(_446 + (time * 0.00696850009262561798095703125), _439.y + (time * 0.02500000037252902984619140625)))) + (texture(code_tex, vec2(mod(_568.x - (floor(mod(_568.y, code_tex_params.z)) * code_tex_params.w), 1.0), mod(_568.y, 1.0))) * _310);
+        highp vec3 _501 = pow(_495.xyz, mix(vec3(0.0, 0.5, 0.699999988079071044921875), vec3(1.0), vec3(_310)));
+        _495.x = _501.x;
+        _495.y = _501.y;
+        _495.z = _501.z;
+        highp float _364 = mix(mix(smoothstep(0.75, 1.0, smoothstep(0.0, 1.0, (0.5 * sin(3.1415927410125732421875 * (_310 + ((1.41999995708465576171875 * smoothstep(0.5, 1.0, _286)) * _291.z)))) + 1.0)), 1.0, _312), 0.0, _302);
+        highp vec4 _369 = _280 * _364;
+        highp float _376 = mix(_286, 0.0, _302);
+        fragColor = _369 + (_495 * (1.0 - _369.w));
+        gl_FragDepth = mix(_376, _376 * _376, (1.0 - _364) * 0.5);
+        break;
+    } while(false);
+}
+

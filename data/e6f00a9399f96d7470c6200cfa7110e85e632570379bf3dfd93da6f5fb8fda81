@@ -1,0 +1,40 @@
+#version 300 es
+precision mediump float;
+precision highp int;
+
+uniform highp vec4 fade;
+uniform highp sampler2D tex;
+uniform highp vec2 blur_direction;
+uniform highp vec2 blur_resolution;
+
+in highp vec2 texCoord;
+layout(location = 0) out highp vec4 fragColor;
+
+void main()
+{
+    highp vec2 _328 = blur_direction / blur_resolution;
+    highp vec2 _370 = _328 * 6.0;
+    highp vec2 _377 = _328 * 5.0;
+    highp vec2 _385 = _328 * 4.0;
+    highp vec2 _393 = _328 * 3.0;
+    highp vec2 _401 = _328 * 2.0;
+    fragColor = fade * (((((((((((((texture(tex, texCoord - _370) * 0.008178892545402050018310546875) + (texture(tex, texCoord - _377) * 0.020447112619876861572265625)) + (texture(tex, texCoord - _385) * 0.04327301681041717529296875)) + (texture(tex, texCoord - _393) * 0.077526487410068511962890625)) + (texture(tex, texCoord - _401) * 0.117579273879528045654296875)) + (texture(tex, texCoord - _328) * 0.15095905959606170654296875)) + (texture(tex, texCoord) * 0.16407231986522674560546875)) + (texture(tex, texCoord + _328) * 0.15095905959606170654296875)) + (texture(tex, texCoord + _401) * 0.117579273879528045654296875)) + (texture(tex, texCoord + _393) * 0.077526487410068511962890625)) + (texture(tex, texCoord + _385) * 0.04327301681041717529296875)) + (texture(tex, texCoord + _377) * 0.020447112619876861572265625)) + (texture(tex, texCoord + _370) * 0.008178892545402050018310546875));
+    highp vec4 _336 = fragColor;
+    highp vec4 _496 = mix(vec4(_336.zy, -1.0, 0.666666686534881591796875), vec4(_336.yz, 0.0, -0.3333333432674407958984375), vec4(step(_336.z, _336.y)));
+    highp float _501 = _496.x;
+    highp vec4 _519 = mix(vec4(_501, _496.yw, _336.x), vec4(_336.x, _496.yz, _501), vec4(step(_501, _336.x)));
+    highp float _521 = _519.x;
+    highp float _523 = _519.w;
+    highp float _525 = _519.y;
+    highp float _527 = _521 - min(_523, _525);
+    highp float _547 = _527 / (_521 + 1.0000000133514319600180897396058e-10);
+    highp vec3 _550 = vec3(abs(_519.z + ((_523 - _525) / ((6.0 * _527) + 1.0000000133514319600180897396058e-10))), _547, _521);
+    highp float _344 = 1.0 - ((1.0 - _547) * 0.949999988079071044921875);
+    _550.y = _344;
+    highp vec3 _581 = mix(vec3(1.0), clamp(abs((fract(_550.xxx + vec3(1.0, 0.666666686534881591796875, 0.3333333432674407958984375)) * 6.0) - vec3(3.0)) - vec3(1.0), vec3(0.0), vec3(1.0)), vec3(_344)) * _521;
+    fragColor.x = _581.x;
+    fragColor.y = _581.y;
+    fragColor.z = _581.z;
+    fragColor = vec4(step(0.0024999999441206455230712890625, fragColor.x) * fragColor.x, step(0.0024999999441206455230712890625, fragColor.y) * fragColor.y, step(0.0024999999441206455230712890625, fragColor.z) * fragColor.z, step(0.0024999999441206455230712890625, fragColor.w) * fragColor.w);
+}
+
