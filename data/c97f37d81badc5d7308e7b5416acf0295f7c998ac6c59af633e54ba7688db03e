@@ -1,0 +1,24 @@
+#version 300 es
+precision mediump float;
+precision highp int;
+
+uniform highp vec3 distortOriginRadius;
+uniform highp vec2 viewport;
+uniform highp vec4 r_color;
+uniform highp sampler2D tex;
+
+in highp vec2 texCoord;
+layout(location = 0) out highp vec4 fragColor;
+
+void main()
+{
+    highp float _63 = distortOriginRadius.z / length((texCoord * viewport) - distortOriginRadius.xy);
+    highp vec2 _66 = distortOriginRadius.xy / viewport;
+    highp vec2 _69 = texCoord - _66;
+    highp float _77 = -_63;
+    highp float _135 = cos(_77);
+    highp float _137 = sin(_77);
+    highp float _90 = log(1.0 + (_63 * _63));
+    fragColor = (r_color * texture(tex, mix(texCoord, (((_69 * _69) * sign(_69)) * mat2(vec2(_135, -_137), vec2(_137, _135))) + _66, vec2(_90)))) * min(sqrt(_90), 1.0);
+}
+
