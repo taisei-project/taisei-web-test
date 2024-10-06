@@ -614,13 +614,17 @@ a { text-decoration: none; }
 <li><p><a class="reference internal" href="#virtual-filesystem" id="id3">Virtual filesystem</a></p></li>
 <li><p><a class="reference internal" href="#resources" id="id4">Resources</a></p></li>
 <li><p><a class="reference internal" href="#video-and-opengl" id="id5">Video and OpenGL</a></p></li>
-<li><p><a class="reference internal" href="#timing" id="id6">Timing</a></p></li>
-<li><p><a class="reference internal" href="#miscellaneous" id="id7">Miscellaneous</a></p></li>
-<li><p><a class="reference internal" href="#logging" id="id8">Logging</a></p>
+<li><p><a class="reference internal" href="#audio" id="id6">Audio</a></p></li>
+<li><p><a class="reference internal" href="#timing" id="id7">Timing</a></p></li>
+<li><p><a class="reference internal" href="#demo-playback" id="id8">Demo Playback</a></p></li>
+<li><p><a class="reference internal" href="#kiosk-mode" id="id9">Kiosk Mode</a></p></li>
+<li><p><a class="reference internal" href="#frame-dump-mode" id="id10">Frame Dump Mode</a></p></li>
+<li><p><a class="reference internal" href="#miscellaneous" id="id11">Miscellaneous</a></p></li>
+<li><p><a class="reference internal" href="#logging" id="id12">Logging</a></p>
 <ul>
-<li><p><a class="reference internal" href="#the-levels" id="id9">The levels</a></p></li>
-<li><p><a class="reference internal" href="#the-variables" id="id10">The variables</a></p></li>
-<li><p><a class="reference internal" href="#examples" id="id11">Examples</a></p></li>
+<li><p><a class="reference internal" href="#the-levels" id="id13">The levels</a></p></li>
+<li><p><a class="reference internal" href="#the-variables" id="id14">The variables</a></p></li>
+<li><p><a class="reference internal" href="#examples" id="id15">Examples</a></p></li>
 </ul>
 </li>
 </ul>
@@ -680,6 +684,23 @@ value of <span class="docutils literal"><span class="pre">SDL_GetPrefPath(&quot;
 it’s <span class="docutils literal">$XDG_DATA_HOME/taisei</span> or <span class="docutils literal"><span class="pre">$HOME/.local/share/taisei</span></span>.</p></li>
 </ul>
 </dd>
+<dt><strong>TAISEI_CACHE_PATH</strong></dt>
+<dd><div class="line-block">
+<div class="line">Default: unset</div>
+</div>
+<p>If set, overrides the default <strong>cache directly</strong> path. This is where
+Taisei stores transcoded Basis Universal textures and translated shaders
+to speed up future loading times.</p>
+<ul>
+<li><p>On <strong>Windows</strong>, it’s <span class="docutils literal"><span class="pre">%LOCALAPPDATA%\taisei\cache</span></span>.</p></li>
+<li><p>On <strong>macOS</strong>, it’s <span class="docutils literal">$HOME/Library/Caches/taisei</span>.</p></li>
+<li><p>On <strong>Linux</strong>, <strong>*BSD</strong>, and most other <strong>Unix</strong>-like systems,
+it’s <span class="docutils literal">$XDG_CACHE_HOME/taisei</span> or <span class="docutils literal"><span class="pre">$HOME/.cache/taisei</span></span>.</p></li>
+</ul>
+<p>It is safe to delete this directly; Taisei will rebuild the cache as it
+loads resources. If you don’t want Taisei to write a persistent cache,
+you can set this to a non-writable directory.</p>
+</dd>
 </dl>
 </div>
 <div class="section" id="resources">
@@ -724,6 +745,43 @@ developers to debug missing preloads.</p>
 <p>If <span class="docutils literal">1</span>, Taisei will load all shader programs at startup. This is mainly
 useful for developers to quickly ensure that none of them fail to compile.</p>
 </dd>
+<dt><strong>TAISEI_AGGRESSIVE_PRELOAD</strong></dt>
+<dd><div class="line-block">
+<div class="line">Default: <span class="docutils literal">0</span></div>
+</div>
+<p>If <span class="docutils literal">1</span>, Taisei will scan all available resources and try to load all of
+them at startup. Implies <span class="docutils literal">TAISEI_NOUNLOAD=1</span>.</p>
+</dd>
+<dt><strong>TAISEI_BASISU_FORCE_UNCOMPRESSED</strong></dt>
+<dd><div class="line-block">
+<div class="line">Default: <span class="docutils literal">0</span></div>
+</div>
+<p>If <span class="docutils literal">1</span>, Basis Universal-compressed textures will be decompressed on the
+CPU and sent to the GPU in an uncompressed form. For debugging.</p>
+</dd>
+<dt><strong>TAISEI_BASISU_MAX_MIP_LEVELS</strong></dt>
+<dd><div class="line-block">
+<div class="line">Default: <span class="docutils literal">0</span></div>
+</div>
+<p>If <span class="docutils literal">&gt;0</span>, limits the amount of mipmap layers loaded from Basis Universal
+textures. For debugging.</p>
+</dd>
+<dt><strong>TAISEI_BASISU_MIP_BIAS</strong></dt>
+<dd><div class="line-block">
+<div class="line">Default: <span class="docutils literal">0</span></div>
+</div>
+<p>If <span class="docutils literal">&gt;0</span>, makes Taisei load lower resolution versions of Basis Universal
+textures that have mipmaps. Each level halves the resolution in each
+dimension.</p>
+</dd>
+<dt><strong>TAISEI_TASKMGR_NUM_THREADS</strong></dt>
+<dd><div class="line-block">
+<div class="line">Default: <span class="docutils literal">0</span> (auto-detect)</div>
+</div>
+<p>How many background worker threads to create for handling tasks such as
+resource loading. If <span class="docutils literal">0</span>, this will default to double the amount of
+logical CPU cores on the host machine.</p>
+</dd>
 </dl>
 </div>
 <div class="section" id="video-and-opengl">
@@ -744,6 +802,20 @@ ignored if <span class="docutils literal">SDL_VIDEODRIVER</span> is set.</p>
 <div class="line"><strong>Deprecated</strong></div>
 </div>
 <p>Use <span class="docutils literal">SDL_VIDEODRIVER</span> instead.</p>
+</dd>
+<dt><strong>TAISEI_VIDEO_RECREATE_ON_FULLSCREEN</strong></dt>
+<dd><div class="line-block">
+<div class="line">Default: <span class="docutils literal">0</span>; <span class="docutils literal">1</span> on X11</div>
+</div>
+<p>If <span class="docutils literal">1</span>, Taisei will re-create the window when switching between fullscreen
+and windowed modes. Can be useful to work around some window manager bugs.</p>
+</dd>
+<dt><strong>TAISEI_VIDEO_RECREATE_ON_RESIZE</strong></dt>
+<dd><div class="line-block">
+<div class="line">Default: <span class="docutils literal">0</span>; <span class="docutils literal">1</span> on X11 and Emscripten</div>
+</div>
+<p>If <span class="docutils literal">1</span>, Taisei will re-create the window when the window size is changed
+in the settings. Can be useful to work around some window manager bugs.</p>
 </dd>
 <dt><strong>TAISEI_RENDERER</strong></dt>
 <dd><div class="line-block">
@@ -791,6 +863,41 @@ not the actual OpenGL functionality. Some OpenGL implementations (such as
 Mesa) provide their own mechanisms for controlling extensions. You most
 likely want to use that instead.</p>
 </dd>
+<dt><strong>TAISEI_GL_WORKAROUND_DISABLE_NORM16</strong></dt>
+<dd><div class="line-block">
+<div class="line">Default: unset</div>
+</div>
+<p>If <span class="docutils literal">1</span>, disables use of normalized 16 bit-per-channel textures in OpenGL.
+May be useful to work around broken drivers. If unset (default), will try
+to automatically disable them on drivers that are known to be problematic.
+If <span class="docutils literal">0</span>, 16-bit textures will always be used when available.</p>
+</dd>
+<dt><strong>TAISEI_GL33_CORE_PROFILE</strong></dt>
+<dd><div class="line-block">
+<div class="line">Default: <span class="docutils literal">1</span></div>
+</div>
+<p>If <span class="docutils literal">1</span>, try to create a Core profile context in the gl33 backend.
+If <span class="docutils literal">0</span>, create a Compatibility profile context.</p>
+</dd>
+<dt><strong>TAISEI_GL33_FORWARD_COMPATIBLE</strong></dt>
+<dd><div class="line-block">
+<div class="line">Default: <span class="docutils literal">1</span></div>
+</div>
+<p>If <span class="docutils literal">1</span>, try to create a forward-compatible context with some deprecated
+OpenGL features disabled.</p>
+</dd>
+<dt><strong>TAISEI_GL33_VERSION_MAJOR</strong></dt>
+<dd><div class="line-block">
+<div class="line">Default: <span class="docutils literal">3</span></div>
+</div>
+<p>Request an OpenGL context with this major version.</p>
+</dd>
+<dt><strong>TAISEI_GL33_VERSION_MINOR</strong></dt>
+<dd><div class="line-block">
+<div class="line">Default: <span class="docutils literal">3</span></div>
+</div>
+<p>Request an OpenGL context with this minor version.</p>
+</dd>
 <dt><strong>TAISEI_FRAMERATE_GRAPHS</strong></dt>
 <dd><div class="line-block">
 <div class="line">Default: <span class="docutils literal">0</span> for release builds, <span class="docutils literal">1</span> for debug builds</div>
@@ -803,10 +910,37 @@ likely want to use that instead.</p>
 </div>
 <p>Displays some statistics about usage of in-game objects.</p>
 </dd>
+<dt><strong>TAISEI_ANGLE_WEBGL</strong></dt>
+<dd><div class="line-block">
+<div class="line">Default: <span class="docutils literal">0</span>; <span class="docutils literal">1</span> on Windows</div>
+</div>
+<p>If <span class="docutils literal">1</span> and the gles30 renderer backend has been configured to use ANGLE,
+it will create a WebGL-compatible context. This is needed to work around
+broken cubemaps in ANGLE’s D3D11 backend.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="audio">
+<h2><a class="toc-backref" href="#id6">Audio</a></h2>
+<dl>
+<dt><strong>TAISEI_AUDIO_BACKEND</strong></dt>
+<dd><div class="line-block">
+<div class="line">Default: <span class="docutils literal">sdl</span></div>
+</div>
+<p>Selects the audio playback backend to use. Currently available options are:</p>
+<blockquote>
+<ul>
+<li><p><span class="docutils literal">sdl</span>: the SDL2 audio subsystem, with a custom mixer</p></li>
+<li><p><span class="docutils literal">null</span>: no audio playback</p></li>
+</ul>
+</blockquote>
+<p>Note that the actual subset of usable backends, as well as the default
+choice, can be controlled by build options.</p>
+</dd>
 </dl>
 </div>
 <div class="section" id="timing">
-<h2><a class="toc-backref" href="#id6">Timing</a></h2>
+<h2><a class="toc-backref" href="#id7">Timing</a></h2>
 <dl>
 <dt><strong>TAISEI_HIRES_TIMER</strong></dt>
 <dd><div class="line-block">
@@ -849,8 +983,93 @@ and the <span class="docutils literal">frameskip</span> setting have no effect i
 </dd>
 </dl>
 </div>
+<div class="section" id="demo-playback">
+<h2><a class="toc-backref" href="#id8">Demo Playback</a></h2>
+<dl>
+<dt><strong>TAISEI_DEMO_TIME</strong></dt>
+<dd><div class="line-block">
+<div class="line">Default: <span class="docutils literal">3600</span> (1 minute)</div>
+</div>
+<p>How much time (in frames) of user inactivity is required to begin playing
+demo replays in the menu. If <span class="docutils literal">&lt;=0</span>, demo playback will be disabled.</p>
+</dd>
+<dt><strong>TAISEI_DEMO_INTER_TIME</strong></dt>
+<dd><div class="line-block">
+<div class="line">Default: <span class="docutils literal">1800</span> (30 seconds)</div>
+</div>
+<p>How much time (in frames) of user inactivity is required to advance to the
+next demo in the sequence in between demo playback. This delay will be reset
+back to <span class="docutils literal">TAISEI_DEMO_TIME</span> on user activity.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="kiosk-mode">
+<h2><a class="toc-backref" href="#id9">Kiosk Mode</a></h2>
+<dl>
+<dt><strong>TAISEI_KIOSK</strong></dt>
+<dd><div class="line-block">
+<div class="line">Default: <span class="docutils literal">0</span></div>
+</div>
+<p>If <span class="docutils literal">1</span>, run Taisei in “kiosk mode”. This forces the game into fullscreen,
+makes the window uncloseable, disables the “Quit” main menu option, and
+enables a watchdog that resets the game back to the main menu and default
+settings if there’s no user activity for too long.</p>
+<p>Useful for running a public “arcade cabinet” at events. You can customize
+the game’s default setting by placing a <span class="docutils literal">config.default</span> file into one of
+the resource search paths, e.g. <span class="docutils literal"><span class="pre">$HOME/.local/share/taisei/resources</span></span>.
+The format is the same as the <span class="docutils literal">config</span> file created by Taisei in the
+storage directly.</p>
+</dd>
+<dt><strong>TAISEI_KIOSK_PREVENT_QUIT</strong></dt>
+<dd><div class="line-block">
+<div class="line">Default: <span class="docutils literal">0</span></div>
+</div>
+<p>If <span class="docutils literal">1</span>, allows users to quit the game in kiosk mode. Useful if you’re
+running a multi-game arcade cabinet setup.</p>
+</dd>
+<dt><strong>TAISEI_KIOSK_TIMEOUT</strong></dt>
+<dd><div class="line-block">
+<div class="line">Default: <span class="docutils literal">7200</span> (2 minutes)</div>
+</div>
+<p>Timeout for the reset watchdog in kiosk mode (in frames).</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="frame-dump-mode">
+<h2><a class="toc-backref" href="#id10">Frame Dump Mode</a></h2>
+<dl>
+<dt><strong>TAISEI_FRAMEDUMP</strong></dt>
+<dd><div class="line-block">
+<div class="line">Default: unset</div>
+<div class="line"><strong>Experimental</strong></div>
+</div>
+<p>If set, enables the framedump mode. In framedump mode, Taiseil will write
+every rendered frame as a .png file into a directly specified by this variable.</p>
+</dd>
+<dt><strong>TAISEI_FRAMEDUMP_SOURCE</strong></dt>
+<dd><div class="line-block">
+<div class="line">Default: <span class="docutils literal">screen</span></div>
+</div>
+<p>If set to <span class="docutils literal">screen</span>, the framedump mode will record the whole window, similar
+to taking a screenshot. If set to <span class="docutils literal">viewport</span>, it will record only the contents
+of the in-game viewport framebuffer, and will only be active while in-game. Note
+that it is not the same as cropping a screenshot to the size of the viewport.
+Some elements that are rendered on top of the viewport, such as dialogue portraits,
+will not be captured.</p>
+</dd>
+<dt><strong>TAISEI_FRAMEDUMP_COMPRESSION</strong></dt>
+<dd><div class="line-block">
+<div class="line">Default: <span class="docutils literal">1</span></div>
+</div>
+<p>Level of deflate compression to apply to dumped frames, in the 0-9 range. Lower
+values will produce larger files that will encode faster. Larger values may create
+a large backlog of frames to encode that will consume a lot of RAM, depending on
+your CPU’s capabilities.</p>
+</dd>
+</dl>
+</div>
 <div class="section" id="miscellaneous">
-<h2><a class="toc-backref" href="#id7">Miscellaneous</a></h2>
+<h2><a class="toc-backref" href="#id11">Miscellaneous</a></h2>
 <dl>
 <dt><strong>TAISEI_GAMEMODE</strong></dt>
 <dd><div class="line-block">
@@ -860,10 +1079,18 @@ and the <span class="docutils literal">frameskip</span> setting have no effect i
 <p>If <span class="docutils literal">1</span>, enables automatic integration with Feral Interactive’s GameMode
 daemon. Only meaningful for GameMode-enabled builds.</p>
 </dd>
+<dt><strong>TAISEI_REPLAY_DESYNC_CHECK_FREQUENCY</strong></dt>
+<dd><div class="line-block">
+<div class="line">Default: <span class="docutils literal">300</span></div>
+</div>
+<p>How frequently to write desync detection hashes into replays (every X frames).
+Lowering this value results in larger replays with more accurate desync
+detection. Intended for debugging desyncing replays with <span class="docutils literal"><span class="pre">--rereplay</span></span>.</p>
+</dd>
 </dl>
 </div>
 <div class="section" id="logging">
-<h2><a class="toc-backref" href="#id8">Logging</a></h2>
+<h2><a class="toc-backref" href="#id12">Logging</a></h2>
 <p>Taisei’s logging system currently has five basic levels and works by
 dispatching messages to a few output handlers. Each handler has a level
 filter, which is configured by a separate environment variable. All of
@@ -871,7 +1098,7 @@ those variables work the same way: their value looks like an IRC mode
 string, and represents a modification of the handler’s default settings.
 If this doesn’t make sense, take a look at the <em>Examples</em> section.</p>
 <div class="section" id="the-levels">
-<h3><a class="toc-backref" href="#id9">The levels</a></h3>
+<h3><a class="toc-backref" href="#id13">The levels</a></h3>
 <ul>
 <li><p><strong>Debug</strong> (<em>d</em>) is the most verbose level. It contains random
 information about internal workings of the game and is disabled for
@@ -895,7 +1122,7 @@ representing all possible log levels. See <em>Examples</em> for usage.</p></li>
 </ul>
 </div>
 <div class="section" id="the-variables">
-<h3><a class="toc-backref" href="#id10">The variables</a></h3>
+<h3><a class="toc-backref" href="#id14">The variables</a></h3>
 <dl>
 <dt><strong>TAISEI_LOGLVLS_CONSOLE</strong></dt>
 <dd><div class="line-block">
@@ -943,10 +1170,17 @@ shutting down. This will make the game quit faster if log writing is
 slow, at the expense of log integrity. Ignored if <span class="docutils literal">TAISEI_LOG_ASYNC</span>
 is disabled.</p>
 </dd>
+<dt><strong>TAISEI_SDL_LOG</strong></dt>
+<dd><div class="line-block">
+<div class="line">Default: <span class="docutils literal">0</span></div>
+</div>
+<p>If <span class="docutils literal">&gt;0</span>, redirects SDL’s log output into the Taisei log. The value
+controls the minimum log priority; see <span class="docutils literal">SDL_log.h</span> for details.</p>
+</dd>
 </dl>
 </div>
 <div class="section" id="examples">
-<h3><a class="toc-backref" href="#id11">Examples</a></h3>
+<h3><a class="toc-backref" href="#id15">Examples</a></h3>
 <ul>
 <li><p>In release builds: print <em>Info</em> messages to stdout, in addition to
 <em>Warning</em>s, <em>Error</em>s, and <em>Fatal</em>s as per default:</p>
