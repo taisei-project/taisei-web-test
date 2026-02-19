@@ -1,0 +1,36 @@
+#version 300 es
+
+uniform mat4 r_projectionMatrix;
+uniform mat4 r_modelViewMatrix;
+uniform mat4 r_textureMatrix;
+uniform vec2 gaps[4];
+uniform float gap_angles[4];
+uniform int gap_links[4];
+uniform vec2 viewport;
+
+layout(location = 0) in vec3 position;
+out vec2 texCoord;
+layout(location = 1) in vec2 texCoordRawIn;
+out vec2 gap_views[4];
+out vec4 gap_rotations[4];
+
+void main()
+{
+    gl_Position = (r_projectionMatrix * r_modelViewMatrix) * vec4(position, 1.0);
+    texCoord = (r_textureMatrix * vec4(texCoordRawIn, 0.0, 1.0)).xy;
+    for (int _220 = 0; _220 < 4; )
+    {
+        float _137 = gap_angles[gap_links[_220]] - gap_angles[_220];
+        float _195 = cos(_137);
+        float _197 = sin(_137);
+        vec2 _147 = ((((vec2(texCoord.x, 1.0 - texCoord.y) * viewport) - gaps[_220]) * mat2(vec2(_195, -_197), vec2(_197, _195))) + gaps[gap_links[_220]]) / viewport;
+        _147.y = 1.0 - _147.y;
+        gap_views[_220] = _147;
+        float _209 = cos(gap_angles[_220]);
+        float _211 = sin(gap_angles[_220]);
+        gap_rotations[_220] = vec4(_209, -_211, _211, _209);
+        _220++;
+        continue;
+    }
+}
+

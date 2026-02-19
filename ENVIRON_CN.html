@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="generator" content="Docutils 0.22.3: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>泰西Project - 环境变量</title>
+<style type="text/css">
+
+/* Minimal style sheet for the HTML output of Docutils.                    */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: minimal.css 10018 2025-03-06 16:19:15Z milde $                                                               */
+/* :Copyright: © 2015, 2021 Günter Milde.                                  */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+
+/* This CSS3 stylesheet defines rules for Docutils elements without        */
+/* HTML equivalent. It is required to make the document semantics visible. */
+/*                                                                         */
+/* .. _validates: http://jigsaw.w3.org/css-validator/validator$link        */
+
+/* titles */
+p.topic-title,
+p.admonition-title,
+p.system-message-title {
+  font-weight: bold;
+}
+p.sidebar-title,
+p.rubric {
+  font-weight: bold;
+  font-size: larger;
+}
+p.rubric {
+  color: maroon;
+}
+p.subtitle,
+p.section-subtitle,
+p.sidebar-subtitle {
+  font-weight: bold;
+  margin-top: -0.5em;
+}
+h1 + p.subtitle {
+  font-size: 1.6em;
+}
+a.toc-backref {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Warnings, Errors */
+.system-messages h2,
+.system-message-title,
+pre.problematic,
+span.problematic {
+  color: red;
+}
+
+/* Inline Literals */
+.docutils.literal {
+  font-family: monospace;
+  white-space: pre-wrap;
+}
+/* do not wrap at hyphens and similar: */
+.literal > span.pre { white-space: nowrap; }
+
+/* keep line-breaks (\n) visible */
+.pre-wrap { white-space: pre-wrap; }
+
+/* Lists */
+
+/* compact and simple lists: no margin between items */
+.simple  li, .simple  ul, .simple  ol, .simple  > li p,
+.compact li, .compact ul, .compact ol, .compact > li p,
+dl.simple  > dd, dl.compact > dd, dl.docinfo > dd {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+/* Nested Paragraphs */
+p:first-child { margin-top: 0; }
+p:last-child { margin-bottom: 0; }
+details > p:last-child { margin-bottom: 1em; }
+
+/* Table of Contents */
+.contents ul.auto-toc { /* section numbers present */
+  list-style-type: none;
+}
+
+/* Enumerated Lists */
+ol.arabic     { list-style: decimal }
+ol.loweralpha { list-style: lower-alpha }
+ol.upperalpha { list-style: upper-alpha }
+ol.lowerroman { list-style: lower-roman }
+ol.upperroman { list-style: upper-roman }
+
+/* Definition Lists and Derivatives */
+dt .classifier { font-style: italic }
+dt .classifier:before {
+  font-style: normal;
+  margin: 0.5em;
+  content: ":";
+}
+/* Field Lists and similar */
+/* bold field name, content starts on the same line */
+dl.field-list,
+dl.option-list,
+dl.docinfo {
+  display: flow-root;
+}
+dl.field-list > dt,
+dl.option-list > dt,
+dl.docinfo > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.25em;
+}
+/* Offset for field content (corresponds to the --field-name-limit option) */
+dl.field-list > dd,
+dl.option-list > dd,
+dl.docinfo > dd {
+  margin-left:  9em; /* ca. 14 chars in the test examples, fit all Docinfo fields */
+}
+/* start nested lists on new line */
+dd > dl:first-child,
+dd > ul:first-child,
+dd > ol:first-child {
+  clear: left;
+}
+/* start field-body on a new line after long field names */
+dl.field-list > dd > *:first-child,
+dl.option-list > dd > *:first-child
+{
+  display: inline-block;
+  width: 100%;
+  margin: 0;
+}
+
+/* Bibliographic Fields (docinfo) */
+dl.docinfo pre.address {
+  font: inherit;
+  margin: 0;
+}
+dl.docinfo > dd.authors > p { margin: 0; }
+
+/* Option Lists */
+dl.option-list > dt { font-weight: normal; }
+span.option { white-space: nowrap; }
+
+/* Footnotes and Citations  */
+
+.footnote, .citation { margin: 1em 0; } /* default paragraph skip (Firefox) */
+/* hanging indent */
+.citation { padding-left: 2em; }
+.footnote { padding-left: 1.7em; }
+.footnote.superscript { padding-left: 1.0em; }
+.citation > .label { margin-left: -2em; }
+.footnote > .label { margin-left: -1.7em; }
+.footnote.superscript > .label { margin-left: -1.0em; }
+
+.footnote > .label + *,
+.citation > .label + * {
+  display: inline-block;
+  margin-top: 0;
+  vertical-align: top;
+}
+.footnote > .backrefs + *,
+.citation > .backrefs + * {
+  margin-top: 0;
+}
+.footnote > .label + p, .footnote > .backrefs + p,
+.citation > .label + p, .citation > .backrefs + p {
+  display: inline;
+  vertical-align: inherit;
+}
+
+.backrefs { user-select: none; }
+.backrefs > a { font-style: italic; }
+
+/* superscript footnotes */
+a[role="doc-noteref"].superscript,
+.footnote.superscript > .label,
+.footnote.superscript > .backrefs {
+  vertical-align: super;
+  font-size: smaller;
+  line-height: 1;
+}
+a[role="doc-noteref"].superscript > .fn-bracket,
+.footnote.superscript > .label > .fn-bracket {
+  /* hide brackets in display but leave for copy/paste */
+  display: inline-block;
+  width: 0;
+  overflow: hidden;
+}
+[role="doc-noteref"].superscript + [role="doc-noteref"].superscript {
+  padding-left: 0.15em; /* separate consecutive footnote references */
+  /* TODO: unfortunately, "+" also selects with text between the references. */
+}
+
+/* Alignment */
+.align-left   {
+  text-align: left;
+  margin-right: auto;
+}
+.align-center {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.align-right  {
+  text-align: right;
+  margin-left: auto;
+}
+.align-top    { vertical-align: top; }
+.align-middle { vertical-align: middle; }
+.align-bottom { vertical-align: bottom; }
+
+/* reset inner alignment in figures and tables */
+figure.align-left, figure.align-right,
+table.align-left, table.align-center, table.align-right {
+  text-align: inherit;
+}
+
+/* Text Blocks */
+.topic { margin: 1em 2em; }
+.sidebar,
+.admonition,
+.system-message {
+  margin: 1em 2em;
+  border: thin solid;
+  padding: 0.5em 1em;
+}
+div.line-block { display: block; }
+div.line-block div.line-block, pre { margin-left: 2em; }
+
+/* Code line numbers: don't copy with drag-and-drop */
+pre.code .ln { display: none; }
+pre.code code:before {
+  content: attr(data-lineno);
+  font-size: small;
+  color: gray;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+}
+td, th {
+  border: thin solid silver;
+  padding: 0 1ex;
+}
+.borderless td, .borderless th {
+  border: 0;
+  padding: 0;
+  padding-right: 0.5em /* separate table cells */
+}
+
+table > caption, figcaption {
+  text-align: left;
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+}
+table.captionbelow {
+  caption-side: bottom;
+}
+
+/* MathML (see "math.css" for --math-output=HTML) */
+math .boldsymbol { font-weight: bold; }
+math.boxed, math .boxed {padding: 0.25em; border: thin solid; }
+/* style table similar to AMS "align" or "aligned" environment: */
+mtable.cases > mtr > mtd { text-align: left; }
+mtable.ams-align > mtr > mtd { padding-left: 0; padding-right: 0; }
+mtable.ams-align > mtr > mtd:nth-child(2n) { text-align: left; }
+mtable.ams-align > mtr > mtd:nth-child(2n+1) { text-align: right; }
+mtable.ams-align > mtr > mtd:nth-child(2n+3) { padding-left: 2em; }
+.mathscr mi, mi.mathscr {
+  font-family: STIX, XITSMathJax_Script, rsfs10,
+               "Asana Math", Garamond, cursive;
+}
+
+/* Document Header and Footer */
+header { border-bottom: 1px solid black; }
+footer { border-top: 1px solid black; }
+
+/* Images are block-level by default in Docutils */
+/* New HTML5 block elements: set display for older browsers */
+img, svg, header, footer, main, aside, nav, section, figure, video, details {
+  display: block;
+}
+svg { width: auto; height: auto; }  /* enable scaling of SVG images */
+/* inline images */
+
+p img, p svg, p video,
+h1 img, h2 img, h3 img, h4 img, h5 img, h6 img,
+h1 svg, h2 svg, h3 svg, h4 svg, h5 svg, h6 svg {
+  display: inline;
+}
+
+</style>
+<style type="text/css">
+
+/* CSS31_ style sheet for the output of Docutils HTML writers.             */
+/* Rules for easy reading and pre-defined style variants.                  */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: plain.css 10079 2025-04-10 12:01:48Z milde $                                                               */
+/* :Copyright: © 2015 Günter Milde.                                        */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+/* .. _CSS3: https://www.w3.org/Style/CSS/                                 */
+
+
+/* Document Structure */
+/* ****************** */
+
+/* "page layout" */
+body {
+  margin: 0;
+  background-color: #dbdbdb;
+  --field-indent: 9em; /* default indent of fields in field lists */
+}
+main, footer, header {
+  line-height:1.6;
+  /* avoid long lines --> better reading */
+  /* optimum is 45…75 characters/line <http://webtypography.net/2.1.2> */
+  /* OTOH: lines should not be too short because of missing hyphenation, */
+  max-width: 50rem;
+  padding: 1px 2%; /* 1px on top avoids grey bar above title (mozilla) */
+  margin: auto;
+}
+main {
+  counter-reset: table figure;
+  background-color: white;
+}
+footer, header {
+  font-size: smaller;
+  padding: 0.5em 2%;
+  border: none;
+}
+
+/* Table of Contents */
+ul.auto-toc > li > p {
+  padding-left: 1em;
+  text-indent: -1em;
+}
+nav.contents ul {
+  padding-left: 1em;
+}
+main > nav.contents ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B29\ ';
+}
+main > nav.contents ul ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B1D\ ';
+}
+
+/* Transitions */
+hr.docutils {
+  width: 80%;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  clear: both;
+}
+
+/* Paragraphs */
+
+/* vertical space (parskip) */
+p, ol, ul, dl, li,
+.footnote, .citation,
+div > math,
+table {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+h1, h2, h3, h4, h5, h6,
+dd, details > p:last-child {
+  margin-bottom: 0.5em;
+}
+
+/* Lists */
+/* ===== */
+
+/* Definition Lists */
+/* Indent lists nested in definition lists */
+dd > ul:only-child, dd > ol:only-child { padding-left: 1em; }
+
+/* Description Lists */
+/* styled like in most dictionaries, encyclopedias etc. */
+dl.description {
+  display: flow-root;
+}
+dl.description > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.3em;
+}
+dl.description > dd:after {
+  display: table;
+  content: "";
+  clear: left; /* clearfix for empty descriptions */
+}
+
+/* Field Lists */
+
+dl.field-list > dd,
+dl.docinfo > dd {
+  margin-left: var(--field-indent); /* adapted in media queries or HTML */
+}
+
+/* example for custom field-name width */
+dl.field-list.narrow > dd {
+  --field-indent: 5em;
+}
+/* run-in: start field-body on same line after long field names */
+dl.field-list.run-in > dd p {
+  display: block;
+}
+
+/* Bibliographic Fields */
+
+/* generally, bibliographic fields use dl.docinfo */
+/* but dedication and abstract are placed into divs */
+div.abstract p.topic-title {
+  text-align: center;
+}
+div.dedication {
+  margin: 2em 5em;
+  text-align: center;
+  font-style: italic;
+}
+div.dedication p.topic-title {
+  font-style: normal;
+}
+
+/* disclosures */
+details { padding-left: 1em; }
+summary { margin-left: -1em; }
+
+/* Text Blocks */
+/* =========== */
+
+/* Literal Blocks */
+pre.literal-block, pre.doctest-block,
+pre.math, pre.code {
+  font-family: monospace;
+}
+
+/* Block Quotes and Topics */
+bockquote { margin: 1em 2em; }
+blockquote p.attribution {
+  text-align: right;
+  margin-left: 20%;
+}
+
+/* Tables */
+/* ====== */
+
+/* th { vertical-align: bottom; } */
+
+table tr { text-align: left; }
+
+/* "booktabs" style (no vertical lines) */
+table.booktabs {
+  border: 0;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-collapse: collapse;
+}
+table.booktabs * {
+  border: 0;
+}
+table.booktabs th {
+  border-bottom: thin solid;
+}
+
+/* numbered tables (counter defined in div.document) */
+table.numbered > caption:before {
+  counter-increment: table;
+  content: "Table " counter(table) ": ";
+  font-weight: bold;
+}
+
+/* Explicit Markup Blocks */
+/* ====================== */
+
+/* Footnotes and Citations */
+/* ----------------------- */
+
+/* line on the left */
+.footnote-list {
+  border-left: solid thin;
+  padding-left: 0.25em;
+}
+
+/* Directives */
+/* ---------- */
+
+/* Body Elements */
+/* ~~~~~~~~~~~~~ */
+
+/* Images and Figures */
+
+/* let content flow to the side of aligned images and figures */
+figure.align-left,
+img.align-left,
+svg.align-left,
+video.align-left,
+div.align-left,
+object.align-left {
+  clear: left;
+  float: left;
+  margin-right: 1em;
+}
+figure.align-right,
+img.align-right,
+svg.align-right,
+video.align-right,
+div.align-right,
+object.align-right {
+  clear: right;
+  float: right;
+  margin-left: 1em;
+}
+/* Stop floating sidebars, images and figures */
+h1, h2, h3, h4, footer, header { clear: both; }
+
+/* Numbered figures */
+figure.numbered > figcaption > p:before {
+  counter-increment: figure;
+  content: "Figure " counter(figure) ": ";
+  font-weight: bold;
+}
+
+/* Admonitions and System Messages */
+.caution p.admonition-title,
+.attention p.admonition-title,
+.danger p.admonition-title,
+.error p.admonition-title,
+.warning p.admonition-title,
+div.error {
+  color: red;
+}
+
+/* Sidebar */
+/* Move right. In a layout with fixed margins, */
+/* it can be moved into the margin.            */
+aside.sidebar {
+  width: 30%;
+  max-width: 26em;
+  float: right;
+  clear: right;
+  margin-left: 1em;
+  margin-right: -1%;
+  background-color: #fffffa;
+}
+
+
+/* Code */
+pre.code { padding: 0.7ex }
+pre.code, code { background-color: #eeeeee }
+/* basic highlighting: for a complete scheme, see */
+/* https://docutils.sourceforge.io/sandbox/stylesheets/ */
+pre.code .comment, code .comment { color: #5C6576 }
+pre.code .keyword, code .keyword { color: #3B0D06; font-weight: bold }
+pre.code .literal.string, code .literal.string { color: #0C5404 }
+pre.code .name.builtin, code .name.builtin { color: #352B84 }
+pre.code .deleted, code .deleted { background-color: #DEB0A1}
+pre.code .inserted, code .inserted { background-color: #A3D289}
+
+
+/* Epigraph           */
+/* Highlights         */
+/* Pull-Quote         */
+/* Compound Paragraph */
+/* Container          */
+
+/* Inline Markup */
+/* ============= */
+
+sup, sub { line-height: 0.8; } /* do not add leading for lines with sup/sub */
+
+/* Inline Literals                                          */
+/* possible values: normal, nowrap, pre, pre-wrap, pre-line */
+/*   span.docutils.literal { white-space: pre-wrap; }       */
+
+/* Hyperlink References */
+a { text-decoration: none; }
+
+/* External Targets       */
+/*   span.target.external */
+/* Internal Targets       */
+/*   span.target.internal */
+/* Footnote References    */
+/*   a[role="doc-noteref"] */
+/* Citation References    */
+/*   a.citation-reference */
+
+</style>
+<style type="text/css">
+
+.strike {
+    text-decoration: line-through;
+}
+</style>
+</head>
+<body class="with-toc">
+<main id="project">
+<h1 class="title">泰西Project - 环境变量</h1>
+
+<nav class="contents" id="contents" role="doc-toc">
+<p class="topic-title"><a class="reference internal" href="#top">Contents</a></p>
+<ul>
+<li><p><a class="reference internal" href="#section-1" id="toc-entry-1">介绍</a></p></li>
+<li><p><a class="reference internal" href="#section-2" id="toc-entry-2">变量</a></p>
+<ul>
+<li><p><a class="reference internal" href="#section-3" id="toc-entry-3">虚拟文件系统</a></p></li>
+<li><p><a class="reference internal" href="#section-4" id="toc-entry-4">资源</a></p></li>
+<li><p><a class="reference internal" href="#section-5" id="toc-entry-5">显示和渲染</a></p></li>
+<li><p><a class="reference internal" href="#openglgles" id="toc-entry-6">OpenGL和GLES渲染器</a></p></li>
+<li><p><a class="reference internal" href="#sdlgpu" id="toc-entry-7">SDLGPU渲染器</a></p></li>
+<li><p><a class="reference internal" href="#section-6" id="toc-entry-8">音频</a></p></li>
+<li><p><a class="reference internal" href="#section-7" id="toc-entry-9">计时</a></p></li>
+<li><p><a class="reference internal" href="#demo" id="toc-entry-10">Demo回放</a></p></li>
+<li><p><a class="reference internal" href="#kiosk" id="toc-entry-11">Kiosk模式</a></p></li>
+<li><p><a class="reference internal" href="#section-8" id="toc-entry-12">帧转储模式</a></p></li>
+<li><p><a class="reference internal" href="#section-9" id="toc-entry-13">其他</a></p></li>
+<li><p><a class="reference internal" href="#section-10" id="toc-entry-14">日志</a></p>
+<ul>
+<li><p><a class="reference internal" href="#section-11" id="toc-entry-15">级别</a></p></li>
+<li><p><a class="reference internal" href="#section-12" id="toc-entry-16">变量</a></p></li>
+<li><p><a class="reference internal" href="#section-13" id="toc-entry-17">例子</a></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+<section id="section-1">
+<h2><a class="toc-backref" href="#toc-entry-1" role="doc-backlink">介绍</a></h2>
+<p>泰西的某些更高级配置选项由 <a class="reference external" href="https://zh.wikipedia.org/wiki/环境变量">环境变量</a> 控制。 本文档试图描述这些选项。</p>
+<p>通常情况下，你无需设置任何环境变量。这些变量仅供开发者和高级用户使用。因此，我们假设您已经熟悉这些概念。</p>
+<p>除了此处列出的变量外，（除非另有说明，）游戏的运行时依赖项（例如 SDL3）处理的环境变量也会生效，</p>
+</section>
+<section id="section-2">
+<h2><a class="toc-backref" href="#toc-entry-2" role="doc-backlink">变量</a></h2>
+<section id="section-3">
+<h3><a class="toc-backref" href="#toc-entry-3" role="doc-backlink">虚拟文件系统</a></h3>
+<dl>
+<dt><span class="docutils literal">TAISEI_RES_PATH</span></dt>
+<dd><div class="line-block">
+<div class="line">默认：未设置</div>
+</div>
+<p>如果设置，则覆盖默认的 <strong>资源目录</strong> 路径。泰西会在此查找游戏数据。默认路径取决于平台和构建版本：</p>
+<ul>
+<li><p>在 <strong>macOS</strong> 上, 它应该在 <span class="docutils literal">Taisei.app</span> 压缩包里的 <span class="docutils literal">Contents/Resources/data</span> 目录。</p></li>
+<li><p>在 <strong>GNU/Linux</strong>, <strong>*BSD</strong>, 以及其他类 <strong>Unix</strong> 系统 (不带 <span class="docutils literal"><span class="pre">-DRELATIVE</span></span> 参数), 它应该在
+<span class="docutils literal">$prefix/share/taisei</span> 。该路径是静态的，在编译时确定。</p></li>
+<li><p>在 <strong>Windows</strong> 和其他构建时带有 <span class="docutils literal"><span class="pre">-DRELATIVE</span></span> 参数的平台, 它应该在可执行文件的目录下的 <span class="docutils literal">data</span> 文件夹 (或者指向特定平台上 <span class="docutils literal">SDL_GetBasePath</span> 函数给所返回的路径。）</p></li>
+</ul>
+</dd>
+<dt><span class="docutils literal">TAISEI_STORAGE_PATH</span></dt>
+<dd><div class="line-block">
+<div class="line">默认：未设置</div>
+</div>
+<p>如果设置，则覆盖默认的 <strong>存储目录</strong> 路径。Taisei 会在此保存您的配置、进度、屏幕截图和录像。泰西还会从其中的 <span class="docutils literal">resources</span> 子目录中加载自定义数据（如果有），除了库存资源之外。如果名称冲突，自定义资源会覆盖默认资源。默认路径因平台而异，与  <span class="docutils literal"><span class="pre">SDL_GetPrefPath(&quot;&quot;,</span> &quot;taisei&quot;)</span> 的返回值有关：</p>
+<ul>
+<li><p>在 <strong>Windows</strong>, 它位于 <span class="docutils literal"><span class="pre">%APPDATA%\taisei</span></span>.</p></li>
+<li><p>在 <strong>macOS</strong>, 它位于 <span class="docutils literal">$HOME/Library/Application Support/taisei</span>.</p></li>
+<li><p>在 <strong>GNU/Linux</strong>, <strong>*BSD</strong>, 以及其他类 <strong>Unix</strong> 系统, 它位于 <span class="docutils literal">$XDG_DATA_HOME/taisei</span> 或者
+<span class="docutils literal"><span class="pre">$HOME/.local/share/taisei</span></span>.</p></li>
+</ul>
+</dd>
+<dt><span class="docutils literal">TAISEI_CACHE_PATH</span></dt>
+<dd><div class="line-block">
+<div class="line">默认：未设置</div>
+</div>
+<p>如果设置，则覆盖默认的 <strong>直接缓存</strong> 路径。泰西将在此存储转码后的 Basis Universal 纹理和编译后的着色器，以加快未来的加载速度。</p>
+<ul>
+<li><p>在 <strong>Windows</strong>, 它位于 <span class="docutils literal"><span class="pre">%LOCALAPPDATA%\taisei\cache</span></span>.</p></li>
+<li><p>在 <strong>macOS</strong>, 它位于 <span class="docutils literal">$HOME/Library/Caches/taisei</span>.</p></li>
+<li><p>在 <strong>GNU/Linux</strong>, <strong>*BSD</strong>, 以及其他类 <strong>Unix</strong> 系统, 它位于 <span class="docutils literal">$XDG_CACHE_HOME/taisei</span> 或者
+<span class="docutils literal"><span class="pre">$HOME/.cache/taisei</span></span>.</p></li>
+</ul>
+<p>直接删除此目录没问题；泰西会在加载资源时重建缓存。如果你不希望缓存，可以直接将其设置为不可写目录。</p>
+</dd>
+</dl>
+</section>
+<section id="section-4">
+<h3><a class="toc-backref" href="#toc-entry-4" role="doc-backlink">资源</a></h3>
+<dl>
+<dt><span class="docutils literal">TAISEI_NOASYNC</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">0</span></div>
+</div>
+<p>如果设置为 <span class="docutils literal">1</span> ，则禁用异步加载。这会增加加载时间，但可能会略微降低加载期间的 CPU 和内存使用率。通常不建议使用此选项，除非遇到一些错误（如果遇到这种情况，去开个issue）</p>
+</dd>
+<dt><span class="docutils literal">TAISEI_NOUNLOAD</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">0</span></div>
+</div>
+<p>如果设置为 <span class="docutils literal">1</span> ，则已加载的资源永远不会从内存删除。随着时间的推移，内存使用量会增加，文件系统读取和加载时间也会减少。</p>
+</dd>
+<dt><span class="docutils literal">TAISEI_NOPRELOAD</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">0</span></div>
+</div>
+<p>如果设置为 <span class="docutils literal">1</span> ，则禁用预加载，所有资源仅在需要时加载。这可以减少加载时间和内存占用，但可能会导致游戏卡顿。</p>
+</dd>
+<dt><span class="docutils literal">TAISEI_PRELOAD_REQUIRED</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">0</span></div>
+</div>
+<p>如果设置为 <span class="docutils literal">1</span> ，游戏在尝试使用之前未预加载的资源时会崩溃并显示错误消息。（这是用来调试的）</p>
+</dd>
+<dt><span class="docutils literal">TAISEI_PRELOAD_SHADERS</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">0</span></div>
+</div>
+<p>如果设置为 <span class="docutils literal">1</span> ，泰西将在启动时加载所有着色器程序。这主要有助于开发者顺利编译程序。</p>
+</dd>
+<dt><span class="docutils literal">TAISEI_AGGRESSIVE_PRELOAD</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">0</span></div>
+</div>
+<p>如果设置为 <span class="docutils literal">1</span> ，泰西将扫描所有可用资源，并尝试在启动时加载所有资源。同时也会启用 <span class="docutils literal">TAISEI_NOUNLOAD=1</span> 。</p>
+</dd>
+<dt><span class="docutils literal">TAISEI_BASISU_FORCE_UNCOMPRESSED</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">0</span></div>
+</div>
+<p>如果设置为 <span class="docutils literal">1</span> ，Basis Universal压缩纹理将在CPU上解压缩，并以未压缩的形式发送到GPU。（用于调试）</p>
+</dd>
+<dt><span class="docutils literal">TAISEI_BASISU_MAX_MIP_LEVELS</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">0</span></div>
+</div>
+<p>如果设置大于 <span class="docutils literal">0</span>, 将限制从Basis Universal纹理加载的mipmap层数。（用于调试）</p>
+</dd>
+<dt><span class="docutils literal">TAISEI_BASISU_MIP_BIAS</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">0</span></div>
+</div>
+<p>如果设置大于 <span class="docutils literal">0</span>, 泰西会加载具有mipmap的Basis Universal纹理的低分辨率版本。每调高1，就将分辨率减半。</p>
+</dd>
+<dt><span class="docutils literal">TAISEI_TASKMGR_NUM_THREADS</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">0</span> (自动检测)</div>
+</div>
+<p>处理资源加载等任务而创建的后台工作线程数量。如果设置为 <span class="docutils literal">0</span> ，则默认为逻辑CPU核心数量的两倍。</p>
+</dd>
+</dl>
+</section>
+<section id="section-5">
+<h3><a class="toc-backref" href="#toc-entry-5" role="doc-backlink">显示和渲染</a></h3>
+<dl>
+<dt><span class="docutils literal">TAISEI_VIDEO_RECREATE_ON_FULLSCREEN</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">0</span>; X11上是 <span class="docutils literal">1</span></div>
+</div>
+<p>如果设置为 <span class="docutils literal">1</span> ，泰西将在全屏和窗口模式之间切换时重新创建窗口。这有助于解决一些窗口管理器的错误。</p>
+</dd>
+<dt><span class="docutils literal">TAISEI_VIDEO_RECREATE_ON_RESIZE</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">0</span>; X11与Emscripten上是 <span class="docutils literal">1</span></div>
+</div>
+<p>如果设置为“1”，泰西将在设置中更改窗口大小时重新创建窗口。这有助于解决某些窗口管理器的错误。</p>
+</dd>
+<dt><span class="docutils literal">TAISEI_RENDERER</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">gl33</span> (但请看下文)</div>
+</div>
+<p>选择要使用的渲染后端。当前可用的选项有：</p>
+<ul>
+<li><p><span class="docutils literal">gl33</span>: OpenGL 3.3 核心渲染器</p></li>
+<li><p><span class="docutils literal">gles30</span>: OpenGL ES 3.0渲染器</p></li>
+<li><p><span class="docutils literal">sdlgpu</span>: SDL3 GPU API渲染器</p></li>
+<li><p><span class="docutils literal">null</span>: 无操作渲染器（不显示任何内容）</p></li>
+</ul>
+<p>请注意，实际可用后端以及默认选项可以通过构建选项进行控制。
+泰西的 Windows 和 macOS 官方版本将默认值覆盖为 <span class="docutils literal">sdlgpu</span> ，以提高兼容性。</p>
+</dd>
+<dt><span class="docutils literal">TAISEI_FRAMERATE_GRAPHS</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">0</span> （release构建）, <span class="docutils literal">1</span> （debug构建）</div>
+</div>
+<p>如果设置为 <span class="docutils literal">1</span>, 会显示帧率图表。</p>
+</dd>
+<dt><span class="docutils literal">TAISEI_OBJPOOL_STATS</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">0</span></div>
+</div>
+<p>显示一些有关游戏内物体使用情况的统计数据。</p>
+</dd>
+</dl>
+</section>
+<section id="openglgles">
+<h3><a class="toc-backref" href="#toc-entry-6" role="doc-backlink">OpenGL和GLES渲染器</a></h3>
+<dl>
+<dt><span class="docutils literal">TAISEI_LIBGL</span></dt>
+<dd><div class="line-block">
+<div class="line">默认：未设置</div>
+</div>
+<p>要加载的OpenGL库，将替代默认库使用。该值的含义与平台相关（会传递至等效于 <span class="docutils literal">dlopen</span> 的函数）。
+若已设置，将优先于 <span class="docutils literal">SDL_OPENGL_LIBRARY</span> 生效。若泰西已链接至libgl则此设置无效（不建议这样做，因为会丧失跨平台性）。</p>
+</dd>
+<dt><span class="docutils literal">TAISEI_GL_DEBUG</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">0</span></div>
+</div>
+<p>启用OpenGL调试功能。将请求调试上下文，记录所有OpenGL消息，并使所有错误成为致命错误。
+需要 <span class="docutils literal">KHR_debug</span> 或 <span class="docutils literal">ARB_debug_output</span> 扩展。</p>
+</dd>
+<dt><span class="docutils literal">TAISEI_GL_EXT_OVERRIDES</span></dt>
+<dd><div class="line-block">
+<div class="line">默认：未设置</div>
+</div>
+<p>假装设置的OpenGL扩展受支持 (即使驱动程序报告不支持）(各扩展间用空格分隔)。在扩展名前添加 <span class="docutils literal">-</span> 可反向操作。
+可用于规避某些怪异/古老/有问题的驱动程序中的错误（但成功几率渺茫）。请注意，这仅影响实际检测给定扩展的代码路径，而非实际的OpenGL功能。
+某些OpenGL实现（如Mesa）提供了自有扩展控制机制，建议优先使用那些机制。</p>
+</dd>
+<dt><span class="docutils literal">TAISEI_GL_WORKAROUND_DISABLE_NORM16</span></dt>
+<dd><div class="line-block">
+<div class="line">默认：未设置</div>
+</div>
+<p>若设置为 <span class="docutils literal">1</span> ，则禁用OpenGL中规范化16位每通道纹理的使用。可用于规避存在缺陷的驱动程序问题。
+未设置时（默认值），将在已知有问题的驱动程序上自动尝试禁用此功能。若设为 <span class="docutils literal">0</span> ，则只要可用就会始终使用16位纹理。</p>
+</dd>
+<dt><span class="docutils literal">TAISEI_GL33_CORE_PROFILE</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">1</span></div>
+</div>
+<p>若设为 <span class="docutils literal">1</span> ，尝试在gl33后端创建核心配置文件上下文。
+若设为 <span class="docutils literal">0</span> ，则创建兼容性配置文件上下文。</p>
+</dd>
+<dt><span class="docutils literal">TAISEI_GL33_FORWARD_COMPATIBLE</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">1</span></div>
+</div>
+<p>若设为 <span class="docutils literal">1</span> ，则尝试创建前向兼容的上下文，同时禁用某些已弃用的OpenGL功能。</p>
+</dd>
+<dt><span class="docutils literal">TAISEI_GL33_VERSION_MAJOR</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">3</span></div>
+</div>
+<p>请求此主版本（OpenGL 4.6前面那个4）的OpenGL上下文。</p>
+</dd>
+<dt><span class="docutils literal">TAISEI_GL33_VERSION_MINOR</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">3</span></div>
+</div>
+<p>请求此小版本（OpenGL 4.6后面那个6）的OpenGL上下文。</p>
+</dd>
+<dt><span class="docutils literal">TAISEI_ANGLE_WEBGL</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">0</span></div>
+</div>
+<p>若设为 <span class="docutils literal">1</span> 且gles30渲染器后端已配置使用ANGLE时，将创建与WebGL兼容的上下文。
+此设置用于规避ANGLE的D3D11后端中存在缺陷的立方体贴图功能。</p>
+</dd>
+</dl>
+</section>
+<section id="sdlgpu">
+<h3><a class="toc-backref" href="#toc-entry-7" role="doc-backlink">SDLGPU渲染器</a></h3>
+<dl>
+<dt><span class="docutils literal">TAISEI_SDLGPU_DEBUG</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">0</span></div>
+</div>
+<p>若设为 <span class="docutils literal">1</span> ，将在调试模式下创建GPU上下文。这将启用SDLGPU中的额外断言机制，并在可用时启用后端特定的调试功能。在Vulkan后端中此设置将启用验证层。</p>
+</dd>
+<dt><span class="docutils literal">TAISEI_SDLGPU_PREFER_LOWPOWER</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">0</span></div>
+</div>
+<p>若设为 <span class="docutils literal">1</span> ，当存在多个GPU时，将优先选择低功耗的GPU进行渲染。在同时配备集成显卡和独立显卡的笔记本电脑上，通常此选项会选择集成显卡。</p>
+</dd>
+<dt><span class="docutils literal">TAISEI_SDLGPU_FAUX_BACKBUFFER</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">1</span></div>
+</div>
+<p>若设为 <span class="docutils literal">1</span> ，将在呈现前将后备缓冲区渲染到暂存纹理中，再复制到交换链。此操作用于在SDLGPU（其交换链为只写模式）上模拟交换链读取功能。
+禁用此选项可消除复制开销，但会导致截图功能失效。如果不需要的话就关掉吧。</p>
+</dd>
+</dl>
+</section>
+<section id="section-6">
+<h3><a class="toc-backref" href="#toc-entry-8" role="doc-backlink">音频</a></h3>
+<dl>
+<dt><span class="docutils literal">TAISEI_AUDIO_BACKEND</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">sdl</span></div>
+</div>
+<p>选择要使用的音频播放后端。当前可用选项有：</p>
+<ul>
+<li><p><span class="docutils literal">sdl</span> ：使用SDL2音频子系统及自定义混音器</p></li>
+<li><p><span class="docutils literal">null</span> ：无音频播放功能</p></li>
+</ul>
+<p>请注意，实际可用的后端以及默认选择可通过构建选项进行控制。</p>
+</dd>
+</dl>
+</section>
+<section id="section-7">
+<h3><a class="toc-backref" href="#toc-entry-9" role="doc-backlink">计时</a></h3>
+<dl>
+<dt><span class="docutils literal">TAISEI_HIRES_TIMER</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">1</span></div>
+</div>
+<p>若设为 <span class="docutils literal">1</span> ，将尝试使用系统高精度计时器来限制游戏帧率。
+不建议禁用此选项，否则可能导致游戏运行速度偏离预期（过快或过慢），且报告的帧率数值准确度会下降。</p>
+</dd>
+<dt><span class="docutils literal">TAISEI_FRAMELIMITER_SLEEP</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">3</span></div>
+</div>
+<p>若设置值大于 <span class="docutils literal">0</span> ，在等待下一帧时若剩余时间至少为``帧时间/此设定值``，将尝试将处理时间让给其他应用程序。
+提高该值可降低CPU使用率，但可能影响性能。设为 <span class="docutils literal">0</span> 可恢复v1.2版本的默认行为。</p>
+</dd>
+<dt><span class="docutils literal">TAISEI_FRAMELIMITER_COMPENSATE</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">1</span></div>
+</div>
+<p>若设为 <span class="docutils literal">1</span> ，帧率限制器在出现突发性帧时间飙升后，可能让帧提前结束渲染。
+这种方式能实现更精确的时序控制，但当帧率过于不稳定时可能会影响画面流畅度。</p>
+</dd>
+<dt><span class="docutils literal">TAISEI_FRAMELIMITER_LOGIC_ONLY</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">0</span></div>
+<div class="line"><strong>实验性功能</strong></div>
+</div>
+<p>若设为 <span class="docutils literal">1</span> ，将仅限制逻辑帧率；渲染帧会以最快速度处理而无延迟。这将导致逻辑帧与渲染帧不同步，因此当渲染速度过慢时可能会丢弃部分逻辑帧。
+但与同步模式不同，在此情况下游戏速度仍能保持大致稳定。
+<span class="docutils literal">TAISEI_FRAMELIMITER_SLEEP</span> 、 <span class="docutils literal">TAISEI_FRAMELIMITER_COMPENSATE</span> 及 <span class="docutils literal">跳帧</span> 设置在此模式下无效。</p>
+</dd>
+</dl>
+</section>
+<section id="demo">
+<h3><a class="toc-backref" href="#toc-entry-10" role="doc-backlink">Demo回放</a></h3>
+<dl>
+<dt><span class="docutils literal">TAISEI_DEMO_TIME</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">3600</span> (1分钟)</div>
+</div>
+<p>菜单中开始播放Demo回放所需用户无操作的时间（按帧数计算）。若设置为小于等于 <span class="docutils literal">0</span> ，将禁用Demo回放功能。</p>
+</dd>
+<dt><span class="docutils literal">TAISEI_DEMO_INTER_TIME</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">1800</span> (30秒)</div>
+</div>
+<p>在演示回放间隙中，切换到序列中下一个演示所需用户无操作的时间（按帧数计算）。用户有操作时将把此延迟重置回 <span class="docutils literal">TAISEI_DEMO_TIME</span> 的值。</p>
+</dd>
+</dl>
+</section>
+<section id="kiosk">
+<h3><a class="toc-backref" href="#toc-entry-11" role="doc-backlink">Kiosk模式</a></h3>
+<dl>
+<dt><span class="docutils literal">TAISEI_KIOSK</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">0</span></div>
+</div>
+<p>若设为 <span class="docutils literal">1</span> ，将以「kiosk模式」运行泰西。此模式会强制游戏全屏运行，使窗口不可关闭，禁用主菜单中的”退出”选项，并启用看门狗机制——当长时间无用户操作时将自动重置游戏至主菜单并恢复默认设置。</p>
+<p>这是为公开展示泰西设置的类街机模式。可通过在资源搜索路径（如 <span class="docutils literal"><span class="pre">$HOME/.local/share/taisei/resources</span></span> ）中放置 <span class="docutils literal">config.default</span> 文件来自定义游戏默认设置，其格式与泰西在存储目录创建的 <span class="docutils literal">config</span> 文件相同。</p>
+</dd>
+<dt><span class="docutils literal">TAISEI_KIOSK_PREVENT_QUIT</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">0</span></div>
+</div>
+<p>若设为 <span class="docutils literal">1</span> ，将允许用户在kiosk模式下退出游戏。适用于运行多游戏街机系统的场景。</p>
+</dd>
+<dt><span class="docutils literal">TAISEI_KIOSK_TIMEOUT</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">7200</span></div>
+</div>
+<p>kiosk模式下重置看门狗的超时时间（按帧数计算）。</p>
+</dd>
+</dl>
+</section>
+<section id="section-8">
+<h3><a class="toc-backref" href="#toc-entry-12" role="doc-backlink">帧转储模式</a></h3>
+<dl>
+<dt><span class="docutils literal">TAISEI_FRAMEDUMP</span></dt>
+<dd><div class="line-block">
+<div class="line">默认：未设置</div>
+<div class="line"><strong>实验性功能</strong></div>
+</div>
+<p>如果设置，则启用帧转储模式。在帧转储模式下，泰西会将每个渲染帧以 <span class="docutils literal">.png</span> 文件的形式写入此变量指定的目录中。</p>
+</dd>
+<dt><span class="docutils literal">TAISEI_FRAMEDUMP_SOURCE</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">screen</span></div>
+</div>
+<p>若设置为 <span class="docutils literal">screen</span> ，帧转储模式将录制整个窗口（类似于截图功能）。若设置为 <span class="docutils literal">viewport</span> ，则仅录制游戏内视口帧缓冲区的内容，且仅在游戏过程中激活。
+请注意：这与将截图裁剪至视口尺寸不同，某些渲染在视口顶部的元素（如对话立绘）将不会被捕获。</p>
+</dd>
+<dt><span class="docutils literal">TAISEI_FRAMEDUMP_COMPRESSION</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">1</span></div>
+</div>
+<p>应用于转储帧的deflate压缩级别（0-9范围）。
+数值越低会生成文件体积更大但编码速度更快的文件；数值越高可能因CPU处理能力不足而造成帧编码积压，从而消耗大量内存。</p>
+</dd>
+</dl>
+</section>
+<section id="section-9">
+<h3><a class="toc-backref" href="#toc-entry-13" role="doc-backlink">其他</a></h3>
+<dl>
+<dt><span class="docutils literal">TAISEI_GAMEMODE</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">1</span></div>
+<div class="line"><em>仅在GNU/Linux可用</em></div>
+</div>
+<p>若设为 <span class="docutils literal">1</span> ，将启用与Feral Interactive的GameMode守护进程的自动集成功能。仅对支持GameMode的编译版本有效。</p>
+</dd>
+<dt><span class="docutils literal">TAISEI_REPLAY_DESYNC_CHECK_FREQUENCY</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">300</span></div>
+</div>
+<p>向回放文件中写入同步检测哈希值的频率（每X帧写入一次）。降低此值会使回放文件体积增大，但能提高同步检测的精确度。该功能主要用于通过 <span class="docutils literal"><span class="pre">--rereplay</span></span> 参数调试回放同步问题。</p>
+</dd>
+</dl>
+</section>
+<section id="section-10">
+<h3><a class="toc-backref" href="#toc-entry-14" role="doc-backlink">日志</a></h3>
+<p>泰西的日志系统目前有五个基本级别，其工作原理是将消息分派到几个输出处理程序。每个处理程序都有一个级别过滤器，该过滤器由单独的环境变量配置。所有这些变量的工作方式相同：它们的值类似于 IRC 模式字符串，表示对处理程序默认设置的修改。如果你对此不理解，请见下文。</p>
+<section id="section-11">
+<h4><a class="toc-backref" href="#toc-entry-15" role="doc-backlink">级别</a></h4>
+<ul>
+<li><p><strong>debug</strong>  ( <em>d</em> )：最详细的日志级别。包含游戏内部运行的各种信息，在Release版本中已在源码级别禁用此级别。</p></li>
+<li><p><strong>info</strong>  ( <em>i</em>  )：记录正常运行期间预期发生的事件，例如解锁符卡或截取屏幕截图时。</p></li>
+<li><p><strong>warning</strong>  ( <em>w</em> )：通常针对引擎功能误用、已弃用功能、未实现功能以及其他不影响核心功能的轻微异常情况发出提示。</p></li>
+<li><p><strong>error</strong>  ( <em>e</em> )：报告非致命性错误，例如缺失可选资源、进度数据损坏、或因存储空间或权限不足导致回放保存失败。</p></li>
+<li><p><strong>fatal</strong>  ( <em>f</em> )：表示不可恢复的故障状态。此类事件通常意味着程序错误或安装损坏。游戏在记录该级别消息后将立即崩溃。部分平台还会显示图形化消息框。</p></li>
+<li><p><strong>all</strong>  ( <em>a</em> )：并非真实日志级别，而是代表所有可能日志级别的快捷指令。用法参见*示例*部分。</p></li>
+</ul>
+</section>
+<section id="section-12">
+<h4><a class="toc-backref" href="#toc-entry-16" role="doc-backlink">变量</a></h4>
+<dl>
+<dt><span class="docutils literal">TAISEI_LOGLVLS_CONSOLE</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">+a</span> <em>(All)</em></div>
+</div>
+<p>控制哪些日志级别可以发送到控制台。相当于 <span class="docutils literal">TAISEI_LOGLVLS_STDOUT</span> 和
+<span class="docutils literal">TAISEI_LOGLVLS_STDERR</span>.</p>
+</dd>
+<dt><span class="docutils literal">TAISEI_LOGLVLS_STDOUT</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">+di</span> <em>(Debug, Info)</em></div>
+</div>
+<p>控制哪些日志级别会被输出到标准输出流。被 <span class="docutils literal">TAISEI_LOGLVLS_CONSOLE</span> 禁用的日志级别将被忽略。</p>
+</dd>
+<dt><span class="docutils literal">TAISEI_LOGLVLS_STDERR</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">+wef</span> <em>(Warning, Error, Fatal)</em></div>
+</div>
+<p>控制哪些日志级别输出到标准错误流。被 <span class="docutils literal">TAISEI_LOGLVLS_CONSOLE</span> 禁用的日志级别将不会输出。</p>
+</dd>
+<dt><span class="docutils literal">TAISEI_LOGLVLS_FILE</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">+a</span> <em>(All)</em></div>
+</div>
+<p>控制哪些日志级别输出到日志文件（<span class="docutils literal"><span class="pre">{存储目录}/log.txt</span></span>）。</p>
+</dd>
+<dt><span class="docutils literal">TAISEI_LOG_ASYNC</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">1</span></div>
+</div>
+<p>若设为 <span class="docutils literal">1</span> ，将通过后台线程异步写入日志消息。这对控制台或文件写入速度较慢的平台（如Windows）尤其有益。调试时建议禁用此选项。</p>
+</dd>
+<dt><span class="docutils literal">TAISEI_LOG_ASYNC_FAST_SHUTDOWN</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">0</span></div>
+</div>
+<p>若设为 <span class="docutils literal">1</span> ，关闭游戏时不等待完整日志队列写入完毕。当日志写入速度较慢时，此设置可加速游戏退出进程，但会牺牲日志完整性。
+若 <span class="docutils literal">TAISEI_LOG_ASYNC</span> 被禁用则此设置无效。</p>
+</dd>
+<dt><span class="docutils literal">TAISEI_SDL_LOG</span></dt>
+<dd><div class="line-block">
+<div class="line">默认： <span class="docutils literal">0</span></div>
+</div>
+<p>若设置为 <span class="docutils literal">0</span> ，将SDL的日志输出重定向至泰西日志系统。该数值控制最低日志优先级，详情参见 <span class="docutils literal">SDL_log.h</span> 。</p>
+</dd>
+</dl>
+</section>
+<section id="section-13">
+<h4><a class="toc-backref" href="#toc-entry-17" role="doc-backlink">例子</a></h4>
+<ul>
+<li><p>在Release构建: 从标准输出流输出 <em>Info</em> 信息, 此外按照 <em>Warning</em>, <em>Error</em> , 和 <em>Fatal</em>  排序。
+默认：</p>
+<blockquote>
+<pre class="code sh literal-block"><code><span class="name variable">TAISEI_LOGLVLS_STDOUT</span><span class="operator">=</span>+i</code></pre>
+</blockquote>
+</li>
+<li><p>在Debug构建: 从控制台删掉 <em>Debug</em> 和 <em>Info</em> 输出:</p>
+<blockquote>
+<pre class="code sh literal-block"><code><span class="name variable">TAISEI_LOGLVLS_STDOUT</span><span class="operator">=</span>-di</code></pre>
+<p>或者:</p>
+<pre class="code sh literal-block"><code><span class="name variable">TAISEI_LOGLVLS_CONSOLE</span><span class="operator">=</span>-di</code></pre>
+</blockquote>
+</li>
+<li><p>不要保存任何日志:</p>
+<blockquote>
+<pre class="code sh literal-block"><code><span class="name variable">TAISEI_LOGLVLS_FILE</span><span class="operator">=</span>-a</code></pre>
+</blockquote>
+</li>
+<li><p>不要在我控制台上输出:</p>
+<blockquote>
+<pre class="code sh literal-block"><code><span class="name variable">TAISEI_LOGLVLS_CONSOLE</span><span class="operator">=</span>-a</code></pre>
+</blockquote>
+</li>
+<li><p>不要保存任何日志, 除了 <em>Error</em> 和 <em>Fatal</em>:</p>
+<blockquote>
+<pre class="code sh literal-block"><code><span class="name variable">TAISEI_LOGLVLS_FILE</span><span class="operator">=</span>-a+ef</code></pre>
+</blockquote>
+</li>
+<li><p>将除 <em>Debug</em> 之外的所有内容输出到 <span class="docutils literal">stderr</span>，不输出到 <span class="docutils literal">stdout</span>:</p>
+<blockquote>
+<pre class="code sh literal-block"><code><span class="name variable">TAISEI_LOGLVLS_STDOUT</span><span class="operator">=</span>-a<span class="whitespace">
+</span><span class="name variable">TAISEI_LOGLVLS_STDERR</span><span class="operator">=</span>+a-d</code></pre>
+</blockquote>
+</li>
+</ul>
+</section>
+</section>
+</section>
+</main>
+</body>
+</html>

@@ -1,0 +1,48 @@
+#version 300 es
+precision mediump float;
+precision highp int;
+
+uniform highp vec2 gaps[4];
+uniform highp vec2 gap_size;
+uniform highp sampler2D tex;
+uniform int draw_background;
+uniform highp vec2 viewport;
+uniform highp float time;
+
+in highp vec4 gap_rotations[4];
+in highp vec2 gap_views[4];
+layout(location = 0) out highp vec4 fragColor;
+in highp vec2 texCoord;
+
+void main()
+{
+    if (draw_background != 0)
+    {
+        fragColor = texture(tex, texCoord);
+    }
+    else
+    {
+        fragColor = vec4(0.0);
+    }
+    highp vec2 _157 = texCoord * viewport;
+    highp float _163 = viewport.y - _157.y;
+    highp float _170 = max(gap_size.x, gap_size.y);
+    highp float _327 = _157.x;
+    if (any(bvec4(all(bvec4(_327 > (gaps[0].x - _170), _327 < (gaps[0].x + _170), _163 > (gaps[0].y - _170), _163 < (gaps[0].y + _170))), all(bvec4(_327 > (gaps[1].x - _170), _327 < (gaps[1].x + _170), _163 > (gaps[1].y - _170), _163 < (gaps[1].y + _170))), all(bvec4(_327 > (gaps[2].x - _170), _327 < (gaps[2].x + _170), _163 > (gaps[2].y - _170), _163 < (gaps[2].y + _170))), all(bvec4(_327 > (gaps[3].x - _170), _327 < (gaps[3].x + _170), _163 > (gaps[3].y - _170), _163 < (gaps[3].y + _170))))))
+    {
+        highp float _221 = _327 + (0.5 * sin(time * 6.0));
+        highp float _235 = _163 + (0.5 * sin((time * 7.320000171661376953125) - (_221 * 0.123000003397464752197265625)));
+        highp float _248 = _221 + (0.5 * sin((time * (-8.159999847412109375)) - (_235 * 0.123000003397464752197265625)));
+        highp float _261 = _235 + (0.5 * sin((time * (-7.7399997711181640625)) - (_248 * 0.123000003397464752197265625)));
+        highp vec2 _688 = vec2(_248 + (0.5 * sin((time * 8.1000003814697265625) - (_261 * 0.123000003397464752197265625))), _261);
+        highp float _478 = length((mat2(vec2(gap_rotations[0].xy), vec2(gap_rotations[0].zw)) * (_688 - gaps[0])) / gap_size);
+        fragColor = mix(fragColor, mix(vec4(0.75, 0.0, 0.4000000059604644775390625, 1.0), texture(tex, gap_views[0]), vec4(1.0 - pow(_478, 3.0))), vec4(smoothstep(1.0, 0.800000011920928955078125, _478)));
+        highp float _522 = length((mat2(vec2(gap_rotations[1].xy), vec2(gap_rotations[1].zw)) * (_688 - gaps[1])) / gap_size);
+        fragColor = mix(fragColor, mix(vec4(0.75, 0.0, 0.4000000059604644775390625, 1.0), texture(tex, gap_views[1]), vec4(1.0 - pow(_522, 3.0))), vec4(smoothstep(1.0, 0.800000011920928955078125, _522)));
+        highp float _566 = length((mat2(vec2(gap_rotations[2].xy), vec2(gap_rotations[2].zw)) * (_688 - gaps[2])) / gap_size);
+        fragColor = mix(fragColor, mix(vec4(0.75, 0.0, 0.4000000059604644775390625, 1.0), texture(tex, gap_views[2]), vec4(1.0 - pow(_566, 3.0))), vec4(smoothstep(1.0, 0.800000011920928955078125, _566)));
+        highp float _610 = length((mat2(vec2(gap_rotations[3].xy), vec2(gap_rotations[3].zw)) * (_688 - gaps[3])) / gap_size);
+        fragColor = mix(fragColor, mix(vec4(0.75, 0.0, 0.4000000059604644775390625, 1.0), texture(tex, gap_views[3]), vec4(1.0 - pow(_610, 3.0))), vec4(smoothstep(1.0, 0.800000011920928955078125, _610)));
+    }
+}
+

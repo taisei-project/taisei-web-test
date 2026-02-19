@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="generator" content="Docutils 0.22.3: https://docutils.sourceforge.io/" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>泰西Project - 游戏手册</title>
+<style type="text/css">
+
+/* Minimal style sheet for the HTML output of Docutils.                    */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: minimal.css 10018 2025-03-06 16:19:15Z milde $                                                               */
+/* :Copyright: © 2015, 2021 Günter Milde.                                  */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+
+/* This CSS3 stylesheet defines rules for Docutils elements without        */
+/* HTML equivalent. It is required to make the document semantics visible. */
+/*                                                                         */
+/* .. _validates: http://jigsaw.w3.org/css-validator/validator$link        */
+
+/* titles */
+p.topic-title,
+p.admonition-title,
+p.system-message-title {
+  font-weight: bold;
+}
+p.sidebar-title,
+p.rubric {
+  font-weight: bold;
+  font-size: larger;
+}
+p.rubric {
+  color: maroon;
+}
+p.subtitle,
+p.section-subtitle,
+p.sidebar-subtitle {
+  font-weight: bold;
+  margin-top: -0.5em;
+}
+h1 + p.subtitle {
+  font-size: 1.6em;
+}
+a.toc-backref {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Warnings, Errors */
+.system-messages h2,
+.system-message-title,
+pre.problematic,
+span.problematic {
+  color: red;
+}
+
+/* Inline Literals */
+.docutils.literal {
+  font-family: monospace;
+  white-space: pre-wrap;
+}
+/* do not wrap at hyphens and similar: */
+.literal > span.pre { white-space: nowrap; }
+
+/* keep line-breaks (\n) visible */
+.pre-wrap { white-space: pre-wrap; }
+
+/* Lists */
+
+/* compact and simple lists: no margin between items */
+.simple  li, .simple  ul, .simple  ol, .simple  > li p,
+.compact li, .compact ul, .compact ol, .compact > li p,
+dl.simple  > dd, dl.compact > dd, dl.docinfo > dd {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+/* Nested Paragraphs */
+p:first-child { margin-top: 0; }
+p:last-child { margin-bottom: 0; }
+details > p:last-child { margin-bottom: 1em; }
+
+/* Table of Contents */
+.contents ul.auto-toc { /* section numbers present */
+  list-style-type: none;
+}
+
+/* Enumerated Lists */
+ol.arabic     { list-style: decimal }
+ol.loweralpha { list-style: lower-alpha }
+ol.upperalpha { list-style: upper-alpha }
+ol.lowerroman { list-style: lower-roman }
+ol.upperroman { list-style: upper-roman }
+
+/* Definition Lists and Derivatives */
+dt .classifier { font-style: italic }
+dt .classifier:before {
+  font-style: normal;
+  margin: 0.5em;
+  content: ":";
+}
+/* Field Lists and similar */
+/* bold field name, content starts on the same line */
+dl.field-list,
+dl.option-list,
+dl.docinfo {
+  display: flow-root;
+}
+dl.field-list > dt,
+dl.option-list > dt,
+dl.docinfo > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.25em;
+}
+/* Offset for field content (corresponds to the --field-name-limit option) */
+dl.field-list > dd,
+dl.option-list > dd,
+dl.docinfo > dd {
+  margin-left:  9em; /* ca. 14 chars in the test examples, fit all Docinfo fields */
+}
+/* start nested lists on new line */
+dd > dl:first-child,
+dd > ul:first-child,
+dd > ol:first-child {
+  clear: left;
+}
+/* start field-body on a new line after long field names */
+dl.field-list > dd > *:first-child,
+dl.option-list > dd > *:first-child
+{
+  display: inline-block;
+  width: 100%;
+  margin: 0;
+}
+
+/* Bibliographic Fields (docinfo) */
+dl.docinfo pre.address {
+  font: inherit;
+  margin: 0;
+}
+dl.docinfo > dd.authors > p { margin: 0; }
+
+/* Option Lists */
+dl.option-list > dt { font-weight: normal; }
+span.option { white-space: nowrap; }
+
+/* Footnotes and Citations  */
+
+.footnote, .citation { margin: 1em 0; } /* default paragraph skip (Firefox) */
+/* hanging indent */
+.citation { padding-left: 2em; }
+.footnote { padding-left: 1.7em; }
+.footnote.superscript { padding-left: 1.0em; }
+.citation > .label { margin-left: -2em; }
+.footnote > .label { margin-left: -1.7em; }
+.footnote.superscript > .label { margin-left: -1.0em; }
+
+.footnote > .label + *,
+.citation > .label + * {
+  display: inline-block;
+  margin-top: 0;
+  vertical-align: top;
+}
+.footnote > .backrefs + *,
+.citation > .backrefs + * {
+  margin-top: 0;
+}
+.footnote > .label + p, .footnote > .backrefs + p,
+.citation > .label + p, .citation > .backrefs + p {
+  display: inline;
+  vertical-align: inherit;
+}
+
+.backrefs { user-select: none; }
+.backrefs > a { font-style: italic; }
+
+/* superscript footnotes */
+a[role="doc-noteref"].superscript,
+.footnote.superscript > .label,
+.footnote.superscript > .backrefs {
+  vertical-align: super;
+  font-size: smaller;
+  line-height: 1;
+}
+a[role="doc-noteref"].superscript > .fn-bracket,
+.footnote.superscript > .label > .fn-bracket {
+  /* hide brackets in display but leave for copy/paste */
+  display: inline-block;
+  width: 0;
+  overflow: hidden;
+}
+[role="doc-noteref"].superscript + [role="doc-noteref"].superscript {
+  padding-left: 0.15em; /* separate consecutive footnote references */
+  /* TODO: unfortunately, "+" also selects with text between the references. */
+}
+
+/* Alignment */
+.align-left   {
+  text-align: left;
+  margin-right: auto;
+}
+.align-center {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.align-right  {
+  text-align: right;
+  margin-left: auto;
+}
+.align-top    { vertical-align: top; }
+.align-middle { vertical-align: middle; }
+.align-bottom { vertical-align: bottom; }
+
+/* reset inner alignment in figures and tables */
+figure.align-left, figure.align-right,
+table.align-left, table.align-center, table.align-right {
+  text-align: inherit;
+}
+
+/* Text Blocks */
+.topic { margin: 1em 2em; }
+.sidebar,
+.admonition,
+.system-message {
+  margin: 1em 2em;
+  border: thin solid;
+  padding: 0.5em 1em;
+}
+div.line-block { display: block; }
+div.line-block div.line-block, pre { margin-left: 2em; }
+
+/* Code line numbers: don't copy with drag-and-drop */
+pre.code .ln { display: none; }
+pre.code code:before {
+  content: attr(data-lineno);
+  font-size: small;
+  color: gray;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+}
+td, th {
+  border: thin solid silver;
+  padding: 0 1ex;
+}
+.borderless td, .borderless th {
+  border: 0;
+  padding: 0;
+  padding-right: 0.5em /* separate table cells */
+}
+
+table > caption, figcaption {
+  text-align: left;
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+}
+table.captionbelow {
+  caption-side: bottom;
+}
+
+/* MathML (see "math.css" for --math-output=HTML) */
+math .boldsymbol { font-weight: bold; }
+math.boxed, math .boxed {padding: 0.25em; border: thin solid; }
+/* style table similar to AMS "align" or "aligned" environment: */
+mtable.cases > mtr > mtd { text-align: left; }
+mtable.ams-align > mtr > mtd { padding-left: 0; padding-right: 0; }
+mtable.ams-align > mtr > mtd:nth-child(2n) { text-align: left; }
+mtable.ams-align > mtr > mtd:nth-child(2n+1) { text-align: right; }
+mtable.ams-align > mtr > mtd:nth-child(2n+3) { padding-left: 2em; }
+.mathscr mi, mi.mathscr {
+  font-family: STIX, XITSMathJax_Script, rsfs10,
+               "Asana Math", Garamond, cursive;
+}
+
+/* Document Header and Footer */
+header { border-bottom: 1px solid black; }
+footer { border-top: 1px solid black; }
+
+/* Images are block-level by default in Docutils */
+/* New HTML5 block elements: set display for older browsers */
+img, svg, header, footer, main, aside, nav, section, figure, video, details {
+  display: block;
+}
+svg { width: auto; height: auto; }  /* enable scaling of SVG images */
+/* inline images */
+
+p img, p svg, p video,
+h1 img, h2 img, h3 img, h4 img, h5 img, h6 img,
+h1 svg, h2 svg, h3 svg, h4 svg, h5 svg, h6 svg {
+  display: inline;
+}
+
+</style>
+<style type="text/css">
+
+/* CSS31_ style sheet for the output of Docutils HTML writers.             */
+/* Rules for easy reading and pre-defined style variants.                  */
+/*                                                                         */
+/* :Author: Günter Milde, based on html4css1.css by David Goodger          */
+/* :Id: $Id: plain.css 10079 2025-04-10 12:01:48Z milde $                                                               */
+/* :Copyright: © 2015 Günter Milde.                                        */
+/* :License: Released under the terms of the `2-Clause BSD license`_,      */
+/*    in short:                                                            */
+/*                                                                         */
+/*    Copying and distribution of this file, with or without modification, */
+/*    are permitted in any medium without royalty provided the copyright   */
+/*    notice and this notice are preserved.                                */
+/*                                                                         */
+/*    This file is offered as-is, without any warranty.                    */
+/*                                                                         */
+/* .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause     */
+/* .. _CSS3: https://www.w3.org/Style/CSS/                                 */
+
+
+/* Document Structure */
+/* ****************** */
+
+/* "page layout" */
+body {
+  margin: 0;
+  background-color: #dbdbdb;
+  --field-indent: 9em; /* default indent of fields in field lists */
+}
+main, footer, header {
+  line-height:1.6;
+  /* avoid long lines --> better reading */
+  /* optimum is 45…75 characters/line <http://webtypography.net/2.1.2> */
+  /* OTOH: lines should not be too short because of missing hyphenation, */
+  max-width: 50rem;
+  padding: 1px 2%; /* 1px on top avoids grey bar above title (mozilla) */
+  margin: auto;
+}
+main {
+  counter-reset: table figure;
+  background-color: white;
+}
+footer, header {
+  font-size: smaller;
+  padding: 0.5em 2%;
+  border: none;
+}
+
+/* Table of Contents */
+ul.auto-toc > li > p {
+  padding-left: 1em;
+  text-indent: -1em;
+}
+nav.contents ul {
+  padding-left: 1em;
+}
+main > nav.contents ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B29\ ';
+}
+main > nav.contents ul ul ul ul ul:not(.auto-toc) {
+  list-style-type: '\2B1D\ ';
+}
+
+/* Transitions */
+hr.docutils {
+  width: 80%;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  clear: both;
+}
+
+/* Paragraphs */
+
+/* vertical space (parskip) */
+p, ol, ul, dl, li,
+.footnote, .citation,
+div > math,
+table {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+h1, h2, h3, h4, h5, h6,
+dd, details > p:last-child {
+  margin-bottom: 0.5em;
+}
+
+/* Lists */
+/* ===== */
+
+/* Definition Lists */
+/* Indent lists nested in definition lists */
+dd > ul:only-child, dd > ol:only-child { padding-left: 1em; }
+
+/* Description Lists */
+/* styled like in most dictionaries, encyclopedias etc. */
+dl.description {
+  display: flow-root;
+}
+dl.description > dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.3em;
+}
+dl.description > dd:after {
+  display: table;
+  content: "";
+  clear: left; /* clearfix for empty descriptions */
+}
+
+/* Field Lists */
+
+dl.field-list > dd,
+dl.docinfo > dd {
+  margin-left: var(--field-indent); /* adapted in media queries or HTML */
+}
+
+/* example for custom field-name width */
+dl.field-list.narrow > dd {
+  --field-indent: 5em;
+}
+/* run-in: start field-body on same line after long field names */
+dl.field-list.run-in > dd p {
+  display: block;
+}
+
+/* Bibliographic Fields */
+
+/* generally, bibliographic fields use dl.docinfo */
+/* but dedication and abstract are placed into divs */
+div.abstract p.topic-title {
+  text-align: center;
+}
+div.dedication {
+  margin: 2em 5em;
+  text-align: center;
+  font-style: italic;
+}
+div.dedication p.topic-title {
+  font-style: normal;
+}
+
+/* disclosures */
+details { padding-left: 1em; }
+summary { margin-left: -1em; }
+
+/* Text Blocks */
+/* =========== */
+
+/* Literal Blocks */
+pre.literal-block, pre.doctest-block,
+pre.math, pre.code {
+  font-family: monospace;
+}
+
+/* Block Quotes and Topics */
+bockquote { margin: 1em 2em; }
+blockquote p.attribution {
+  text-align: right;
+  margin-left: 20%;
+}
+
+/* Tables */
+/* ====== */
+
+/* th { vertical-align: bottom; } */
+
+table tr { text-align: left; }
+
+/* "booktabs" style (no vertical lines) */
+table.booktabs {
+  border: 0;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-collapse: collapse;
+}
+table.booktabs * {
+  border: 0;
+}
+table.booktabs th {
+  border-bottom: thin solid;
+}
+
+/* numbered tables (counter defined in div.document) */
+table.numbered > caption:before {
+  counter-increment: table;
+  content: "Table " counter(table) ": ";
+  font-weight: bold;
+}
+
+/* Explicit Markup Blocks */
+/* ====================== */
+
+/* Footnotes and Citations */
+/* ----------------------- */
+
+/* line on the left */
+.footnote-list {
+  border-left: solid thin;
+  padding-left: 0.25em;
+}
+
+/* Directives */
+/* ---------- */
+
+/* Body Elements */
+/* ~~~~~~~~~~~~~ */
+
+/* Images and Figures */
+
+/* let content flow to the side of aligned images and figures */
+figure.align-left,
+img.align-left,
+svg.align-left,
+video.align-left,
+div.align-left,
+object.align-left {
+  clear: left;
+  float: left;
+  margin-right: 1em;
+}
+figure.align-right,
+img.align-right,
+svg.align-right,
+video.align-right,
+div.align-right,
+object.align-right {
+  clear: right;
+  float: right;
+  margin-left: 1em;
+}
+/* Stop floating sidebars, images and figures */
+h1, h2, h3, h4, footer, header { clear: both; }
+
+/* Numbered figures */
+figure.numbered > figcaption > p:before {
+  counter-increment: figure;
+  content: "Figure " counter(figure) ": ";
+  font-weight: bold;
+}
+
+/* Admonitions and System Messages */
+.caution p.admonition-title,
+.attention p.admonition-title,
+.danger p.admonition-title,
+.error p.admonition-title,
+.warning p.admonition-title,
+div.error {
+  color: red;
+}
+
+/* Sidebar */
+/* Move right. In a layout with fixed margins, */
+/* it can be moved into the margin.            */
+aside.sidebar {
+  width: 30%;
+  max-width: 26em;
+  float: right;
+  clear: right;
+  margin-left: 1em;
+  margin-right: -1%;
+  background-color: #fffffa;
+}
+
+
+/* Code */
+pre.code { padding: 0.7ex }
+pre.code, code { background-color: #eeeeee }
+/* basic highlighting: for a complete scheme, see */
+/* https://docutils.sourceforge.io/sandbox/stylesheets/ */
+pre.code .comment, code .comment { color: #5C6576 }
+pre.code .keyword, code .keyword { color: #3B0D06; font-weight: bold }
+pre.code .literal.string, code .literal.string { color: #0C5404 }
+pre.code .name.builtin, code .name.builtin { color: #352B84 }
+pre.code .deleted, code .deleted { background-color: #DEB0A1}
+pre.code .inserted, code .inserted { background-color: #A3D289}
+
+
+/* Epigraph           */
+/* Highlights         */
+/* Pull-Quote         */
+/* Compound Paragraph */
+/* Container          */
+
+/* Inline Markup */
+/* ============= */
+
+sup, sub { line-height: 0.8; } /* do not add leading for lines with sup/sub */
+
+/* Inline Literals                                          */
+/* possible values: normal, nowrap, pre, pre-wrap, pre-line */
+/*   span.docutils.literal { white-space: pre-wrap; }       */
+
+/* Hyperlink References */
+a { text-decoration: none; }
+
+/* External Targets       */
+/*   span.target.external */
+/* Internal Targets       */
+/*   span.target.internal */
+/* Footnote References    */
+/*   a[role="doc-noteref"] */
+/* Citation References    */
+/*   a.citation-reference */
+
+</style>
+<style type="text/css">
+
+.strike {
+    text-decoration: line-through;
+}
+</style>
+</head>
+<body class="with-toc">
+<main id="project-1">
+<span id="project"></span>
+<h1 class="title">泰西Project - 游戏手册</h1>
+
+<nav class="contents" id="contents" role="doc-toc">
+<p class="topic-title"><a class="reference internal" href="#top">Contents</a></p>
+<ul>
+<li><p><a class="reference internal" href="#section-1" id="toc-entry-1">介绍</a></p></li>
+<li><p><a class="reference internal" href="#section-2" id="toc-entry-2">难度</a></p></li>
+<li><p><a class="reference internal" href="#section-3" id="toc-entry-3">角色和机体</a></p></li>
+<li><p><a class="reference internal" href="#hud" id="toc-entry-4">界面（HUD）</a></p></li>
+<li><p><a class="reference internal" href="#section-4" id="toc-entry-5">控制</a></p></li>
+<li><p><a class="reference internal" href="#section-5" id="toc-entry-6">低速</a></p></li>
+<li><p><a class="reference internal" href="#bomb-1" id="toc-entry-7">Bomb (自机符卡)</a></p></li>
+<li><p><a class="reference internal" href="#power-surge" id="toc-entry-8">Power Surge（能量浪涌）</a></p></li>
+<li><p><a class="reference internal" href="#section-6" id="toc-entry-9">道具</a></p></li>
+<li><p><a class="reference internal" href="#boss" id="toc-entry-10">Boss</a></p></li>
+<li><p><a class="reference internal" href="#section-7" id="toc-entry-11">评分系统</a></p></li>
+<li><p><a class="reference internal" href="#section-8" id="toc-entry-12">更多信息</a></p></li>
+</ul>
+</nav>
+<section id="section-1">
+<h2><a class="toc-backref" href="#toc-entry-1" role="doc-backlink">介绍</a></h2>
+<p>《泰西》是一款弹幕射击游戏（STG）。很多子弹覆盖了屏幕，如果你被子弹击中，你就会死亡。
+为了更简单，你的碰撞箱（判定）非常小——比你看起来的小得多。</p>
+<p>如果你被子弹击中，你就会失去一条生命（残机）；如果你的残机耗尽，游戏就结束了，但你有五次续关机会
+（不记分数）。</p>
+</section>
+<section id="section-2">
+<h2><a class="toc-backref" href="#toc-entry-2" role="doc-backlink">难度</a></h2>
+<p>泰西是一款非常困难的游戏，尤其是对于STG新手来说。在许多现代游戏中， <em>Easy</em> 属于无脑模式，而 <em>Normal</em> 才是真正的简单模式（给玩家一点自信），所以你可能会倾向于从Normal难度开始打，就像其他游戏中一样。</p>
+<p>不过吗，泰西是其中的例外。Easy难度是相对平衡的，对于新手来说可能有失败的风险，所以你需要多加练习。当然，Easy仍然包含足够的游戏内容来向您展示本游戏所有的乐趣。:)</p>
+<p>玩Easy难度并没有什么可耻的。据说，即使是最初创立该项目并编写本节的开发人员都无法通关Easy……</p>
+</section>
+<section id="section-3">
+<h2><a class="toc-backref" href="#toc-entry-3" role="doc-backlink">角色和机体</a></h2>
+<p>三个不同的可玩角色有不同的射击模式。你一开始伤害不高，必须将你的灵力（Power）提高来变得更强。</p>
+<p>尝试几种模式，找到最适合您的机体。</p>
+</section>
+<section id="hud">
+<h2><a class="toc-backref" href="#toc-entry-4" role="doc-backlink">界面（HUD）</a></h2>
+<p>开始游戏后，屏幕右侧（HUD）会出现一堆数字。这些分别是：</p>
+<ul>
+<li><p><strong>Score</strong> 表示你当前的分数。参见 <a class="reference internal" href="#target-1">评分系统</a> ，通过擦弹和收集道具以提高分数。</p></li>
+<li><p><strong>Lives</strong> 表示你有多少条生命（残机）。<em>Next</em> 值显示下一个奖残分数。</p></li>
+<li><p><strong>Spell Cards</strong> 表示你有多少个 <a class="reference internal" href="#bomb">Bomb</a> 。如果你的 <em>Fragment</em> （碎片）计数达到 500，你就会得到一个Bomb。</p></li>
+<li><p><strong>Power</strong> 或者说灵力，表示你当前的射击有多强。最高可达4.00，但可以超额收集到6.00。</p></li>
+<li><p><strong>Value</strong> 表示你在屏幕顶部获取“点”道具的分数</p></li>
+<li><p><strong>Volts</strong> 参见 <a class="reference internal" href="#target-1">评分系统</a> 。</p></li>
+<li><p><strong>Graze</strong> 或者说擦弹，靠近子弹来提高本值。</p></li>
+</ul>
+</section>
+<section id="section-4">
+<h2><a class="toc-backref" href="#toc-entry-5" role="doc-backlink">控制</a></h2>
+<table>
+<thead>
+<tr><th class="head"><p>名称</p></th>
+<th class="head"><p>默认键</p></th>
+</tr>
+</thead>
+<tbody>
+<tr><td><p>射击</p></td>
+<td><p><span class="docutils literal">Z</span></p></td>
+</tr>
+<tr><td><p>Bomb</p></td>
+<td><p><span class="docutils literal">X</span></p></td>
+</tr>
+<tr><td><p>Power Surge</p></td>
+<td><p><span class="docutils literal">C</span></p></td>
+</tr>
+<tr><td><p>低速</p></td>
+<td><p><span class="docutils literal">左Shift</span></p></td>
+</tr>
+<tr><td><p>移动</p></td>
+<td><p><span class="docutils literal">Up</span>, <span class="docutils literal">Down</span>, <span class="docutils literal">Left</span>, <span class="docutils literal">Right</span></p></td>
+</tr>
+</tbody>
+</table>
+<p>如果你不喜欢默认值，可以在设置中轻松重新映射它们。</p>
+<p>还支持使用游戏手柄。请参阅设置控件的选项。</p>
+<p>如果你用的键盘不是QWERTY布局的话也不用担心，泰西的控制基于某个键的位置而与布局无关。</p>
+</section>
+<section id="section-5">
+<h2><a class="toc-backref" href="#toc-entry-6" role="doc-backlink">低速</a></h2>
+<p>按下 <span class="docutils literal">Shift</span> 时, 你的移动速度会变慢，并且射击会发生变化。它适用于精准的
+躲避弹幕，但你不应该一直保持低速。</p>
+<p>在此模式下出现的白色圆圈表示你大致的判定。如你所见，它真的很小。</p>
+</section>
+<section id="bomb-1">
+<span id="bomb"></span><h2><a class="toc-backref" href="#toc-entry-7" role="doc-backlink">Bomb (自机符卡)</a></h2>
+<p>在这游戏里，所有的子弹都会一击杀死你，你可能需要一些“好东西”来消除它们。值得庆幸的是，你的角色拥有所谓的「符卡」（或者说Bomb），伤害非常高。</p>
+<p>您可以使用它们从屏幕上消除子弹和敌人。但是它们数量有限，因此处于紧要关头时再使用它们。当在Boss符卡时释放Bomb时，就没有Capturing Bonus（Get Spell Card Bonus）了。</p>
+<p>有传言说，如果你被子弹击中时足够快地按下Bomb键，可以避免Miss。我们管这叫「决死」。</p>
+</section>
+<section id="power-surge">
+<h2><a class="toc-backref" href="#toc-entry-8" role="doc-backlink">Power Surge（能量浪涌）</a></h2>
+<p>泰西有一个名为「Power Surge」的独特机制，默认使用C键激活和释放，每次激活消耗2.00灵力。默认情况下，当灵力达到6.00时，能量浪涌会自动激活。虽然激活能量浪涌需要消耗2.00灵力，但在能量涌动结束前，玩家自机的子机数量保持不变。能量浪涌激活后会自动回收所有道具。</p>
+<p>在浪涌期间，伤害提高20%，在任何位置拾取的蓝点都会按最大得点记分，擦弹效果也会从生成小红点或得点道具变为生成神秘黄色浪涌闪电。这些道具以及浪涌闪电共同用于积攒能量，能量值在游戏界面上以蓝色和黄色圆弧显示。两种能量——稳定的蓝色负电荷和不稳定的黄色正电荷——都会以上述方式增加，并随时间推移而被动减少。（注：正电荷从高到低下降，负电荷反之。）</p>
+<p>能量浪涌会在自机周围显示的正负电荷数量相等时结束。两种电荷的消耗速度不同，可以通过收集灵力道具或从擦弹掉落的小闪电来补充。蓝色电荷积累越多，维持浪涌就越困难。积累的电荷还会影响能量浪涌的范围、伤害和释放时的增加的最大得点。</p>
+<p>当能量浪涌释放时（无论是手动释放还是因中弹或正负电荷数量而自动触发），能量范围内的所有子弹都会被消除并转化为电压道具。范围内的敌人也会受到伤害，并产生电压道具。如果能量涌动并非中弹引起，则产生的电压道具会自动被拾取。电压道具可以大幅提升最大得点，并增加电压值，电压值可用于解锁每面的隐藏符卡。</p>
+</section>
+<section id="section-6">
+<h2><a class="toc-backref" href="#toc-entry-9" role="doc-backlink">道具</a></h2>
+<p>击败敌人后，你会看到它们爆出了一些道具。（当然它们不是子弹）</p>
+<p>它们分别是：</p>
+<ul>
+<li><p><strong>蓝色的</strong> 点道具会增加分数。</p></li>
+<li><p><strong>红色的</strong> 给你更多的灵力。有两种尺寸，总是带有大写的 P。</p></li>
+<li><p><strong>绿色星星</strong> 是Bomb。实心的等于一个Bomb，空心的等于100碎片。</p></li>
+<li><p><strong>粉色爱心</strong> 是一条额外的生命。</p></li>
+<li><p><strong>黄色的小幽灵</strong> 提高最大得点。</p></li>
+<li><p><strong>浪涌闪电</strong> 会在你的能量浪涌期间生成，以提供电荷。</p></li>
+<li><p><strong>紫色的</strong> 是Voltage（电压），在能量浪涌结束后得到，折算为最大得点与Bomb碎片</p></li>
+</ul>
+<p>如果你飞到屏幕顶部附近，会自动回收所有道具。</p>
+</section>
+<section id="boss">
+<h2><a class="toc-backref" href="#toc-entry-10" role="doc-backlink">Boss</a></h2>
+<p>泰西一共有6个关卡(或者叫 <em>stage</em> )。每个Stage都有某个Boss和道中Boss。她们比
+普通敌人更强，以及攻击时间限制，并有不同类型的攻击形式：</p>
+<ul>
+<li><p><strong>非符</strong> : 它们是其他更猛烈的符卡之间的歇息，但不要放松警惕。</p></li>
+<li><p><strong>符卡</strong> : 这是Boss集中力量对你发动进攻的标识，背景有所变化，血量高，弹幕华丽。当你收取符卡后，会有额外分数奖励与100个Bomb碎片。（收取的意思是No Miss No Bomb击破符卡）</p>
+<p>你可以在 <em>Spell Practice</em> 模式中重温遇到的符卡，以避免老是死在同一张符卡下。</p>
+</li>
+<li><p><strong>电压过载</strong> : 收集足够的 <a class="reference internal" href="#target-4">电压</a> 以解锁Boss最后的一张额外符卡。（Last Spell）</p>
+<p>这些都是棘手的独特符卡，需要一些“创造力”才能躲避。由于极度电离，Bomb和Miss一起被禁用了。</p>
+<p>但是Boss在电离下倒是如鱼得水，将以最邪门的弹幕用来对付你。如果收取它，可能会获得些好东西。</p>
+</li>
+<li><p><strong>时符</strong> : 极少数情况下，强大的Boss会释放根本无法击破的符卡，你拿她一点办法都没有。在倒计时结束前，尽情避弹吧！</p>
+<p>当然你也可以在 <em>Spell Practice</em> 模式好好熟悉攻击形式。</p>
+</li>
+</ul>
+</section>
+<section id="section-7">
+<span id="target-1"></span><h2><a class="toc-backref" href="#toc-entry-11" role="doc-backlink">评分系统</a></h2>
+<p>得分似乎只对熟练的职业玩家来说很重要。普通玩家需要生存下来，对吗？NONONO！泰西是分数奖残制。所以嘛知道获得好分数的基础知识对每个人都有帮助。</p>
+<p id="target-2">你获得的分数并非固定值，而是取决于多种因素。</p>
+<p>例如，如果在屏幕上方收得蓝点，获得的分数会更高。</p>
+<p>最大得点是在屏幕上方自动回收道具时一个蓝点的分数。通过收集消弹时生成的神秘黄色幽灵道具，或者使用能量浪涌来提升最大得点。</p>
+<p>最大得点还会影响其他一些数值，例如收取符卡的奖励分数。</p>
+<p id="target-3">在某些情况下，玩家会自动收集屏幕上的所有道具。以这种方式收集的每个道具都会记为最大分数。
+例如：
+- 扔bomb
+- 移动到屏幕上方的收点线上面
+- 开能量浪涌</p>
+<p id="target-4">评分系统中最明显的部分是能量浪涌机制。虽然4.00灵力就是射击的最大输出，但可以将灵力过充至6.00。多余的灵力可以
+用于启动能量浪涌（参见 “控件” ）。默认情况下，一旦你灵力达到6.00就会自动启用，但这可以在设置中禁用。</p>
+<p>当浪涌激活时，无论在屏幕上的哪个位置，所有点道具都会这样计为最高分，且你的伤害提升20%，灵力始终锁定为浪涌激活前的值。</p>
+<p>当浪涌激活时，角色周围的圆环会显示正电荷（橙色）和负电荷（蓝色）。正电荷从 100% 开始，负电荷从 0% 开始。两者都以不同的速度逐渐耗尽。当两个电荷处于相等水平时，浪涌将突然结束。可以通过收集浪涌闪电来补充电荷（射击敌人或者擦弹会生成浪涌闪电），蓝点与P点也会补充电荷。</p>
+<p>浪涌维持的时间越长，它就会变得越强。（就是你周围越来越大的闪闪发光的浪涌光环）当前的负电荷越多，浪涌光环增长得越快。</p>
+<p>一旦浪涌结束，所有力量都会在爆炸中解放出来，对敌人造成伤害并消除子弹。威力和作用面积取决于你的浪涌积累了多少能量。也可以手动取消浪涌以触发爆炸，务必挑个好时机释放。</p>
+<p>所有被爆炸击中的敌人和子弹都会生成特殊的电压道具，这会大大增加你的最大得点，
+每个电压道具记1个Bomb碎片。如果你的电压值达到关卡要求，就可以见到电压过载符卡</p>
+</section>
+<section id="section-8">
+<h2><a class="toc-backref" href="#toc-entry-12" role="doc-backlink">更多信息</a></h2>
+<p>希望这些应该有助于你入门！</p>
+<p>如果你想了解更多技巧，可以去看看东方STG玩家们（比如威哥）的各种视频，应该有所帮助。（毕竟泰西本来就是东方同人STG）</p>
+<p>如果没有问题，请享受游戏。 如果你想联系我们，可以去 <a class="reference external" href="https://discord.gg/JEHCMzW">Discord</a> .</p>
+</section>
+</main>
+</body>
+</html>
