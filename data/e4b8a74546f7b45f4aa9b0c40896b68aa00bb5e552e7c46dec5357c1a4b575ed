@@ -1,0 +1,29 @@
+#version 300 es
+precision mediump float;
+precision highp int;
+
+uniform highp vec2 origin;
+uniform highp float ratio;
+uniform highp float t;
+uniform highp float h;
+uniform highp float w;
+uniform highp sampler2D tex;
+
+in highp vec2 texCoordRaw;
+layout(location = 0) out highp vec4 fragColor;
+
+void main()
+{
+    highp vec2 _33 = (texCoordRaw - (origin * vec2(ratio, 1.0))) * 10.0;
+    highp float _39 = _33.x / ratio;
+    highp vec2 _119 = _33;
+    _119.x = _39;
+    highp float _46 = atan(_39, _33.y);
+    highp float _55 = length(_119) + t;
+    highp vec2 _56 = vec2(_46, _55);
+    highp float _64 = _46 * (h / w);
+    _56.x = _64;
+    _56.x = _64 + (t * (mod(_55, 2.0) - 0.5));
+    fragColor = (vec4(texture(tex, mod(_56, vec2(1.0 + (0.00999999977648258209228515625 / w), 1.0)) * vec2(w, h)).x) * t) * (2.0 - t);
+}
+

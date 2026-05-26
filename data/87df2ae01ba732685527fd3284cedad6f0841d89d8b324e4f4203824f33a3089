@@ -1,0 +1,44 @@
+#version 300 es
+
+uniform vec2 texsize;
+uniform mat4 r_projectionMatrix;
+uniform mat4 r_modelViewMatrix;
+
+layout(location = 2) in vec4 instance_bbox;
+layout(location = 0) in vec2 vertex_position;
+layout(location = 1) in vec2 vertex_uv;
+layout(location = 4) in vec2 instance_texofs;
+out vec2 texCoord;
+out vec4 color_width;
+layout(location = 3) in vec4 instance_color_width;
+
+void main()
+{
+    vec2 _23 = instance_bbox.zw;
+    bool _33 = instance_bbox.z < 0.0;
+    vec2 _124;
+    if (_33)
+    {
+        vec2 _123 = _23;
+        _123.x = -instance_bbox.z;
+        _124 = _123;
+    }
+    else
+    {
+        _124 = _23;
+    }
+    vec2 _54 = vertex_uv * _124;
+    vec2 _118;
+    if (_33)
+    {
+        _118 = _54.yx;
+    }
+    else
+    {
+        _118 = _54;
+    }
+    gl_Position = (r_projectionMatrix * r_modelViewMatrix) * vec4((vertex_position * _124) + instance_bbox.xy, 0.0, 1.0);
+    texCoord = (_118 + instance_texofs) / texsize;
+    color_width = instance_color_width;
+}
+

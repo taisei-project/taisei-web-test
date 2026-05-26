@@ -1,0 +1,174 @@
+#version 300 es
+precision mediump float;
+precision highp int;
+
+uniform highp sampler2D depth_map;
+uniform highp vec4 environmentRGB_depthScale;
+uniform highp vec4 ambientRGB_roughnessA;
+uniform highp vec4 diffuseRGB_metallicA;
+uniform highp sampler2D roughness_map;
+uniform highp sampler2D diffuse_map;
+uniform highp sampler2D ambient_map;
+uniform highp sampler2D ao_map;
+uniform highp sampler2D normal_map;
+uniform highp mat4 inv_camera_transform;
+uniform int features_mask;
+uniform int light_count;
+uniform highp vec3 light_positions[6];
+uniform highp vec3 light_colors[6];
+uniform highp sampler2D ibl_brdf_lut;
+uniform highp samplerCube environment_map;
+
+in highp vec3 tangent;
+in highp vec3 bitangent;
+in highp vec3 normal;
+in highp vec2 texCoord;
+in highp vec3 pos;
+layout(location = 0) out highp vec4 fragColor;
+
+void main()
+{
+    highp mat3 _1124 = mat3(normalize(tangent), normalize(bitangent), normalize(normal));
+    highp vec2 _2586;
+    if ((32 & features_mask) != int(0u))
+    {
+        highp vec3 _1421 = normalize(transpose(_1124) * (-pos));
+        highp float _1448 = mix(16.0, 4.0, max(_1421.z, 0.0));
+        highp float _1450 = 1.0 / _1448;
+        highp vec2 _1458 = (_1421.xy * environmentRGB_depthScale.w) / vec2(_1448);
+        highp vec4 _1462 = texture(depth_map, texCoord);
+        highp float _1463 = _1462.x;
+        highp float _2579;
+        highp float _2580;
+        highp vec2 _2582;
+        highp float _2584;
+        _2584 = _1463;
+        _2582 = texCoord;
+        _2580 = _1463;
+        _2579 = 0.0;
+        for (int _2581 = 0; (_2579 < _2580) && (_2581 < 16); )
+        {
+            highp vec2 _1477 = _2582 - _1458;
+            _2584 = _2580;
+            _2582 = _1477;
+            _2581++;
+            _2580 = texture(depth_map, _1477).x;
+            _2579 += _1450;
+            continue;
+        }
+        highp float _1494 = _2580 - _2579;
+        _2586 = mix(_2582, _2582 + _1458, vec2(_1494 / (_1494 - ((_2584 - _2579) + _1450))));
+    }
+    else
+    {
+        _2586 = texCoord;
+    }
+    highp vec4 _1302 = texture(roughness_map, _2586);
+    if (_1302.w < 0.300000011920928955078125)
+    {
+        discard;
+    }
+    highp float _1315 = ambientRGB_roughnessA.w * _1302.x;
+    highp vec3 _2666;
+    if ((1 & features_mask) != int(0u))
+    {
+        _2666 = diffuseRGB_metallicA.xyz * texture(diffuse_map, _2586).xyz;
+    }
+    else
+    {
+        _2666 = diffuseRGB_metallicA.xyz;
+    }
+    highp vec3 _2670;
+    if ((4 & features_mask) != int(0u))
+    {
+        _2670 = ambientRGB_roughnessA.xyz * texture(ambient_map, _2586).xyz;
+    }
+    else
+    {
+        _2670 = ambientRGB_roughnessA.xyz;
+    }
+    bool _1359 = (64 & features_mask) != int(0u);
+    bool _1372;
+    if (_1359)
+    {
+        _1372 = (16 & features_mask) != int(0u);
+    }
+    else
+    {
+        _1372 = _1359;
+    }
+    highp float _2636;
+    if (_1372)
+    {
+        _2636 = texture(ao_map, _2586).x;
+    }
+    else
+    {
+        _2636 = 1.0;
+    }
+    highp vec3 _2656;
+    if ((2 & features_mask) != int(0u))
+    {
+        highp vec2 _1520 = (texture(normal_map, _2586).xy * 2.0) - vec2(1.0);
+        highp float _1522 = _1520.x;
+        highp float _1528 = _1520.y;
+        _2656 = _1124 * vec3(_1522, _1528, sqrt((1.0 - (_1522 * _1522)) - (_1528 * _1528)));
+    }
+    else
+    {
+        _2656 = _1124 * vec3(0.0, 0.0, 1.0);
+    }
+    highp vec3 _1554 = normalize(-pos);
+    highp float _1561 = max(dot(_2656, _1554), 0.0);
+    highp vec3 _1568 = mix(vec3(0.039999999105930328369140625), _2666, vec3(diffuseRGB_metallicA.w));
+    highp float _1574 = _1315 * _1315;
+    highp float _1580 = _1574 * _1574;
+    highp float _1585 = (_1315 + 1.0) * 0.125;
+    highp float _1604 = mix(_1561, 1.0, _1585);
+    highp float _1611 = 1.0 - _1561;
+    highp float _1614 = _1611 * _1611;
+    highp float _1619 = (_1614 * _1614) * _1611;
+    highp vec3 _1623 = mix(vec3(_1619), vec3(1.0), _1568);
+    highp vec3 _2698;
+    _2698 = vec3(0.0);
+    for (int _2696 = 0; _2696 < light_count; )
+    {
+        highp vec3 _1682 = light_positions[_2696] - pos;
+        highp vec3 _1684 = normalize(_1682);
+        highp vec3 _1689 = normalize(_1554 + _1684);
+        highp float _1701 = max(dot(_2656, _1684), 0.0);
+        highp float _1706 = max(dot(_2656, _1689), 0.0);
+        highp float _1770 = 1.0 - max(dot(_1689, _1684), 0.0);
+        highp float _1773 = _1770 * _1770;
+        highp float _1789 = 1.0 - _1701;
+        highp float _1792 = _1789 * _1789;
+        highp float _1815 = ((_1706 * _1706) * (_1580 - 1.0)) + 1.0;
+        _2698 += ((((mix(vec3((_1773 * _1773) * _1770), vec3(1.0), _1568) * (_1580 / ((((3.1415927410125732421875 * _1815) * _1815) * 4.0) * (_1604 * mix(_1701, 1.0, _1585))))) + (((vec3(1.0) - mix(vec3((_1792 * _1792) * _1789), vec3(1.0), _1568)) * (vec3(1.0) - _1623)) * (_2666 * mix(0.3183098733425140380859375, 0.0, diffuseRGB_metallicA.w)))) * (light_colors[_2696] / vec3(dot(_1682, _1682)))) * _1701);
+        _2696++;
+        continue;
+    }
+    highp vec3 _2718;
+    if ((16 & features_mask) != int(0u))
+    {
+        highp vec4 _1882 = texture(ibl_brdf_lut, vec2(_1561, _1315));
+        _2718 = ((texture(environment_map, (mat3(inv_camera_transform[0].xyz, inv_camera_transform[1].xyz, inv_camera_transform[2].xyz) * reflect(pos, _2656)).xzy).xyz * (((_1568 + ((max(vec3(1.0 - _1315), _1568) - _1568) * _1619)) * _1882.x) + vec3(_1882.y))) * _2636) * environmentRGB_depthScale.xyz;
+    }
+    else
+    {
+        _2718 = vec3(0.0);
+    }
+    highp vec3 _1185 = (_2670 + _2698) + _2718;
+    highp vec3 _2720;
+    if ((128 & features_mask) != int(0u))
+    {
+        highp vec3 _2030 = smoothstep(vec3(0.0), vec3(0.2199999988079071044921875), _1185);
+        highp vec3 _2038 = step(vec3(0.532000005245208740234375), _1185);
+        _2720 = pow((((pow(_1185 * vec3(4.545454502105712890625), vec3(1.33000004291534423828125)) * 0.2199999988079071044921875) * (vec3(1.0) - _2030)) + ((vec3(0.2199999988079071044921875) + ((_1185 - vec3(0.2199999988079071044921875)) * 1.0)) * (_2030 - _2038))) + ((vec3(1.0) - (exp((_1185 - vec3(0.532000005245208740234375)) * (-2.13675212860107421875)) * 0.467999994754791259765625)) * _2038), vec3(0.4545454680919647216796875));
+    }
+    else
+    {
+        _2720 = _1185;
+    }
+    fragColor = vec4(_2720, 1.0);
+}
+

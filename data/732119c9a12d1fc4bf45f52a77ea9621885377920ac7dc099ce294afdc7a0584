@@ -1,0 +1,58 @@
+#version 300 es
+precision mediump float;
+precision highp int;
+
+uniform highp vec4 snap_angles_sincos;
+uniform highp vec2 deadzones;
+uniform highp vec4 joy_pointers;
+uniform highp vec4 r_color;
+
+in highp vec2 texCoordRaw;
+layout(location = 0) out highp vec4 fragColor;
+
+void main()
+{
+    highp vec2 _234 = (texCoordRaw - vec2(0.5)) * 2.2200000286102294921875;
+    highp float _248 = fwidth(_234.x);
+    highp float _254 = 1.5 - length(_234);
+    highp float _257 = 0.5 - _248;
+    highp float _259 = 0.5 + _248;
+    highp float _261 = smoothstep(_257, _259, _254);
+    highp float _280 = smoothstep(0.4900000095367431640625, 0.5099999904632568359375, _254 - (1.0 - deadzones.x));
+    highp float _285 = _261 * (1.0 - _280);
+    highp float _303 = max(deadzones.x, deadzones.y);
+    highp float _312 = _254 - (1.0 - _303);
+    highp vec2 _329 = _234 * mat2(vec2(0.707106769084930419921875, -0.707106769084930419921875), vec2(0.707106769084930419921875));
+    highp vec2 _519 = abs(_329);
+    highp float _522 = _519.x;
+    highp float _524 = _519.y;
+    highp vec2 _537 = abs(_234);
+    highp float _540 = _537.x;
+    highp float _542 = _537.y;
+    highp float _350 = smoothstep(0.4799999892711639404296875, 0.60000002384185791015625, _261 * (1.0 - min(length(_519 - vec2(min(_522 + _524, 2.0) * 0.5)) - (-0.4900000095367431640625), length(_537 - vec2(min(_540 + _542, 2.0) * 0.5)) - (-0.4900000095367431640625))));
+    highp vec2 _610 = abs(_234.yx);
+    highp vec2 _713 = abs(_329.yx);
+    highp float _367 = 0.5 * (smoothstep(_303 + (-0.5), _259, _312) - smoothstep(0.519999980926513671875 - _248, 0.519999980926513671875 + _248, _312));
+    highp vec4 _383 = (vec4(0.5, 0.1500000059604644775390625, 0.1500000059604644775390625, 0.5) * _285) * smoothstep(_257, _259, 0.5 - min(max(length(_537) - 1.0, length(_537 - (snap_angles_sincos.xy * clamp(dot(_537, snap_angles_sincos.xy), 0.0, 1.0))) * sign((snap_angles_sincos.y * _540) - (snap_angles_sincos.x * _542))), max(length(_610) - 1.0, length(_610 - (snap_angles_sincos.xy * clamp(dot(_610, snap_angles_sincos.xy), 0.0, 1.0))) * sign((snap_angles_sincos.y * _610.x) - (snap_angles_sincos.x * _610.y)))));
+    highp vec4 _397 = (vec4(0.1500000059604644775390625, 0.1500000059604644775390625, 0.5, 0.5) * _285) * smoothstep(_257, _259, 0.5 - min(max(length(_519) - 1.0, length(_519 - (snap_angles_sincos.zw * clamp(dot(_519, snap_angles_sincos.zw), 0.0, 1.0))) * sign((snap_angles_sincos.w * _522) - (snap_angles_sincos.z * _524))), max(length(_713) - 1.0, length(_713 - (snap_angles_sincos.zw * clamp(dot(_713, snap_angles_sincos.zw), 0.0, 1.0))) * sign((snap_angles_sincos.w * _713.x) - (snap_angles_sincos.z * _713.y)))));
+    highp float _404 = 0.699999988079071044921875 * (_280 * (1.0 - smoothstep(0.25, 0.699999988079071044921875, _254 - (1.2000000476837158203125 - deadzones.x))));
+    highp float _793 = 0.60000002384185791015625 - length(_234 - joy_pointers.xy);
+    highp float _797 = 0.513000011444091796875 - _248;
+    highp float _799 = 0.513000011444091796875 + _248;
+    highp float _802 = smoothstep(0.4799999892711639404296875, 0.519999980926513671875, _793) - smoothstep(_797, _799, _793);
+    highp vec4 _828 = vec4(vec3(1.0, 0.89999997615814208984375, 0.20000000298023223876953125) * mix(1.0, 0.75, smoothstep(0.519999980926513671875, 0.550000011920928955078125, _793)), 1.0) * smoothstep(0.5099999904632568359375, 0.5299999713897705078125, _793);
+    highp vec4 _849 = _828 + ((mix(vec4(1.0), vec4(1.0, 0.89999997615814208984375, 0.20000000298023223876953125, 1.0), vec4(_802)) * _802) * (1.0 - _828.w));
+    highp vec4 _834 = _849 * _849.w;
+    highp float _872 = 0.60000002384185791015625 - length(_234 - joy_pointers.zw);
+    highp float _881 = smoothstep(0.4799999892711639404296875, 0.519999980926513671875, _872) - smoothstep(_797, _799, _872);
+    highp vec4 _907 = vec4(vec3(0.60000002384185791015625) * mix(1.0, 0.75, smoothstep(0.519999980926513671875, 0.550000011920928955078125, _872)), 0.60000002384185791015625) * smoothstep(0.5099999904632568359375, 0.5299999713897705078125, _872);
+    highp vec4 _928 = _907 + ((mix(vec4(0.60000002384185791015625), vec4(0.60000002384185791015625), vec4(_881)) * _881) * (1.0 - _907.w));
+    highp vec4 _913 = _928 * _928.w;
+    highp vec4 _946 = vec4(0.0, 0.0, 0.0, _350) + ((_913 + ((_834 + ((vec4(0.0, 0.0, 0.0, _404) + ((_397 + ((_383 + ((vec4(_367) + (vec4(0.25 * _261) * (1.0 - _367))) * (1.0 - _383.w))) * (1.0 - _397.w))) * (1.0 - _404))) * (1.0 - _834.w))) * (1.0 - _913.w))) * (1.0 - _350));
+    if (all(lessThan(_946, vec4(0.0039215688593685626983642578125))))
+    {
+        discard;
+    }
+    fragColor = _946 * r_color;
+}
+

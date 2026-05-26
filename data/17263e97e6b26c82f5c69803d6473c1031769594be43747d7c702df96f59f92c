@@ -1,0 +1,69 @@
+#version 300 es
+precision mediump float;
+precision highp int;
+
+uniform highp sampler2D water_noisetex;
+uniform highp vec2 wave_offset;
+uniform highp float time;
+uniform highp vec4 water_color;
+uniform highp sampler2D tex;
+
+in highp vec2 texCoord;
+layout(location = 0) out highp vec4 fragColor;
+
+void main()
+{
+    highp vec2 _368 = texCoord * (vec2(1.0) - texCoord.yx);
+    highp vec2 _175 = texCoord + wave_offset;
+    highp vec2 _184 = _175 * 4.0;
+    highp vec2 _190 = vec2(0.0, (-0.25) * time);
+    highp vec2 _388 = _184 + (_190 * 2.0);
+    _388.y = 1.0 - _388.y;
+    highp vec4 _416 = texture(water_noisetex, _388 * 0.0625);
+    highp float _417 = _416.x;
+    highp vec2 _396 = (_184 - (_190 * 0.5)) - vec2(_417);
+    _396.y = 1.0 - _396.y;
+    highp vec2 _404 = _184 - (mat2(vec2(0.0, -1.0), vec2(1.0, 0.0)) * vec2(_417, texture(water_noisetex, _396 * 0.0625).x));
+    _404.y = 1.0 - _404.y;
+    highp vec4 _440 = texture(water_noisetex, _404 * 0.0625);
+    highp float _441 = _440.x;
+    highp vec2 _451 = dFdx(_175);
+    highp vec2 _453 = dFdy(_175);
+    highp float _464 = dFdx(_441);
+    highp float _466 = dFdy(_441);
+    highp vec2 _205 = ((inverse(mat2(_451, _453)) * vec2(_464, _466)) * smoothstep(0.0, 0.75, (_368.x * _368.y) * 20.0)) * 0.20000000298023223876953125;
+    highp vec2 _210 = (_205 * _205) * 0.5;
+    highp vec2 _218 = vec2(texCoord.x, 1.0 - texCoord.y);
+    _218.y = 0.9700000286102294921875 - texCoord.y;
+    highp vec2 _226 = _218 - vec2(0.5);
+    _226.x = _226.x * (3.0 / (1.0 + smoothstep(0.5, 1.0, gl_FragCoord.z)));
+    highp vec2 _242 = _226 + vec2(0.5);
+    highp float _244 = _242.y;
+    _242.y = _244 * _244;
+    highp vec2 _260 = _242 + (((sign(_205) * 0.02999999932944774627685546875) * sqrt(abs(_205))) * vec2(0.100000001490116119384765625, 1.0));
+    highp vec2 _268 = clamp(_260 - vec2(0.0, 0.3499999940395355224609375), vec2(0.0), vec2(1.0));
+    highp vec2 _481 = _268 * (vec2(1.0) - _268.yx);
+    highp vec2 _498 = _260 * (vec2(1.0) - _260.yx);
+    highp float _280 = smoothstep(0.0, 0.5, (_481.x * _481.y) * 40.0) * smoothstep(0.0, 0.20000000298023223876953125, (_498.x * _498.y) * 20.0);
+    highp vec2 _548 = _260;
+    _548.y = 1.0 - _260.y;
+    highp vec2 _287 = dFdx(_548);
+    highp vec2 _290 = dFdy(_548);
+    highp vec4 _517;
+    if (_280 < 0.0078740157186985015869140625)
+    {
+        _517 = water_color;
+    }
+    else
+    {
+        highp vec4 _308 = textureGrad(tex, _548, _287, _290);
+        highp vec3 _318 = mix(_308.xyz, water_color.xyz, vec3(_308.w * 0.5));
+        highp vec4 _551 = _308;
+        _551.x = _318.x;
+        _551.y = _318.y;
+        _551.z = _318.z;
+        _517 = (_551 * vec4(0.5, 0.800000011920928955078125, 0.800000011920928955078125, 1.0)) * (0.5 * _280);
+    }
+    fragColor = mix(_517, vec4(0.800000011920928955078125, 0.800000011920928955078125, 1.0, 1.0), vec4(max(_210.y - (_210.x * 0.25), 0.0) * 0.100000001490116119384765625));
+}
+
