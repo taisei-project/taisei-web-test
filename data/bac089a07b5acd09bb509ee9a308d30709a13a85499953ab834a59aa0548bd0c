@@ -1,0 +1,20 @@
+#version 300 es
+precision mediump float;
+precision highp int;
+
+uniform highp mat3 filter_matrix;
+uniform highp sampler2D tex;
+uniform highp vec3 filter_offset;
+
+layout(location = 0) out highp vec4 fragColor;
+in highp vec2 texCoord;
+
+void main()
+{
+    highp vec3 _35 = (filter_matrix * texture(tex, texCoord).xyz) + filter_offset;
+    fragColor.x = _35.x;
+    fragColor.y = _35.y;
+    fragColor.z = _35.z;
+    fragColor.w = 1.0;
+}
+
