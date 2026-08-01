@@ -1,0 +1,57 @@
+#version 300 es
+precision mediump float;
+precision highp int;
+
+uniform highp sampler2D tex;
+
+layout(location = 0) out highp vec4 fragColor;
+in highp vec2 texCoord;
+in highp vec2 texCoordOverlay;
+in highp vec2 dimensions;
+in highp vec4 customParams;
+in highp vec4 texRegion;
+in highp vec4 color;
+
+void main()
+{
+    highp vec2 _191 = texCoord * dimensions;
+    _191.x = _191.x + (5.0 * sin((3.0 * texCoordOverlay.y) + customParams.x));
+    highp vec2 _206 = _191 / dimensions;
+    highp float _208 = _206.x;
+    bool _209 = _208 >= 0.0;
+    bool _215;
+    if (_209)
+    {
+        _215 = _208 <= 1.0;
+    }
+    else
+    {
+        _215 = _209;
+    }
+    bool _221;
+    if (_215)
+    {
+        _221 = _206.y >= 0.0;
+    }
+    else
+    {
+        _221 = _215;
+    }
+    bool _227;
+    if (_221)
+    {
+        _227 = _206.y <= 1.0;
+    }
+    else
+    {
+        _227 = _221;
+    }
+    highp vec4 _235 = texture(tex, vec2(mix(texRegion.x, texRegion.x + texRegion.z, _208), mix(texRegion.y, texRegion.y + texRegion.w, _206.y)));
+    highp vec4 _247 = (color * vec4(_235.x * float(_227))) * vec4(texCoordOverlay, 0.0, 1.0);
+    if (all(lessThan(_247, vec4(1.525902189314365386962890625e-05))))
+    {
+        discard;
+    }
+    fragColor = _247;
+}
+

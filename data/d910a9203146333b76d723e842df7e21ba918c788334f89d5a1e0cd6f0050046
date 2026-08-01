@@ -1,0 +1,30 @@
+#version 300 es
+precision mediump float;
+precision highp int;
+
+uniform highp sampler2D tex;
+
+layout(location = 0) out highp vec4 fragColor;
+in highp vec4 customParams;
+in highp vec2 texCoordOverlay;
+in highp vec2 texCoord;
+
+void main()
+{
+    highp float _239 = 1.0 - texCoordOverlay.y;
+    highp float _266 = fract(((-0.5) * customParams.x) + (_239 + (texCoordOverlay.x * mix(-1.0, 1.0, texCoordOverlay.y))));
+    highp float _301 = 1.0 - _266;
+    highp float _303 = smoothstep(0.300000011920928955078125, 0.699999988079071044921875, _266) * smoothstep(0.20000000298023223876953125, 0.300000011920928955078125, _301);
+    highp float _306 = smoothstep(0.3499999940395355224609375, 0.699999988079071044921875, _266);
+    highp float _310 = _306 * smoothstep(0.23000000417232513427734375, 0.319999992847442626953125, _301);
+    highp float _317 = _306 * smoothstep(0.23999999463558197021484375, 0.310000002384185791015625, _301);
+    highp vec4 _277 = texture(tex, texCoord);
+    highp vec4 _291 = (vec4(_303, _310, _317, 0.0) + (vec4(pow(vec3(smoothstep(-0.5, 0.800000011920928955078125, _239)), vec3(0.800000011920928955078125, 0.699999988079071044921875, 0.60000002384185791015625)), 1.0) * 1.0)) * _277.x;
+    highp vec4 _337 = _291 + ((vec4(_303, _310, _317, 0.5) * _277.y) * (1.0 - _291.w));
+    if (all(lessThan(_337, vec4(1.525902189314365386962890625e-05))))
+    {
+        discard;
+    }
+    fragColor = _337;
+}
+

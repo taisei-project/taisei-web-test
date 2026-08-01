@@ -1,0 +1,47 @@
+#version 300 es
+precision mediump float;
+precision highp int;
+
+uniform highp sampler2D tex;
+uniform highp vec4 r_viewport;
+uniform highp sampler2D tex_aux0;
+
+layout(location = 0) out highp vec4 fragColor;
+in highp vec4 customParams;
+in highp vec4 color;
+in highp vec2 texCoord;
+
+void main()
+{
+    highp vec4 _396;
+    do
+    {
+        highp vec4 _278 = texture(tex, texCoord);
+        highp vec4 _279 = color * _278;
+        if (customParams.y == 0.0)
+        {
+            _396 = _279;
+            break;
+        }
+        uint _373 = floatBitsToUint(customParams.z);
+        highp vec2 _382 = vec2(float(_373 & 65535u), float(_373 >> uint(16))) * vec2(1.525902189314365386962890625e-05);
+        highp vec2 _298 = gl_FragCoord.xy / r_viewport.zw;
+        highp vec3 _324 = mix(_279.xyz, (vec3(0.5, 0.699999988079071044921875, 1.0) * (_279.w * texture(tex_aux0, ((vec2(1.0, 20.0) * _298) + _382) + vec2(customParams.w)).x)) * (((0.21600000560283660888671875 * _279.x) + (0.715200006961822509765625 * _279.y)) + (0.072200000286102294921875 * _279.z)), vec3(customParams.y));
+        highp vec4 _404 = _279;
+        _404.x = _324.x;
+        _404.y = _324.y;
+        _404.z = _324.z;
+        highp vec4 _337 = texture(tex_aux0, (_298 * 4.0) + _382);
+        highp float _338 = _337.x;
+        highp float _344 = 1.0 - smoothstep(customParams.x, customParams.x + 0.20000000298023223876953125, _338);
+        highp float _350 = 1.0 - smoothstep(customParams.x, customParams.x + 0.100000001490116119384765625, _338);
+        _396 = mix(_404 * _344, (mix(vec4(0.0, 0.0, 1.0, 0.0), vec4(1.0, 0.25, 0.0, 0.0), vec4(_350)) * 20.0) * _279.w, vec4(_344 - _350));
+        break;
+    } while(false);
+    if (all(lessThan(_396, vec4(1.525902189314365386962890625e-05))))
+    {
+        discard;
+    }
+    fragColor = _396;
+}
+

@@ -1,0 +1,40 @@
+#version 300 es
+precision mediump float;
+precision highp int;
+
+uniform highp float time;
+uniform highp sampler2D tex;
+uniform highp vec2 blur_direction;
+uniform highp vec2 blur_resolution;
+uniform highp vec4 r_color;
+uniform highp float hue_shift;
+
+in highp vec2 texCoord;
+layout(location = 0) out highp vec4 fragColor;
+
+void main()
+{
+    highp float _221 = 8.0 * time;
+    highp vec2 _490 = vec2(texCoord.x + (0.001000000047497451305389404296875 * sin(_221 + (texCoord.y * 16.0))), texCoord.y + (0.001000000047497451305389404296875 * cos(_221 + (texCoord.x * 16.0))));
+    highp vec2 _253 = blur_direction / blur_resolution;
+    highp vec2 _308 = _253 * 2.0;
+    fragColor = ((((texture(tex, _490 - _308) * 0.09242115914821624755859375) + (texture(tex, _490 - _253) * 0.24137602746486663818359375)) + (texture(tex, _490) * 0.332405626773834228515625)) + (texture(tex, _490 + _253) * 0.24137602746486663818359375)) + (texture(tex, _490 + _308) * 0.09242115914821624755859375);
+    fragColor = r_color * fragColor;
+    highp vec4 _265 = fragColor;
+    highp vec4 _370 = mix(vec4(_265.zy, -1.0, 0.666666686534881591796875), vec4(_265.yz, 0.0, -0.3333333432674407958984375), vec4(step(_265.z, _265.y)));
+    highp float _375 = _370.x;
+    highp vec4 _393 = mix(vec4(_375, _370.yw, _265.x), vec4(_265.x, _370.yz, _375), vec4(step(_375, _265.x)));
+    highp float _395 = _393.x;
+    highp float _397 = _393.w;
+    highp float _399 = _393.y;
+    highp float _401 = _395 - min(_397, _399);
+    highp float _415 = abs(_393.z + ((_397 - _399) / ((6.0 * _401) + 1.0000000133514319600180897396058e-10)));
+    highp float _421 = _401 / (_395 + 1.0000000133514319600180897396058e-10);
+    highp vec3 _424 = vec3(_415, _421, _395);
+    _424.x = mod(_415 + hue_shift, 1.0);
+    highp vec3 _455 = mix(vec3(1.0), clamp(abs((fract(_424.xxx + vec3(1.0, 0.666666686534881591796875, 0.3333333432674407958984375)) * 6.0) - vec3(3.0)) - vec3(1.0), vec3(0.0), vec3(1.0)), vec3(_421)) * _395;
+    fragColor.x = _455.x;
+    fragColor.y = _455.y;
+    fragColor.z = _455.z;
+}
+

@@ -1,0 +1,55 @@
+#version 300 es
+precision mediump float;
+precision highp int;
+
+in highp vec4 segment;
+in highp vec2 segment_width;
+in highp vec2 coord;
+layout(location = 0) out highp vec4 fragOutput;
+in highp float segment_time;
+
+void main()
+{
+    highp float _349;
+    if (all(equal(segment.xy, segment.zw)))
+    {
+        _349 = length(segment.zw - coord) - segment_width.y;
+    }
+    else
+    {
+        highp float _348;
+        do
+        {
+            highp vec2 _256 = coord - segment.xy;
+            highp vec2 _259 = segment.zw - segment.xy;
+            highp float _262 = dot(_259, _259);
+            highp vec2 _277 = vec2(dot(_256, vec2(_259.y, -_259.x)), dot(_256, _259)) / vec2(_262);
+            highp float _280 = abs(_277.x);
+            highp vec2 _354 = _277;
+            _354.x = _280;
+            highp float _284 = segment_width.x - segment_width.y;
+            highp float _290 = sqrt(_262 - (_284 * _284));
+            highp float _340 = _277.y;
+            highp float _347 = (_290 * _340) - (_284 * _280);
+            highp float _301 = dot(_354, _354);
+            if (_347 < 0.0)
+            {
+                _348 = sqrt(_262 * _301) - segment_width.x;
+                break;
+            }
+            else
+            {
+                if (_347 > _290)
+                {
+                    _348 = sqrt(_262 * ((_301 + 1.0) - (2.0 * _340))) - segment_width.y;
+                    break;
+                }
+            }
+            _348 = dot(vec2(_290, _284), _354) - segment_width.x;
+            break;
+        } while(false);
+        _349 = _348;
+    }
+    fragOutput = vec4(_349, segment_time, 0.0, 1.0);
+}
+

@@ -1,0 +1,49 @@
+#version 300 es
+precision mediump float;
+precision highp int;
+
+uniform highp vec2 blur_orig;
+uniform highp float ratio;
+uniform highp float blur_rad;
+uniform highp sampler2D tex;
+uniform highp vec2 fix_orig;
+uniform highp vec4 color;
+uniform highp float rad;
+
+in highp vec2 texCoordRaw;
+layout(location = 0) out highp vec4 fragColor;
+
+void main()
+{
+    highp vec2 _257 = texCoordRaw - blur_orig;
+    highp vec2 _260 = vec2(1.0, ratio);
+    highp vec3 _268 = vec3(1.03499996662139892578125, 1.07000005245208740234375, 1.105000019073486328125) * vec3(length(_257 * _260) / blur_rad);
+    highp vec3 _406;
+    if (all(greaterThan(_268, vec3(0.939999997615814208984375))))
+    {
+        _406 = texture(tex, texCoordRaw).xyz;
+    }
+    else
+    {
+        highp vec3 _287 = sqrt(tanh(((_268 * 4.0) * _268) * _268));
+        highp float _290 = _287.x;
+        highp float _328 = 6.283185482025146484375 * _290;
+        highp float _339 = cos(_328);
+        highp float _341 = sin(_328);
+        highp float _296 = _287.y;
+        highp float _357 = 6.283185482025146484375 * _296;
+        highp float _367 = cos(_357);
+        highp float _369 = sin(_357);
+        highp float _302 = _287.z;
+        highp float _385 = 6.283185482025146484375 * _302;
+        highp float _395 = cos(_385);
+        highp float _397 = sin(_385);
+        _406 = vec3(texture(tex, mix((_257 * _290) * mat2(vec2(_339, -_341), vec2(_341, _339)), _257, vec2(_290)) + blur_orig).x, texture(tex, mix((_257 * _296) * mat2(vec2(_367, -_369), vec2(_369, _367)), _257, vec2(_296)) + blur_orig).y, texture(tex, mix((_257 * _302) * mat2(vec2(_395, -_397), vec2(_397, _395)), _257, vec2(_302)) + blur_orig).z);
+    }
+    fragColor.x = _406.x;
+    fragColor.y = _406.y;
+    fragColor.z = _406.z;
+    fragColor.w = 1.0;
+    fragColor *= pow(color, vec4(3.0 * max(0.0, rad - length((texCoordRaw - fix_orig) * _260))));
+}
+

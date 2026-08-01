@@ -1,0 +1,96 @@
+#version 300 es
+precision mediump float;
+precision highp int;
+
+uniform highp vec2 aspect;
+uniform highp float zoom;
+uniform highp float time;
+uniform highp sampler2D tex;
+uniform highp vec4 r_color;
+uniform highp sampler2D runes;
+
+in highp vec2 texCoord;
+layout(location = 0) out highp vec4 fragColor;
+
+void main()
+{
+    highp float _196 = -time;
+    highp float _510 = cos(_196);
+    highp float _512 = sin(_196);
+    highp vec2 _493 = texCoord - vec2(0.5);
+    highp vec2 _499 = (_493 * (aspect * zoom)) * mat2(vec2(_510, -_512), vec2(_512, _510));
+    highp vec2 _502 = _499 + vec2(0.5);
+    highp float _527 = _502.x;
+    highp float _667;
+    if (_527 < 0.5)
+    {
+        highp float _576 = (2.0 * _527) - 0.5;
+        _667 = 0.5 - sqrt(0.25 - (_576 * _576));
+    }
+    else
+    {
+        highp float _586 = (2.0 * _527) - 1.5;
+        _667 = sqrt(0.25 - (_586 * _586)) + 0.5;
+    }
+    highp float _537 = length((_499 + vec2(-0.25, 0.0)) * 16.0);
+    highp float _545 = length((_499 + vec2(0.25, 0.0)) * 16.0);
+    highp float _231 = (1.0 - (2.0 * mix(mix(smoothstep(0.0, 0.00999999977648258209228515625, _502.y - ((0.5 * _667) + 0.25)), 1.0, smoothstep(1.0, 0.949999988079071044921875, _537)), 0.0, smoothstep(1.0, 0.949999988079071044921875, _545)))) * (1.0 + sqrt((_545 * _545) + (_537 * _537)));
+    highp float _233 = sqrt(_537);
+    highp float _235 = sqrt(_545);
+    highp float _241 = (_235 * 4.9999998736893758177757263183594e-05) * _231;
+    highp float _596 = cos(_241);
+    highp float _598 = sin(_241);
+    highp mat2 _251 = mat2(vec2(_596, -_598), vec2(_598, _596)) * (1.0 / (1.0 + ((_233 * (-0.000600000028498470783233642578125)) * _231)));
+    highp float _257 = (_235 * 9.0000001364387571811676025390625e-05) * _231;
+    highp float _610 = cos(_257);
+    highp float _612 = sin(_257);
+    highp mat2 _267 = mat2(vec2(_610, -_612), vec2(_612, _610)) * (1.0 / (1.0 + ((_233 * (-0.00039999998989515006542205810546875)) * _231)));
+    highp float _273 = (_235 * 0.00011999999696854501962661743164062) * _231;
+    highp float _624 = cos(_273);
+    highp float _626 = sin(_273);
+    highp mat2 _283 = mat2(vec2(_624, -_626), vec2(_626, _624)) * (1.0 / (1.0 + ((_233 * (-0.00019999999494757503271102905273438)) * _231)));
+    highp mat2 _288 = (_251 * _251) * _251;
+    highp mat2 _293 = (_267 * _267) * _267;
+    highp mat2 _298 = (_283 * _283) * _283;
+    highp vec2 _671;
+    highp vec2 _673;
+    highp vec2 _675;
+    highp vec3 _718;
+    _718 = vec3(0.0);
+    _675 = texCoord;
+    _673 = texCoord;
+    _671 = texCoord;
+    for (int _669 = 0; _669 < 2; )
+    {
+        highp vec2 _319 = ((_671 - vec2(0.5)) * _288) + vec2(0.5);
+        highp vec2 _341 = ((_673 - vec2(0.5)) * _293) + vec2(0.5);
+        highp vec2 _358 = ((_675 - vec2(0.5)) * _298) + vec2(0.5);
+        _718 = vec3(_718.x + texture(tex, _319).x, _718.y + texture(tex, _341).y, _718.z + texture(tex, _358).z);
+        _675 = _358;
+        _673 = _341;
+        _671 = _319;
+        _669++;
+        continue;
+    }
+    fragColor = (vec4(_718 * 0.5, 1.0) * 0.89999997615814208984375) * vec4(r_color.w);
+    highp vec2 _400 = (_493 * mat2(vec2(-4.3711388286737928865477442741394e-08, 1.0), vec2(-1.0, -4.3711388286737928865477442741394e-08))) + vec2(0.5);
+    highp float _406 = floor(_400.y * 24.0);
+    highp float _421 = _400.x + ((0.931222975254058837890625 * _406) + ((time * 0.100000001490116119384765625) * cos(3.1415927410125732421875 * _406)));
+    highp float _425 = _400.y * 24.0;
+    highp vec2 _719 = vec2(_421, _425);
+    highp float _653 = mod(_425, 1.0);
+    _719.y = _653;
+    highp float _660 = _653 + floor(_421);
+    _719.y = _660;
+    _719.y = _660 * 0.03125;
+    highp vec4 _434 = texture(runes, _719);
+    highp float _435 = _434.x;
+    highp vec4 _436 = fragColor;
+    highp vec3 _444 = pow(_436.xyz, vec3(1.0 + ((1.0 - (2.0 * _435)) * 0.100000001490116119384765625)));
+    fragColor.x = _444.x;
+    fragColor.y = _444.y;
+    fragColor.z = _444.z;
+    fragColor += ((r_color * _435) * 0.100000001490116119384765625);
+    fragColor.w *= (1.0 - (_435 * 0.100000001490116119384765625));
+}
+

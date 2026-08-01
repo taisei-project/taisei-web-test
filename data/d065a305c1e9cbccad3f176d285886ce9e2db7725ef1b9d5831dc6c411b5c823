@@ -1,0 +1,30 @@
+#version 300 es
+precision mediump float;
+precision highp int;
+
+uniform highp sampler2D background_tex;
+uniform highp sampler2D background_binary_tex;
+uniform highp sampler2D code_tex;
+uniform highp vec4 code_tex_params;
+uniform highp float time;
+
+layout(location = 0) out highp vec4 fragColor;
+in highp vec2 texCoord;
+
+void main()
+{
+    highp vec2 _372 = (mod(texCoord, vec2(1.0)) - vec2(0.5)) * vec2(1.5, 1.0);
+    highp vec2 _375 = _372.yx;
+    highp vec2 _389 = ((_372 * sqrt(vec2(1.0) - ((_375 * 0.5) * _375))) * vec2(0.666666686534881591796875, 1.0)) + vec2(0.5);
+    highp vec2 _292 = (_389 * vec2(0.5, 0.800000011920928955078125)) * 0.5;
+    highp float _299 = _292.x;
+    highp vec2 _421 = ((vec2(_389.x + (time * 0.1500000059604644775390625), _389.y + (time * 0.100000001490116119384765625)) * code_tex_params.xy) * 2.0) * code_tex_params.w;
+    highp vec4 _348 = (texture(background_tex, vec2(_299 + (time * 0.00999999977648258209228515625), _292.y - (time * 0.072499997913837432861328125))) * texture(background_binary_tex, vec2(_299 + (time * 0.00696850009262561798095703125), _292.y + (time * 0.02500000037252902984619140625)))) + (texture(code_tex, vec2(mod(_421.x - (floor(mod(_421.y, code_tex_params.z)) * code_tex_params.w), 1.0), mod(_421.y, 1.0))) * 1.0);
+    highp vec3 _354 = pow(_348.xyz, vec3(1.0));
+    highp vec4 _478 = _348;
+    _478.x = _354.x;
+    _478.y = _354.y;
+    _478.z = _354.z;
+    fragColor = _478;
+}
+

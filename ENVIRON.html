@@ -926,31 +926,61 @@ off.</p>
 </div>
 <p>Selects the audio playback backend to use. Currently available options are:</p>
 <ul>
-<li><p><span class="docutils literal">sdl</span>: the SDL2 audio subsystem, with a custom mixer</p></li>
+<li><p><span class="docutils literal">sdl</span>: the SDL3 audio subsystem, with a custom mixer</p></li>
 <li><p><span class="docutils literal">null</span>: no audio playback</p></li>
 </ul>
 <p>Note that the actual subset of usable backends, as well as the default choice, can be controlled by build options.</p>
+</dd>
+<dt><span class="docutils literal">TAISEI_AUDIO_SYNC</span></dt>
+<dd><div class="line-block">
+<div class="line">Default: <span class="docutils literal">0</span></div>
+<div class="line"><strong>Experimental</strong></div>
+</div>
+<p>If <span class="docutils literal">1</span>, synchronize audio playback with the game clock. Keeps the audio in perfect sync, but prone to glitches and
+dropouts if the framerate is unstable. With this option, audio will speed up when fast-forwarding replays.</p>
+</dd>
+<dt><span class="docutils literal">TAISEI_AUDIO_DUMP_FILE</span></dt>
+<dd><div class="line-block">
+<div class="line">Default: unset</div>
+</div>
+<p>If set, dumps raw PCM audio into the specified file. Implies <span class="docutils literal">TAISEI_AUDIO_SYNC=1</span>. Can be used together with
+<span class="docutils literal">TAISEI_FRAMEDUMP</span> to render replay videos with sound (see below). The sample format is 32-bit floating point in
+the native byte order, 48kHz, interleaved stereo.</p>
+<p>This is fundamentally different from <span class="docutils literal">SDL_AUDIO_DRIVER=disk</span>. This option records perfect audio for each game
+frame, as if each frame took exactly 1/60th of a second, even if the game is sped up or is lagging. This is what
+makes it useful for replay rendering.</p>
+</dd>
+<dt><span class="docutils literal">TAISEI_AUDIO_SYNC_MIN_FRAME_LATENCY</span></dt>
+<dd><div class="line-block">
+<div class="line">Default: <span class="docutils literal">2</span></div>
+</div>
+<p>Has no effect when <span class="docutils literal">TAISEI_AUDIO_SYNC=0</span>.</p>
+<p>Specifies the minimum amount of audio to keep queued for playback, in units of game-time frames (1 frame = 1/60 of a
+second). Larger values increase latency, but reduce the hiccups caused by framerate skipes. Note that this may cause
+the music to desync slightly. For that reason, it is recommnded to set this to 0 when using
+<span class="docutils literal">TAISEI_AUDIO_DUMP_FILE</span> to render replays; the dump output will not be affected by hiccups.</p>
+</dd>
+<dt><span class="docutils literal">TAISEI_AUDIO_SYNC_MAX_FRAME_LATENCY</span></dt>
+<dd><div class="line-block">
+<div class="line">Default: <span class="docutils literal">4</span></div>
+</div>
+<p>Has no effect when <span class="docutils literal">TAISEI_AUDIO_SYNC=0</span>.</p>
+<p>Maximum amount of audio to keep queued for playback. When attempting to queue more than this much, the frame will be
+dropped. This can happen when a frame completes faster than normal, e.g. when fast-forwarding replays.</p>
+<p>Takes the same units as <span class="docutils literal">TAISEI_AUDIO_SYNC_MIN_FRAME_LATENCY</span>, and can’t be lower than that value + 1. Note that
+this only affects playback, not dumps, as dumps never drop frames.</p>
 </dd>
 </dl>
 </section>
 <section id="timing">
 <h3><a class="toc-backref" href="#toc-entry-9" role="doc-backlink">Timing</a></h3>
 <dl>
-<dt><span class="docutils literal">TAISEI_HIRES_TIMER</span></dt>
+<dt><span class="docutils literal">TAISEI_FRAMELIMITER_SLEEP</span></dt>
 <dd><div class="line-block">
 <div class="line">Default: <span class="docutils literal">1</span></div>
 </div>
-<p>If <span class="docutils literal">1</span>, tries to use the system’s high resolution timer to limit the game’s framerate. Disabling this is not
-recommended; it will likely make Taisei run slower or faster than intended and the reported FPS will be less
-accurate.</p>
-</dd>
-<dt><span class="docutils literal">TAISEI_FRAMELIMITER_SLEEP</span></dt>
-<dd><div class="line-block">
-<div class="line">Default: <span class="docutils literal">3</span></div>
-</div>
-<p>If over <span class="docutils literal">0</span>, tries to give up processing time to other applications while waiting for the next frame, if at least
-<span class="docutils literal">frame_time / this_value</span> amount of time is remaining. Increasing this value reduces CPU usage, but may harm
-performance. Set to <span class="docutils literal">0</span> for the v1.2 default behaviour.</p>
+<p>If <span class="docutils literal">1</span>, tries to give up processing time to other applications while waiting for the next frame. Will try to
+measure and compensate for the inaccuracy of the sleep function to maximize framerate stability.</p>
 </dd>
 <dt><span class="docutils literal">TAISEI_FRAMELIMITER_COMPENSATE</span></dt>
 <dd><div class="line-block">
