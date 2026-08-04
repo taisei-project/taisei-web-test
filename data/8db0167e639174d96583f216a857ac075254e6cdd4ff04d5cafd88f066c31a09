@@ -14,14 +14,15 @@ void main()
 {
     highp vec2 _234 = (texCoordRaw - vec2(0.5)) * 2.2200000286102294921875;
     highp float _248 = fwidth(_234.x);
-    highp float _254 = 1.5 - length(_234);
+    highp float _490 = length(_234);
     highp float _257 = 0.5 - _248;
     highp float _259 = 0.5 + _248;
-    highp float _261 = smoothstep(_257, _259, _254);
-    highp float _280 = smoothstep(0.4900000095367431640625, 0.5099999904632568359375, _254 - (1.0 - deadzones.x));
+    highp float _261 = smoothstep(_257, _259, 1.5 - _490);
+    highp float _956 = deadzones.x - _490;
+    highp float _280 = smoothstep(0.4900000095367431640625, 0.5099999904632568359375, 0.5 + _956);
     highp float _285 = _261 * (1.0 - _280);
     highp float _303 = max(deadzones.x, deadzones.y);
-    highp float _312 = _254 - (1.0 - _303);
+    highp float _312 = 0.5 + (_303 - _490);
     highp vec2 _329 = _234 * mat2(vec2(0.707106769084930419921875, -0.707106769084930419921875), vec2(0.707106769084930419921875));
     highp vec2 _520 = abs(_329);
     highp float _523 = _520.x;
@@ -35,7 +36,7 @@ void main()
     highp float _367 = 0.5 * (smoothstep(_303 + (-0.5), _259, _312) - smoothstep(0.519999980926513671875 - _248, 0.519999980926513671875 + _248, _312));
     highp vec4 _383 = (vec4(0.5, 0.1500000059604644775390625, 0.1500000059604644775390625, 0.5) * _285) * smoothstep(_257, _259, 0.5 - min(max(length(_538) - 1.0, length(_538 - (snap_angles_sincos.xy * clamp(dot(_538, snap_angles_sincos.xy), 0.0, 1.0))) * sign((snap_angles_sincos.y * _541) - (snap_angles_sincos.x * _543))), max(length(_611) - 1.0, length(_611 - (snap_angles_sincos.xy * clamp(dot(_611, snap_angles_sincos.xy), 0.0, 1.0))) * sign((snap_angles_sincos.y * _611.x) - (snap_angles_sincos.x * _611.y)))));
     highp vec4 _397 = (vec4(0.1500000059604644775390625, 0.1500000059604644775390625, 0.5, 0.5) * _285) * smoothstep(_257, _259, 0.5 - min(max(length(_520) - 1.0, length(_520 - (snap_angles_sincos.zw * clamp(dot(_520, snap_angles_sincos.zw), 0.0, 1.0))) * sign((snap_angles_sincos.w * _523) - (snap_angles_sincos.z * _525))), max(length(_714) - 1.0, length(_714 - (snap_angles_sincos.zw * clamp(dot(_714, snap_angles_sincos.zw), 0.0, 1.0))) * sign((snap_angles_sincos.w * _714.x) - (snap_angles_sincos.z * _714.y)))));
-    highp float _404 = 0.699999988079071044921875 * (_280 * (1.0 - smoothstep(0.25, 0.699999988079071044921875, _254 - (1.2000000476837158203125 - deadzones.x))));
+    highp float _404 = 0.699999988079071044921875 * (_280 * (1.0 - smoothstep(0.25, 0.699999988079071044921875, 0.2999999523162841796875 + _956)));
     highp float _794 = 0.60000002384185791015625 - length(_234 - joy_pointers.xy);
     highp float _798 = 0.513000011444091796875 - _248;
     highp float _800 = 0.513000011444091796875 + _248;
