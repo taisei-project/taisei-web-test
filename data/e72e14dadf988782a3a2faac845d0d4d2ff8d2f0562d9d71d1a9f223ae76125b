@@ -7,15 +7,16 @@ uniform highp sampler2D tex;
 layout(location = 0) out highp vec4 fragColor;
 in highp vec4 color;
 in highp vec2 texCoord;
+in highp vec4 customVec4;
 
 void main()
 {
-    highp vec4 _66 = texture(tex, texCoord);
-    highp vec4 _69 = color * vec4(_66.x);
-    if (all(lessThan(_69, vec4(1.525902189314365386962890625e-05))))
+    highp vec4 _72 = texture(tex, texCoord);
+    highp vec4 _76 = (color * _72) * customVec4.x;
+    if (all(lessThan(_76, vec4(1.525902189314365386962890625e-05))))
     {
         discard;
     }
-    fragColor = _69;
+    fragColor = _76;
 }
 

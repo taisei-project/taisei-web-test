@@ -1,0 +1,72 @@
+#version 300 es
+precision mediump float;
+precision highp int;
+
+uniform highp sampler2D tex_aux2;
+uniform highp sampler2D tex_aux0;
+uniform highp sampler2D tex_aux1;
+uniform highp sampler2D tex;
+uniform int light_count;
+uniform highp vec3 light_positions[6];
+uniform highp vec3 light_colors[6];
+
+in highp vec2 texCoord;
+in highp vec3 tangent;
+in highp vec3 bitangent;
+in highp vec3 normal;
+in highp vec3 pos;
+in highp vec4 color;
+in highp vec4 customVec4;
+layout(location = 0) out highp vec4 fragColor;
+
+void main()
+{
+    highp vec4 _533 = texture(tex_aux2, texCoord);
+    highp float _537 = _533.w;
+    if (_537 < 0.300000011920928955078125)
+    {
+        discard;
+    }
+    highp vec4 _548 = texture(tex_aux0, texCoord);
+    highp vec4 _679 = texture(tex_aux1, texCoord);
+    highp vec2 _683 = (_679.xy * 2.0) - vec2(1.0);
+    highp float _685 = _683.x;
+    highp float _691 = _683.y;
+    highp vec4 _592 = texture(tex, texCoord);
+    highp vec3 _594 = color.xyz * _592.xyz;
+    highp float _597 = _533.x;
+    highp vec3 _607 = normalize(mat3(normalize(tangent), normalize(bitangent), normalize(normal)) * vec3(_685, _691, sqrt((1.0 - (_685 * _685)) - (_691 * _691))));
+    highp vec3 _717 = normalize(-pos);
+    highp float _724 = max(dot(_607, _717), 0.0);
+    highp vec3 _731 = mix(vec3(0.039999999105930328369140625), _594, vec3(customVec4.w));
+    highp float _737 = _597 * _597;
+    highp float _743 = _737 * _737;
+    highp float _748 = (_597 + 1.0) * 0.125;
+    highp float _767 = mix(_724, 1.0, _748);
+    highp float _774 = 1.0 - _724;
+    highp float _777 = _774 * _774;
+    highp vec3 _786 = mix(vec3((_777 * _777) * _774), vec3(1.0), _731);
+    highp vec3 _1465;
+    _1465 = vec3(0.0);
+    for (int _1463 = 0; _1463 < light_count; )
+    {
+        highp vec3 _845 = light_positions[_1463] - pos;
+        highp vec3 _847 = normalize(_845);
+        highp vec3 _852 = normalize(_717 + _847);
+        highp float _864 = max(dot(_607, _847), 0.0);
+        highp float _869 = max(dot(_607, _852), 0.0);
+        highp float _933 = 1.0 - max(dot(_852, _847), 0.0);
+        highp float _936 = _933 * _933;
+        highp float _952 = 1.0 - _864;
+        highp float _955 = _952 * _952;
+        highp float _978 = ((_869 * _869) * (_743 - 1.0)) + 1.0;
+        _1465 += ((((mix(vec3((_936 * _936) * _933), vec3(1.0), _731) * (_743 / ((((3.1415927410125732421875 * _978) * _978) * 4.0) * (_767 * mix(_864, 1.0, _748))))) + (((vec3(1.0) - mix(vec3((_955 * _955) * _952), vec3(1.0), _731)) * (vec3(1.0) - _786)) * (_594 * mix(0.3183098733425140380859375, 0.0, customVec4.w)))) * (light_colors[_1463] / vec3(dot(_845, _845)))) * _864);
+        _1463++;
+        continue;
+    }
+    highp vec3 _633 = (customVec4.xyz * _548.xyz) + _1465;
+    highp vec3 _1058 = smoothstep(vec3(0.0), vec3(0.2199999988079071044921875), _633);
+    highp vec3 _1066 = step(vec3(0.532000005245208740234375), _633);
+    fragColor = vec4(pow((((pow(_633 * vec3(4.545454502105712890625), vec3(1.33000004291534423828125)) * 0.2199999988079071044921875) * (vec3(1.0) - _1058)) + ((vec3(0.2199999988079071044921875) + ((_633 - vec3(0.2199999988079071044921875)) * 1.0)) * (_1058 - _1066))) + ((vec3(1.0) - (exp((_633 - vec3(0.532000005245208740234375)) * (-2.13675212860107421875)) * 0.467999994754791259765625)) * _1066), vec3(0.4545454680919647216796875)), 1.0) * _537;
+}
+

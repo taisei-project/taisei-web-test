@@ -11,16 +11,16 @@ in highp vec4 color;
 
 void main()
 {
-    highp float _81 = length(texCoordRaw - vec2(0.5));
-    if (_81 > 0.5)
+    highp float _85 = length(texCoordRaw - vec2(0.5));
+    if (_85 > 0.5)
     {
         discard;
     }
-    highp vec4 _93 = color * mix(color_inner, color_outer, vec4(_81 * 2.0));
-    if (all(lessThan(_93, vec4(1.525902189314365386962890625e-05))))
+    highp vec4 _97 = color * mix(color_inner, color_outer, vec4(_85 * 2.0));
+    if (all(lessThan(_97, vec4(1.525902189314365386962890625e-05))))
     {
         discard;
     }
-    fragColor = _93;
+    fragColor = _97;
 }
 

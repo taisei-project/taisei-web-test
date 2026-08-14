@@ -1,0 +1,30 @@
+#version 300 es
+precision mediump float;
+precision highp int;
+
+vec4 _176;
+
+uniform highp sampler2D tex;
+
+layout(location = 0) out highp vec4 fragColor;
+in highp vec2 texCoord;
+in highp vec4 color;
+in highp vec4 customVec4;
+
+void main()
+{
+    highp vec4 _115 = texture(tex, texCoord);
+    highp float _123 = _115.w;
+    highp vec3 _124 = mix(color.xyz, vec3(0.0), vec3(_115.z)) * _123;
+    highp vec4 _160;
+    _160.x = _124.x;
+    _160.y = _124.y;
+    _160.z = _124.z;
+    highp vec4 _177 = vec4(_160.xyz + (((customVec4.xyz * _115.x) * _123) * customVec4.w), _123 * color.w);
+    if (all(lessThan(_177, vec4(1.525902189314365386962890625e-05))))
+    {
+        discard;
+    }
+    fragColor = _177;
+}
+
