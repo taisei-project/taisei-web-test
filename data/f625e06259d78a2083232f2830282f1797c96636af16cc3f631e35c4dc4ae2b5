@@ -7,7 +7,7 @@ uniform highp vec4 r_viewport;
 uniform highp sampler2D tex_aux0;
 
 layout(location = 0) out highp vec4 fragColor;
-in highp vec4 customVec4;
+in highp vec4 customVec0;
 in highp vec4 color;
 in highp vec2 texCoord;
 
@@ -18,23 +18,23 @@ void main()
     {
         highp vec4 _282 = texture(tex, texCoord);
         highp vec4 _283 = color * _282;
-        if (customVec4.y == 0.0)
+        if (customVec0.y == 0.0)
         {
             _400 = _283;
             break;
         }
-        uint _377 = floatBitsToUint(customVec4.z);
+        uint _377 = floatBitsToUint(customVec0.z);
         highp vec2 _386 = vec2(float(_377 & 65535u), float(_377 >> uint(16))) * vec2(1.525902189314365386962890625e-05);
         highp vec2 _302 = gl_FragCoord.xy / r_viewport.zw;
-        highp vec3 _328 = mix(_283.xyz, (vec3(0.5, 0.699999988079071044921875, 1.0) * (_283.w * texture(tex_aux0, ((vec2(1.0, 20.0) * _302) + _386) + vec2(customVec4.w)).x)) * (((0.21600000560283660888671875 * _283.x) + (0.715200006961822509765625 * _283.y)) + (0.072200000286102294921875 * _283.z)), vec3(customVec4.y));
+        highp vec3 _328 = mix(_283.xyz, (vec3(0.5, 0.699999988079071044921875, 1.0) * (_283.w * texture(tex_aux0, ((vec2(1.0, 20.0) * _302) + _386) + vec2(customVec0.w)).x)) * (((0.21600000560283660888671875 * _283.x) + (0.715200006961822509765625 * _283.y)) + (0.072200000286102294921875 * _283.z)), vec3(customVec0.y));
         highp vec4 _410 = _283;
         _410.x = _328.x;
         _410.y = _328.y;
         _410.z = _328.z;
         highp vec4 _341 = texture(tex_aux0, (_302 * 4.0) + _386);
         highp float _342 = _341.x;
-        highp float _347 = smoothstep(customVec4.x, customVec4.x + 0.20000000298023223876953125, _342);
-        highp float _353 = smoothstep(customVec4.x, customVec4.x + 0.100000001490116119384765625, _342);
+        highp float _347 = smoothstep(customVec0.x, customVec0.x + 0.20000000298023223876953125, _342);
+        highp float _353 = smoothstep(customVec0.x, customVec0.x + 0.100000001490116119384765625, _342);
         _400 = mix(_410 * (1.0 - _347), (mix(vec4(0.0, 0.0, 1.0, 0.0), vec4(1.0, 0.25, 0.0, 0.0), vec4(1.0 - _353)) * 20.0) * _283.w, vec4(_353 - _347));
         break;
     } while(false);

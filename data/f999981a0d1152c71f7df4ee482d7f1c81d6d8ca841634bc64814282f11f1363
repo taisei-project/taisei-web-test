@@ -7,7 +7,7 @@ uniform highp sampler2D tex;
 
 layout(location = 0) out highp vec4 fragColor;
 in highp vec2 texCoordOverlay;
-in highp vec4 customVec4;
+in highp vec4 customVec0;
 in highp vec2 texCoord;
 in highp vec4 color;
 
@@ -16,8 +16,8 @@ void main()
     highp vec2 _199 = texCoordOverlay;
     _199.y = _199.y * (fwidth(_199.x) / fwidth(_199.y));
     highp vec4 _298 = texture(tex_aux0, _199);
-    highp float _208 = 8.0 * customVec4.x;
-    highp float _224 = smoothstep(0.20000000298023223876953125, 0.800000011920928955078125, 1.0 - smoothstep((_208 * customVec4.x) * 0.949999988079071044921875, _208, _298.x + (7.0 * (0.5 + texCoordOverlay.x))));
+    highp float _208 = 8.0 * customVec0.x;
+    highp float _224 = smoothstep(0.20000000298023223876953125, 0.800000011920928955078125, 1.0 - smoothstep((_208 * customVec0.x) * 0.949999988079071044921875, _208, _298.x + (7.0 * (0.5 + texCoordOverlay.x))));
     highp vec4 _227 = texture(tex, texCoord);
     highp vec4 _267 = mix((vec4(color.xyz * 0.300000011920928955078125, color.w) * _224) * _224, mix(vec4(color.xyz * 0.89999997615814208984375, color.w) * _224, color, vec4(_227.z)), vec4(_227.x)) * _227.y;
     highp vec3 _273 = _267.xyz * (_224 * _224);

@@ -8,14 +8,14 @@ layout(location = 0) out highp vec4 fragColor;
 in highp vec2 texCoord;
 in highp vec2 texCoordOverlay;
 in highp vec2 dimensions;
-in highp vec4 customVec4;
+in highp vec4 customVec0;
 in highp vec4 texRegion;
 in highp vec4 color;
 
 void main()
 {
     highp vec2 _195 = texCoord * dimensions;
-    _195.x = _195.x + (5.0 * sin((3.0 * texCoordOverlay.y) + customVec4.x));
+    _195.x = _195.x + (5.0 * sin((3.0 * texCoordOverlay.y) + customVec0.x));
     highp vec2 _210 = _195 / dimensions;
     highp float _212 = _210.x;
     bool _213 = _212 >= 0.0;

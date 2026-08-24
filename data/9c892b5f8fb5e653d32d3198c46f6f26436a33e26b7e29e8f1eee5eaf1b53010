@@ -7,7 +7,7 @@ uniform highp sampler2D tex;
 layout(location = 0) out highp vec4 fragColor;
 in highp vec2 texCoord;
 in highp vec4 color;
-in highp vec4 customVec4;
+in highp vec4 customVec0;
 
 void main()
 {
@@ -17,7 +17,7 @@ void main()
     _176.x = _125;
     _176.y = _125;
     _176.z = _125;
-    highp vec4 _173 = vec4(_176.xyz + (vec3(color.x * color.x, color.y * color.y, color.z * color.z) * _123.z), _123.w * color.w) * customVec4.x;
+    highp vec4 _173 = vec4(_176.xyz + (vec3(color.x * color.x, color.y * color.y, color.z * color.z) * _123.z), _123.w * color.w) * customVec0.x;
     if (all(lessThan(_173, vec4(1.525902189314365386962890625e-05))))
     {
         discard;

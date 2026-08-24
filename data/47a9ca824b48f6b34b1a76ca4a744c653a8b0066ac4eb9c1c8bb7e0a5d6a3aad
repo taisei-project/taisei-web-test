@@ -6,7 +6,7 @@ uniform highp sampler2D tex;
 
 layout(location = 0) out highp vec4 fragColor;
 in highp vec2 texCoordRaw;
-in highp vec4 customVec4;
+in highp vec4 customVec0;
 in highp vec4 texRegion;
 in highp vec4 color;
 
@@ -19,7 +19,7 @@ void main()
     {
         highp vec2 _302 = vec2(0.5) - texCoordRaw;
         highp vec2 _309 = step(_302, vec2(0.0));
-        highp vec2 _327 = vec2(1.0) - (_309 + ((vec2(1.0) - (_309 * 2.0)) * ((pow(((vec2(0.5) + abs(texCoordRaw - vec2(0.5))) * 2.0) - vec2(1.0), vec2(1.0 + ((customVec4.x * _363) * length(_302)))) + vec2(1.0)) * 0.5)));
+        highp vec2 _327 = vec2(1.0) - (_309 + ((vec2(1.0) - (_309 * 2.0)) * ((pow(((vec2(0.5) + abs(texCoordRaw - vec2(0.5))) * 2.0) - vec2(1.0), vec2(1.0 + ((customVec0.x * _363) * length(_302)))) + vec2(1.0)) * 0.5)));
         highp float _350 = _327.x;
         highp float _360 = _327.y;
         highp vec4 _255 = texture(tex, vec2(mix(texRegion.x, texRegion.x + texRegion.z, _350), mix(texRegion.y, texRegion.y + texRegion.w, _360)));

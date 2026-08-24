@@ -5,14 +5,14 @@ precision highp int;
 uniform highp sampler2D tex;
 
 layout(location = 0) out highp vec4 fragColor;
-in highp vec4 customVec4;
+in highp vec4 customVec0;
 in highp vec2 texCoordOverlay;
 in highp vec2 texCoord;
 
 void main()
 {
     highp float _243 = 1.0 - texCoordOverlay.y;
-    highp float _270 = fract(((-0.5) * customVec4.x) + (_243 + (texCoordOverlay.x * mix(-1.0, 1.0, texCoordOverlay.y))));
+    highp float _270 = fract(((-0.5) * customVec0.x) + (_243 + (texCoordOverlay.x * mix(-1.0, 1.0, texCoordOverlay.y))));
     highp float _305 = 1.0 - _270;
     highp float _307 = smoothstep(0.300000011920928955078125, 0.699999988079071044921875, _270) * smoothstep(0.20000000298023223876953125, 0.300000011920928955078125, _305);
     highp float _310 = smoothstep(0.3499999940395355224609375, 0.699999988079071044921875, _270);

@@ -9,16 +9,17 @@ layout(location = 1) in vec2 vertTexCoord;
 out vec2 texCoord;
 layout(location = 14) in vec4 spriteTexRegion;
 out vec4 texRegion;
-out vec4 customVec4;
-layout(location = 12) in vec4 spriteCustomVec;
-out vec4 color;
-layout(location = 13) in vec4 spriteRGBA;
-out vec2 texCoordOverlay;
-out vec2 dimensions;
 out vec4 customVec0;
+layout(location = 9) in vec4 spriteCustomVec;
 out vec4 customVec1;
+layout(location = 10) in mat4 spriteCustomMatrix;
 out vec4 customVec2;
 out vec4 customVec3;
+out vec4 color;
+layout(location = 8) in vec4 spriteRGBA;
+out vec2 texCoordOverlay;
+out vec2 dimensions;
+out vec4 customVec4;
 
 void main()
 {
@@ -26,7 +27,10 @@ void main()
     texCoordRaw = vertTexCoord;
     texCoord = vec2(mix(spriteTexRegion.x, spriteTexRegion.x + spriteTexRegion.z, vertTexCoord.x), mix(spriteTexRegion.y, spriteTexRegion.y + spriteTexRegion.w, vertTexCoord.y));
     texRegion = spriteTexRegion;
-    customVec4 = spriteCustomVec;
+    customVec0 = spriteCustomVec;
+    customVec1 = spriteCustomMatrix[0];
+    customVec2 = spriteCustomMatrix[1];
+    customVec3 = spriteCustomMatrix[2];
     color = spriteRGBA;
 }
 

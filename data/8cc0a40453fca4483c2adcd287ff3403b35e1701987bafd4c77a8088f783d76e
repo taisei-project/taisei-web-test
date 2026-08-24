@@ -6,7 +6,7 @@ uniform highp sampler2D tex;
 uniform highp sampler2D tex_aux0;
 
 layout(location = 0) out highp vec4 fragColor;
-in highp vec4 customVec4;
+in highp vec4 customVec0;
 in highp vec2 texCoord;
 in highp vec2 texCoordOverlay;
 in highp vec2 dimensions;
@@ -16,7 +16,7 @@ in highp vec4 texRegion;
 void main()
 {
     highp vec2 _293 = texCoord * dimensions;
-    highp float _298 = 1.0 - customVec4.x;
+    highp float _298 = 1.0 - customVec0.x;
     highp float _299 = pow(_298, 2.0);
     highp float _300 = 1.0 - _299;
     highp float _310 = _293.x + ((sin((_293.y * 0.25) * _300) * 2.0) * pow(_298, 1.0));
@@ -86,7 +86,7 @@ void main()
     }
     highp vec4 _367 = texture(tex, vec2(mix(texRegion.x, _428, _446), mix(texRegion.y, _438, _354.y)));
     highp vec4 _386 = texture(tex_aux0, clamp(texCoordOverlay, vec2(0.00999999977648258209228515625), vec2(0.9900000095367431640625)));
-    highp vec4 _395 = mix((vec4(0.0, 0.0, 0.0, color.w) * _367.x) * float(_465), _350, vec4(sqrt(_350.w))) * clamp((((_386.x + 0.5) * 2.5) * customVec4.x) - 0.5, 0.0, 1.0);
+    highp vec4 _395 = mix((vec4(0.0, 0.0, 0.0, color.w) * _367.x) * float(_465), _350, vec4(sqrt(_350.w))) * clamp((((_386.x + 0.5) * 2.5) * customVec0.x) - 0.5, 0.0, 1.0);
     if (all(lessThan(_395, vec4(1.525902189314365386962890625e-05))))
     {
         discard;

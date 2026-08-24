@@ -14,17 +14,17 @@ out vec2 texCoord;
 layout(location = 14) in vec4 spriteTexRegion;
 layout(location = 1) in vec2 vertTexCoord;
 out vec4 color;
-layout(location = 13) in vec4 spriteRGBA;
-out vec4 customVec4;
-layout(location = 12) in vec4 spriteCustomVec;
+layout(location = 8) in vec4 spriteRGBA;
+out vec4 customVec0;
+layout(location = 9) in vec4 spriteCustomVec;
 out vec2 texCoordRaw;
 out vec2 texCoordOverlay;
 out vec4 texRegion;
 out vec2 dimensions;
-out vec4 customVec0;
 out vec4 customVec1;
 out vec4 customVec2;
 out vec4 customVec3;
+out vec4 customVec4;
 
 void main()
 {
@@ -36,6 +36,6 @@ void main()
     gl_Position = r_projectionMatrix * vec4(pos, 1.0);
     texCoord = vec2(mix(spriteTexRegion.x, spriteTexRegion.x + spriteTexRegion.z, vertTexCoord.x), mix(spriteTexRegion.y, spriteTexRegion.y + spriteTexRegion.w, vertTexCoord.y));
     color = spriteRGBA;
-    customVec4 = spriteCustomVec;
+    customVec0 = spriteCustomVec;
 }
 

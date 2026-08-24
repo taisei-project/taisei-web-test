@@ -1,0 +1,16 @@
+#version 300 es
+precision mediump float;
+precision highp int;
+
+layout(location = 0) out highp vec4 fragColor;
+in highp vec4 color;
+
+void main()
+{
+    if (all(lessThan(color, vec4(1.525902189314365386962890625e-05))))
+    {
+        discard;
+    }
+    fragColor = color;
+}
+
