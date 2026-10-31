@@ -1,0 +1,29 @@
+#version 300 es
+precision mediump float;
+precision highp int;
+
+uniform highp vec3 distortOriginRadius;
+uniform highp vec2 viewport;
+uniform highp float time;
+uniform highp sampler2D tex;
+
+in highp vec2 texCoord;
+layout(location = 0) out highp vec4 fragColor;
+
+void main()
+{
+    highp float _44 = distortOriginRadius.z / length((texCoord * viewport) - distortOriginRadius.xy);
+    highp vec2 _47 = distortOriginRadius.xy / viewport;
+    highp vec2 _50 = texCoord - _47;
+    highp float _54 = sqrt(_44);
+    highp float _67 = smoothstep(0.100000001490116119384765625, 1.0, 1.0 - log(1.0 + (_44 * _44)));
+    highp float _68 = 0.00999999977648258209228515625 * _67;
+    highp float _89 = _50.x + (_68 * sin((_50.y * 71.3339996337890625) + (time * 4.344999790191650390625)));
+    highp float _106 = _50.y + (_68 * sin((_89 * 78.73199462890625) - (time * 6.431000232696533203125)));
+    highp float _110 = _67 * 0.004999999888241291046142578125;
+    highp float _129 = _89 + (_110 * sin((_106 * 248.022003173828125) - (time * 54.96099853515625)));
+    highp vec2 _224 = vec2(_129, _106 + (_110 * sin((_129 * 312.821990966796875) + (time * 31.3449993133544921875))));
+    highp vec4 _173 = texture(tex, (pow(abs(_224), vec2(1.10000002384185791015625 - (_54 * 0.0500000007450580596923828125))) * sign(_224)) + _47);
+    fragColor = (_173 * _173) * min(1.0, _54);
+}
+
